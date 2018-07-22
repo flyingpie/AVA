@@ -11,4 +11,9 @@
     <PackageReference Include="Lucene.Net.QueryParser" Version="4.8.0-beta00005" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MUI.DI\MUI.DI.csproj" />
+    <ProjectReference Include="..\MUI\MUI.csproj" />
+  </ItemGroup>
+
 </Project>

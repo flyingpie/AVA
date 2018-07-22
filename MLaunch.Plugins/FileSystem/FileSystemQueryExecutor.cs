@@ -3,11 +3,9 @@ using System.Collections.Generic;
 
 namespace MLaunch.Plugins.FileSystem
 {
-    public class FileSystemPlugin : ListQueryExecutor
+    public class FileSystemQueryExecutor : ListQueryExecutor
     {
-        public override int Order => 1000;
-
-        public override bool CanHandle(string term) => true;
+        public override bool TryHandle(string term) => false;
 
         public override IList<IListQueryResult> GetQueryResults(string term)
         {

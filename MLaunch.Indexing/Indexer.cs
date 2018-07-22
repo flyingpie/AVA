@@ -6,6 +6,7 @@ using Lucene.Net.QueryParsers.Classic;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
+using MUI.DI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,6 +14,7 @@ using System.Linq;
 
 namespace MLaunch.Indexing
 {
+    [Service(ServiceLifetime.Singleton)]
     public class Indexer
     {
         public static readonly LuceneVersion LuceneVersion = LuceneVersion.LUCENE_48;

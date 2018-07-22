@@ -1,6 +1,4 @@
-﻿using MUI;
-
-namespace MLaunch.Core.QueryExecutors
+﻿namespace MLaunch.Core.QueryExecutors
 {
     public interface IQueryExecutor
     {
@@ -10,6 +8,6 @@ namespace MLaunch.Core.QueryExecutors
 
         bool TryExecute(string term);
 
-        void Draw(UIContext uiContext); // TODO: Move context parameter to DI (or remove entirely)
+        void Draw();
     }
 }

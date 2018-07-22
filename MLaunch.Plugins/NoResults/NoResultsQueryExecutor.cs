@@ -1,14 +1,15 @@
 ﻿using ImGuiNET;
 using MLaunch.Core.QueryExecutors;
-using MUI;
+using MUI.DI;
 
 namespace MLaunch.Plugins.NoResults
 {
+    [Service]
     public class NoResultsQueryExecutor : IQueryExecutor
     {
         public int Order => 1000;
 
-        public void Draw(UIContext uiContext)
+        public void Draw()
         {
             ImGui.Text("That didn't work :(");
         }

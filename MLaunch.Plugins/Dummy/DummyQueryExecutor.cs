@@ -10,7 +10,7 @@ namespace MLaunch.Plugins.Dummy
 {
     public class DummyQueryExecutor : ListQueryExecutor
     {
-        [Dependency] public /*private*/ ResourceManager _resourceManager;
+        [Dependency] private ResourceManager _resourceManager;
 
         private Image _avatar;
 
@@ -55,8 +55,6 @@ namespace MLaunch.Plugins.Dummy
         }
 
         public override int Order => 999;
-
-        public override bool CanHandle(string term) => !string.IsNullOrWhiteSpace(term);
 
         public override IList<IListQueryResult> GetQueryResults(string term)
         {

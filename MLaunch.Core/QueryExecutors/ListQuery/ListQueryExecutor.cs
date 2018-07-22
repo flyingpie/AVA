@@ -7,9 +7,12 @@ using Veldrid;
 
 namespace MLaunch.Core.QueryExecutors.ListQuery
 {
+    [Service]
     public abstract class ListQueryExecutor : IQueryExecutor
     {
-        [Dependency] public /*private*/ ResourceManager _resourceManager;
+        [Dependency] private UIContext _context;
+
+        [Dependency] private ResourceManager _resourceManager;
 
         private IList<IListQueryResult> _queryResults;
         private int _selectedItemIndex;
@@ -41,16 +44,16 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
 
         #region Query executor
 
-        public abstract bool CanHandle(string term);
-
-        public bool TryHandle(string term)
+        public virtual bool TryHandle(string term)
         {
+            if (string.IsNullOrWhiteSpace(term)) return false;
+
             _queryResults = GetQueryResults(term);
 
             return _queryResults.Any();
         }
 
-        public bool TryExecute(string term)
+        public virtual bool TryExecute(string term)
         {
             if (_queryResults.Count > _selectedItemIndex)
             {
@@ -62,17 +65,17 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
             return false;
         }
 
-        public void Draw(UIContext context)
+        public void Draw()
         {
             // Previous
-            if (context.Input.IsKeyDown(Key.Up) || context.Input.IsKeyDown(Key.K, ModifierKeys.Control) || context.Input.IsKeyDown(Key.Tab, ModifierKeys.Shift)) PreviousItem();
+            if (_context.Input.IsKeyDown(Key.Up) || _context.Input.IsKeyDown(Key.K, ModifierKeys.Control) || _context.Input.IsKeyDown(Key.Tab, ModifierKeys.Shift)) PreviousItem();
 
             // Next
-            if (context.Input.IsKeyDown(Key.Down) || context.Input.IsKeyDown(Key.J, ModifierKeys.Control) || context.Input.IsKeyDown(Key.Tab, ModifierKeys.None)) NextItem();
+            if (_context.Input.IsKeyDown(Key.Down) || _context.Input.IsKeyDown(Key.J, ModifierKeys.Control) || _context.Input.IsKeyDown(Key.Tab, ModifierKeys.None)) NextItem();
 
             for (int i = 0; i < _queryResults.Count; i++)
             {
-                _queryResults[i].Draw(context, i == _selectedItemIndex);
+                _queryResults[i].Draw(_context, i == _selectedItemIndex);
             }
         }
 

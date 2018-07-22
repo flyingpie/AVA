@@ -16,7 +16,8 @@ namespace MLaunch
 {
     public class UI : UIBase
     {
-        [Dependency] private QueryExecutorManager _queryExecutorManager;
+        [Dependency] private UIContext Context;
+        [Dependency] private IQueryExecutorManager _queryExecutorManager;
 
         private IQueryExecutor _activeQueryExecutor;
 
@@ -25,42 +26,42 @@ namespace MLaunch
 
         public override void Load()
         {
-            Window.Width = 600;
-            Window.Height = 300;
-            Window.CenterToActiveMonitor();
+            Context.Window.Width = 600;
+            Context.Window.Height = 300;
+            Context.Window.CenterToActiveMonitor();
 
             // Toggle on Alt-Space
             HotKeyManager.RegisterHotKey(Keys.Space, KeyModifiers.Alt | KeyModifiers.Shift);
-            HotKeyManager.HotKeyPressed += (s, a) => { if (Window.Visible) { Minimize(); } else { Maximize(); } };
+            HotKeyManager.HotKeyPressed += (s, a) => { if (Context.Window.Visible) { Minimize(); } else { Maximize(); } };
 
             // Minimize on focus lost
-            Window.FocusLost += () => { Console.WriteLine("Lost focus"); Minimize(); };
+            Context.Window.FocusLost += () => { Console.WriteLine("Lost focus"); Minimize(); };
 
             ////// TO DI ///////
-            _queryExecutorManager = new QueryExecutorManager();
-            _queryExecutorManager._resourceManager = ResourceManager;
-            _queryExecutorManager.Initialize();
+            //_queryExecutorManager = new QueryExecutorManager();
+            //_queryExecutorManager._resourceManager = ResourceManager;
+            //_queryExecutorManager.Initialize();
             ////// TO DI ///////
         }
 
-        public override void Draw(UIContext context)
+        public override void Draw()
         {
             ImGui.PushStyleVar(StyleVar.WindowRounding, 0);
 
             ImGui.SetNextWindowPos(Vector2.Zero, Condition.Always, Vector2.Zero);
-            ImGui.SetNextWindowSize(new Vector2(Window.Width, Window.Height), Condition.Always);
+            ImGui.SetNextWindowSize(new Vector2(Context.Window.Width, Context.Window.Height), Condition.Always);
 
             ImGui.BeginWindow(string.Empty, WindowFlags.NoMove | WindowFlags.NoResize | WindowFlags.NoTitleBar);
             {
-                ImGui.PushFont(context.Font24);
+                ImGui.PushFont(Context.Font24);
 
-                DrawSearchBar(context);
+                DrawSearchBar();
 
                 ImGui.Spacing();
 
                 ImGui.BeginChild("query-executor", false, WindowFlags.Default);
                 {
-                    _activeQueryExecutor?.Draw(context);
+                    _activeQueryExecutor?.Draw();
                 }
                 ImGui.EndChild();
 
@@ -69,14 +70,14 @@ namespace MLaunch
             ImGui.EndWindow();
         }
 
-        private void DrawSearchBar(UIContext context)
+        private void DrawSearchBar()
         {
-            ImGui.PushFont(context.Font32);
+            ImGui.PushFont(Context.Font32);
             ImGui.PushItemWidth(-1);
 
             ImGui.InputText("query", _termBuffer, (uint)_termBuffer.Length, InputTextFlags.Default, null);
 
-            if (context.Input.IsKeyDown(Key.Enter))
+            if (Context.Input.IsKeyDown(Key.Enter))
             {
                 Console.WriteLine($"ENTER");
 
@@ -100,17 +101,17 @@ namespace MLaunch
         {
             Console.WriteLine("Maximize");
 
-            Window.CenterToActiveMonitor();
-            Window.Visible = true;
+            Context.Window.CenterToActiveMonitor();
+            Context.Window.Visible = true;
 
-            PInvoke.SetForegroundWindow((int)Window.Handle);
+            PInvoke.SetForegroundWindow((int)Context.Window.Handle);
         }
 
         private void Minimize()
         {
             Console.WriteLine("Minimize");
 
-            Window.Visible = false;
+            Context.Window.Visible = false;
 
             _termBuffer.ClearBuffer();
         }

@@ -44,6 +44,19 @@ namespace MUI
 
             return pointer;
         }
+
+        public IntPtr LoadTexture(byte[] data)
+        {
+            var image = SixLabors.ImageSharp.Image.Load(data);
+
+            var ist = new ImageSharpTexture(image, false);
+
+            var texture = ist.CreateDeviceTexture(_graphicsDevice, _graphicsDevice.ResourceFactory);
+
+            var pointer = _controller.GetOrCreateImGuiBinding(_graphicsDevice.ResourceFactory, texture);
+
+            return pointer;
+        }
     }
 
     public class TextureBinding
