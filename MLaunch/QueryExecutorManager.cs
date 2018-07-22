@@ -1,6 +1,7 @@
 ﻿using MLaunch.Core.QueryExecutors;
 using MUI;
 using MUI.DI;
+using System;
 using System.Linq;
 
 namespace MLaunch
@@ -32,7 +33,11 @@ namespace MLaunch
 
         public IQueryExecutor GetQueryExecutor(string term)
         {
-            return _queryExecutors.FirstOrDefault(qe => qe.TryHandle(term));
+            var qex = _queryExecutors.FirstOrDefault(qe => qe.TryHandle(term));
+
+            Console.WriteLine(qex.ToString());
+
+            return qex;
         }
 
         //private IQueryExecutor CreateDummyQueryExecutor()

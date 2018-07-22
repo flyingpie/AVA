@@ -10,8 +10,13 @@ namespace MLaunch
     {
         private static int Main(string[] args)
         {
+            //var index = new Indexing.Indexer();
+            //index.Rebuild();
+            //index.SearchRepl();
+
             // TODO: Make nicer
             typeof(DummyQueryExecutor).GetType();
+            typeof(Indexing.Indexer).GetType();
 
             var uiContext = new UIContext();
 
@@ -24,11 +29,10 @@ namespace MLaunch
 
             RegisterServices(container);
 
-            return uiContext.Run(container.Resolve<UI>());
+            // TODO: Remove (pries cache)
+            container.Resolve<Indexing.Indexer>().Query("conemu");
 
-            //var index = new Indexer();
-            //index.Rebuild();
-            //index.SearchRepl();
+            return uiContext.Run(container.Resolve<UI>());
 
             //return 0;
         }

@@ -52,6 +52,8 @@ namespace MUI
 
             _controller.Initialize();
             _controller.PostInit();
+
+            ResourceManager.Init();
         }
 
         public int Run(UIBase ui)
@@ -65,12 +67,10 @@ namespace MUI
                 InputSnapshot snapshot = Window.PumpEvents();
                 Input = snapshot;
 
+                _controller.Update(1f / 60f, snapshot); // Feed the input events to our ImGui controller, which passes them through to ImGui.
+
                 if (Window.Visible)
                 {
-                    _controller.Update(1f / 60f, snapshot); // Feed the input events to our ImGui controller, which passes them through to ImGui.
-
-                    //UI.Update(snapshot);
-
                     ui.Draw();
 
                     _cl.Begin();

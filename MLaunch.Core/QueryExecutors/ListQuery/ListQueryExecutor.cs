@@ -24,7 +24,11 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
 
         #region List
 
-        public virtual int Order => 0;
+        public virtual int Order => 500;
+
+        public virtual string Prefix => null;
+
+        public virtual bool IsSelectable => true;
 
         public abstract IList<IListQueryResult> GetQueryResults(string term);
 
@@ -46,16 +50,22 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
 
         public virtual bool TryHandle(string term)
         {
+            // Require at least some term
             if (string.IsNullOrWhiteSpace(term)) return false;
 
+            // Require a prefix (when specified in the plugin)
+            if (Prefix != null && !term.ToLowerInvariant().StartsWith(Prefix.ToLowerInvariant())) return false;
+
+            // Execute the query
             _queryResults = GetQueryResults(term);
 
+            // Succeeds when something was returned
             return _queryResults.Any();
         }
 
         public virtual bool TryExecute(string term)
         {
-            if (_queryResults.Count > _selectedItemIndex)
+            if (IsSelectable && _queryResults.Count > _selectedItemIndex)
             {
                 _queryResults[_selectedItemIndex].Execute(term);
 
@@ -75,7 +85,7 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
 
             for (int i = 0; i < _queryResults.Count; i++)
             {
-                _queryResults[i].Draw(_context, i == _selectedItemIndex);
+                _queryResults[i].Draw(_context, IsSelectable && i == _selectedItemIndex);
             }
         }
 

@@ -24,36 +24,50 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
         {
             ImGui.PushFont(context.Font24);
 
+            // Selection
             if (isSelected) ImGui.PushStyleColor(ColorTarget.ChildBg, new Vector4(1, 1, 1, .1f));
 
             ImGui.BeginChild($"query-result-{Name}", new Vector2(ImGui.GetWindowContentRegionWidth(), Height), false, WindowFlags.Default);
+            {
+                ImGui.Columns(2, " ", false);
 
-            ImGui.Columns(2, " ", false);
+                ImGui.SetColumnWidth(0, Height + 10);
 
-            ImGui.SetColumnWidth(0, Height + 10);
-            var size = Height - 2;
-            ImGui.Image(Icon.GetTexture(), new Vector2(size, size), Vector2.Zero, Vector2.One, Vector4.One, new Vector4(1, 1, 1, .6f));
+                // Icon
+                {
+                    var texture = Icon?.GetTexture();
+                    if (texture != null)
+                    {
+                        var size = Height - 2;
+                        ImGui.Image(texture.Value, new Vector2(size, size), Vector2.Zero, Vector2.One, Vector4.One, new Vector4(1, 1, 1, .6f));
+                    }
+                }
 
-            ImGui.NextColumn();
+                ImGui.NextColumn();
 
-            ImGui.Text(Name);
+                // Name and subtext
+                {
+                    ImGui.Text(Name);
 
-            ImGui.PushFont(context.Font16);
-            ImGui.Text(Description, new Vector4(1f, 1f, 1f, 0.5f));
-            ImGui.PopFont();
+                    ImGui.PushFont(context.Font16);
+                    ImGui.Text(Description, new Vector4(1f, 1f, 1f, 0.5f));
+                    ImGui.PopFont();
+                }
 
-            ImGui.Columns(1, "_", false);
-
+                ImGui.Columns(1, "_", false);
+            }
             ImGui.EndChild();
 
             if (isSelected) ImGui.PopStyleColor();
 
             ImGui.PopFont();
+
+            if (isSelected) ImGui.SetScrollHere();
         }
 
         public void Execute(string term)
         {
-            OnExecute(term);
+            OnExecute?.Invoke(term);
         }
     }
 }

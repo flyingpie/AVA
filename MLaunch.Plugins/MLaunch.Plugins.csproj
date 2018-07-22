@@ -6,6 +6,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MLaunch.Core\MLaunch.Core.csproj" />
+    <ProjectReference Include="..\MLaunch.Indexing\MLaunch.Indexing.csproj" />
+    <ProjectReference Include="..\MUI.Utils\MUI.Utils.csproj" />
+    <ProjectReference Include="..\MUI.Win32\MUI.Win32.csproj" />
   </ItemGroup>
 
   <ItemGroup>

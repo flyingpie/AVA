@@ -6,6 +6,9 @@ namespace MUI.Graphics
     {
         private IntPtr _texture;
 
+        public Image()
+        { }
+
         public Image(IntPtr texture)
         {
             _texture = texture;

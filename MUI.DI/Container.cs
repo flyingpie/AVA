@@ -40,6 +40,8 @@ namespace MUI.DI
         public Container()
         {
             _registrations = new Dictionary<Type, ServiceRegistration>();
+
+            Register(this);
         }
 
         public IContainer Register<TInterface, TImplementation>(ServiceLifetime lifetime = ServiceLifetime.Singleton)
@@ -158,7 +160,32 @@ namespace MUI.DI
 
                     continue;
                 }
+                else if (member.Member.MemberType == MemberTypes.Property)
+                {
+                    var property = (PropertyInfo)member.Member;
+                    var propertyType = property.PropertyType;
 
+                    if (typeof(object[]).IsAssignableFrom(propertyType))
+                    {
+                        var serviceType = propertyType.GetElementType();
+                        var services = ResolveAll(serviceType).ToArray();
+
+                        var serviceArray = Array.CreateInstance(serviceType, services.Length);
+                        services.CopyTo(serviceArray, 0);
+
+                        property.SetValue(instance, serviceArray);
+                    }
+                    else
+                    {
+                        var dependency = Resolve(propertyType);
+
+                        Console.WriteLine($"Injecting dependency of type '{dependency.GetType().FullName}' into instance field ('{instance.GetType().FullName}')'{property.Name}'");
+
+                        property.SetValue(instance, dependency);
+                    }
+
+                    continue;
+                }
                 // TODO: properties
             }
 
@@ -193,9 +220,9 @@ namespace MUI.DI
             //.OrderBy(m => m.Member.Name)
             //.ToList();
 
-            if(type.BaseType != null)
+            if (type.BaseType != null)
             {
-                foreach(var member in type.BaseType.GetAllMembers())
+                foreach (var member in type.BaseType.GetAllMembers())
                 {
                     yield return member;
                 }

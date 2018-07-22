@@ -3,7 +3,6 @@ using MLaunch.Core.QueryExecutors;
 using MUI;
 using MUI.DI;
 using MUI.Extensions;
-using MUI.Utils.Extensions;
 using MUI.Win32;
 using MUI.Win32.Extensions;
 using MUI.Win32.Input;
@@ -16,32 +15,26 @@ namespace MLaunch
 {
     public class UI : UIBase
     {
-        [Dependency] private UIContext Context;
-        [Dependency] private IQueryExecutorManager _queryExecutorManager;
-
-        private IQueryExecutor _activeQueryExecutor;
+        [Dependency] public UIContext Context { get; set; }
+        [Dependency] private IQueryExecutorManager QueryExecutorManager { get; set; }
 
         private byte[] _termBuffer = new byte[1024];
         private string _term;
 
+        private IQueryExecutor _activeQueryExecutor;
+
         public override void Load()
         {
             Context.Window.Width = 600;
-            Context.Window.Height = 300;
+            Context.Window.Height = 400;
             Context.Window.CenterToActiveMonitor();
 
             // Toggle on Alt-Space
             HotKeyManager.RegisterHotKey(Keys.Space, KeyModifiers.Alt | KeyModifiers.Shift);
-            HotKeyManager.HotKeyPressed += (s, a) => { if (Context.Window.Visible) { Minimize(); } else { Maximize(); } };
+            HotKeyManager.HotKeyPressed += (s, a) => Toggle();
 
             // Minimize on focus lost
             Context.Window.FocusLost += () => { Console.WriteLine("Lost focus"); Minimize(); };
-
-            ////// TO DI ///////
-            //_queryExecutorManager = new QueryExecutorManager();
-            //_queryExecutorManager._resourceManager = ResourceManager;
-            //_queryExecutorManager.Initialize();
-            ////// TO DI ///////
         }
 
         public override void Draw()
@@ -53,12 +46,15 @@ namespace MLaunch
 
             ImGui.BeginWindow(string.Empty, WindowFlags.NoMove | WindowFlags.NoResize | WindowFlags.NoTitleBar);
             {
+                // Search bar
+
                 ImGui.PushFont(Context.Font24);
 
                 DrawSearchBar();
 
                 ImGui.Spacing();
 
+                // Query executor
                 ImGui.BeginChild("query-executor", false, WindowFlags.Default);
                 {
                     _activeQueryExecutor?.Draw();
@@ -75,7 +71,7 @@ namespace MLaunch
             ImGui.PushFont(Context.Font32);
             ImGui.PushItemWidth(-1);
 
-            ImGui.InputText("query", _termBuffer, (uint)_termBuffer.Length, InputTextFlags.Default, null);
+            ImGui.InputText("query", _termBuffer, (uint)_termBuffer.Length, InputTextFlags.EnterReturnsTrue, null);
 
             if (Context.Input.IsKeyDown(Key.Enter))
             {
@@ -90,11 +86,17 @@ namespace MLaunch
             if (_term != term)
             {
                 _term = term;
-                _activeQueryExecutor = _queryExecutorManager.GetQueryExecutor(term);
+                _activeQueryExecutor = QueryExecutorManager.GetQueryExecutor(term);
             }
 
             ImGui.PopItemWidth();
             ImGui.PopFont();
+        }
+
+        private void Toggle()
+        {
+            if (Context.Window.Visible) Minimize();
+            else Maximize();
         }
 
         private void Maximize()

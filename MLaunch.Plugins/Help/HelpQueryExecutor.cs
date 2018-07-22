@@ -3,10 +3,10 @@ using MLaunch.Core.QueryExecutors;
 using MUI;
 using MUI.DI;
 using MUI.Graphics;
+using MUI.Win32.Extensions;
 using System;
 using System.Diagnostics;
-using System.Drawing.Imaging;
-using System.IO;
+using System.Numerics;
 
 namespace MLaunch.Plugins.Help
 {
@@ -30,25 +30,21 @@ namespace MLaunch.Plugins.Help
             var sw = new Stopwatch();
             sw.Start();
 
-            Image img = null;
+            var path = "";
+            path = @"D:\Syncthing\Apps\ConEmu\ConEmu.exe";
+            path = @"C:\Program Files\Firefox Developer Edition\firefox.exe";
+            path = @"C:\Users\Marco van den Oever\Desktop\Code.exe - Shortcut.lnk";
 
-            using (var icoExe = System.Drawing.Icon.ExtractAssociatedIcon(@"C:\Syncthing\Apps\ConEmu\ConEmu.exe"))
-            using (var str = new MemoryStream())
-            {
-                icoExe.ToBitmap().Save(str, ImageFormat.Bmp);
-
-                img = new Image(_resourceManager.LoadTexture(str.ToArray()));
-            }
+            _image = _resourceManager.LoadImageFromIcon(path);
 
             sw.Stop();
             Console.WriteLine($"Loaded image in {sw.Elapsed}");
-
-            var xx = 2;
         }
 
         public void Draw()
         {
             ImGui.Text("Hello from help!");
+            ImGui.Image(_image.GetTexture(), new Vector2(50, 50), Vector2.Zero, Vector2.One, Vector4.One, Vector4.One);
         }
     }
 }
