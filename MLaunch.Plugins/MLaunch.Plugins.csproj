@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MLaunch.Core\MLaunch.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Hosts\" />
+    <Folder Include="Time\" />
+  </ItemGroup>
+
+</Project>

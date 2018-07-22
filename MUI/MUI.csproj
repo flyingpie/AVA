@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	  <PlatformTarget>x64</PlatformTarget>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ImGui.NET" Version="0.4.7" />
+		<PackageReference Include="Veldrid" Version="4.3.3" />
+		<PackageReference Include="Veldrid.ImageSharp" Version="4.3.3" />
+		<PackageReference Include="Veldrid.SDL2" Version="4.3.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Resources\Shaders\Vulkan.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Vulkan.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\Shaders\Vulkan.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Vulkan.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+</Project>
