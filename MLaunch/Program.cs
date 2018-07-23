@@ -1,6 +1,7 @@
 ﻿using MLaunch.Plugins.Dummy;
 using MUI;
 using MUI.DI;
+using MUI.Win32;
 using System.Linq;
 using System.Reflection;
 
@@ -10,10 +11,6 @@ namespace MLaunch
     {
         private static int Main(string[] args)
         {
-            //var index = new Indexing.Indexer();
-            //index.Rebuild();
-            //index.SearchRepl();
-
             // TODO: Make nicer
             typeof(DummyQueryExecutor).GetType();
             typeof(Indexing.Indexer).GetType();
@@ -31,9 +28,9 @@ namespace MLaunch
             // TODO: Remove (pries cache)
             container.Resolve<Indexing.Indexer>().Query("conemu");
 
-            return uiContext.Run(container.Resolve<UI>());
+            PInvoke.ShowWindow(PInvoke.GetConsoleWindow(), PInvoke.SW_HIDE);
 
-            //return 0;
+            return uiContext.Run(container.Resolve<UI>());
         }
 
         private static void RegisterServices(IContainer container)

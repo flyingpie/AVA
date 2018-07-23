@@ -18,7 +18,7 @@ namespace MLaunch.Plugins.EnvVars
 
         public override int Order => 0;
 
-        public override string Prefix => "env";
+        public override string Prefix => "env ";
 
         [RunAfterInject]
         private void Init()

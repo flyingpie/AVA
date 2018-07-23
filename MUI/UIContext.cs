@@ -14,8 +14,6 @@ namespace MUI
 
         public Font Font16 { get; set; }
 
-        public Font FontAwesome { get; set; }
-
         public InputSnapshot Input { get; set; }
 
         public Vector3 ClearColor { get; set; } = new Vector3(0.45f, 0.55f, 0.6f);
@@ -47,8 +45,6 @@ namespace MUI
             Font16 = ResourceManager.LoadFont(@"Resources\Fonts\OpenSans\OpenSans-Light.ttf", 16);
             Font24 = ResourceManager.LoadFont(@"Resources\Fonts\OpenSans\OpenSans-Light.ttf", 24);
             Font32 = ResourceManager.LoadFont(@"Resources\Fonts\OpenSans\OpenSans-Light.ttf", 32);
-
-            FontAwesome = ResourceManager.LoadFont(@"Resources\Fonts\FontAwesome\FontAwesome.ttf", 32);
 
             _controller.Initialize();
             _controller.PostInit();
