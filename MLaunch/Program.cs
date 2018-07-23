@@ -21,7 +21,6 @@ namespace MLaunch
             var uiContext = new UIContext();
 
             var container = new Container()
-                .Register<IQueryExecutorManager, QueryExecutorManager>()
                 .Register<ResourceManager, ResourceManager>(c => uiContext.ResourceManager)
                 .Register(uiContext)
                 .Register<UI, UI>()

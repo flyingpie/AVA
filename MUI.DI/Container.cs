@@ -93,10 +93,12 @@ namespace MUI.DI
 
         public object Resolve(Type type)
         {
-            if (!_registrations.ContainsKey(type))
+            var implementingType = _registrations.Keys.FirstOrDefault(k => type.IsAssignableFrom(k));
+
+            if (implementingType == null)
                 throw new InvalidOperationException($"No service found of type '{type.FullName}'");
 
-            return _registrations[type].Resolve(this);
+            return _registrations[implementingType].Resolve(this);
         }
 
         public T Resolve<T>() => (T)Resolve(typeof(T));

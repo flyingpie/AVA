@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <Folder Include="Hosts\" />
-    <Folder Include="Time\" />
+    <Folder Include="WebQuery\" />
   </ItemGroup>
 
 </Project>

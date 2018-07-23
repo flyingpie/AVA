@@ -5,6 +5,8 @@
 		<OutputType>Exe</OutputType>
 		<OutputPath>bin</OutputPath>
 		<TargetFramework>net462</TargetFramework>
+		<ApplicationIcon />
+		<StartupObject />
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -14,12 +14,13 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
 
         [Dependency] private ResourceManager _resourceManager;
 
-        private IList<IListQueryResult> _queryResults;
-        private int _selectedItemIndex;
+        public IList<IListQueryResult> QueryResults { get; set; }
+
+        public int SelectedItemIndex { get; set; }
 
         public ListQueryExecutor()
         {
-            _queryResults = new List<IListQueryResult>(0);
+            QueryResults = new List<IListQueryResult>(0);
         }
 
         #region List
@@ -34,14 +35,14 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
 
         public void NextItem()
         {
-            _selectedItemIndex++;
-            if (_selectedItemIndex >= _queryResults.Count) _selectedItemIndex = 0;
+            SelectedItemIndex++;
+            if (SelectedItemIndex >= QueryResults.Count) SelectedItemIndex = 0;
         }
 
         public void PreviousItem()
         {
-            _selectedItemIndex--;
-            if (_selectedItemIndex < 0) _selectedItemIndex = _queryResults.Count - 1;
+            SelectedItemIndex--;
+            if (SelectedItemIndex < 0) SelectedItemIndex = QueryResults.Count - 1;
         }
 
         #endregion List
@@ -57,17 +58,17 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
             if (Prefix != null && !term.ToLowerInvariant().StartsWith(Prefix.ToLowerInvariant())) return false;
 
             // Execute the query
-            _queryResults = GetQueryResults(term);
+            QueryResults = GetQueryResults(term);
 
             // Succeeds when something was returned
-            return _queryResults.Any();
+            return QueryResults.Any();
         }
 
         public virtual bool TryExecute(string term)
         {
-            if (IsSelectable && _queryResults.Count > _selectedItemIndex)
+            if (IsSelectable && QueryResults.Count > SelectedItemIndex)
             {
-                _queryResults[_selectedItemIndex].Execute(term);
+                QueryResults[SelectedItemIndex].Execute(term);
 
                 return true;
             }
@@ -83,9 +84,9 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
             // Next
             if (_context.Input.IsKeyDown(Key.Down) || _context.Input.IsKeyDown(Key.J, ModifierKeys.Control) || _context.Input.IsKeyDown(Key.Tab, ModifierKeys.None)) NextItem();
 
-            for (int i = 0; i < _queryResults.Count; i++)
+            for (int i = 0; i < QueryResults.Count; i++)
             {
-                _queryResults[i].Draw(_context, IsSelectable && i == _selectedItemIndex);
+                QueryResults[i].Draw(_context, IsSelectable && i == SelectedItemIndex);
             }
         }
 

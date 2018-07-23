@@ -8,6 +8,8 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
 {
     public class ListQueryResult : IListQueryResult
     {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+
         public string Name { get; set; }
 
         public string Description { get; set; }
@@ -27,7 +29,7 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
             // Selection
             if (isSelected) ImGui.PushStyleColor(ColorTarget.ChildBg, new Vector4(1, 1, 1, .1f));
 
-            ImGui.BeginChild($"query-result-{Name}", new Vector2(ImGui.GetWindowContentRegionWidth(), Height), false, WindowFlags.Default);
+            ImGui.BeginChild($"query-result-{Id}", new Vector2(ImGui.GetWindowContentRegionWidth(), Height), false, WindowFlags.Default);
             {
                 ImGui.Columns(2, " ", false);
 
