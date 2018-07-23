@@ -22,10 +22,10 @@ namespace MUI
         public static Sdl2Window CreateWindow(ref WindowCreateInfo windowCI)
         {
                SDL_WindowFlags flags =
-                SDL_WindowFlags.Borderless
-              | SDL_WindowFlags.OpenGL
+                /*SDL_WindowFlags.Borderless
+              |*/ SDL_WindowFlags.OpenGL
               | SDL_WindowFlags.Shown
-              | SDL_WindowFlags.SkipTaskbar;
+              /*| SDL_WindowFlags.SkipTaskbar*/;
 
             Sdl2Window window = new Sdl2Window(
                 "MLaunch",

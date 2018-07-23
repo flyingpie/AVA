@@ -30,7 +30,7 @@ namespace MUI
         public UIContext()
         {
             VeldridStartup.CreateWindowAndGraphicsDevice(
-                new WindowCreateInfo(0, 0, 800, 600),
+                new WindowCreateInfo(100, 100, 800, 600),
                 new GraphicsDeviceOptions(true, null, true),
                 out _window,
                 out _graphicsDevice);

@@ -28,7 +28,7 @@ namespace MLaunch
             // TODO: Remove (pries cache)
             container.Resolve<Indexing.Indexer>().Query("conemu");
 
-            PInvoke.ShowWindow(PInvoke.GetConsoleWindow(), PInvoke.SW_HIDE);
+            //PInvoke.ShowWindow(PInvoke.GetConsoleWindow(), PInvoke.SW_HIDE);
 
             return uiContext.Run(container.Resolve<UI>());
         }

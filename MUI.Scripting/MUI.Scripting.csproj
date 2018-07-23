@@ -4,4 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Dotnet.Script.Core" Version="0.25.0" />
+  </ItemGroup>
+
 </Project>

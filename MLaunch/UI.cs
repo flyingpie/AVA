@@ -1,15 +1,18 @@
 ﻿using ImGuiNET;
+using Microsoft.CodeAnalysis.Scripting;
 using MLaunch.Core.QueryExecutors;
 using MLaunch.Plugins.SysMon;
 using MUI;
 using MUI.DI;
 using MUI.Extensions;
+using MUI.Scripting;
 using MUI.Win32;
 using MUI.Win32.Extensions;
-using MUI.Win32.Input;
 using System;
+using System.Linq;
 using System.Numerics;
-using System.Windows.Forms;
+
+//using System.Windows.Forms;
 using Veldrid;
 
 namespace MLaunch
@@ -33,15 +36,36 @@ namespace MLaunch
             Context.Window.CenterToActiveMonitor();
 
             // Toggle on Alt-Space
-            HotKeyManager.RegisterHotKey(Keys.Space, KeyModifiers.Alt | KeyModifiers.Shift);
-            HotKeyManager.HotKeyPressed += (s, a) => Toggle();
+            //HotKeyManager.RegisterHotKey(Keys.Space, KeyModifiers.Alt | KeyModifiers.Shift);
+            //HotKeyManager.HotKeyPressed += (s, a) => Toggle();
 
             // Minimize on focus lost
-            Context.Window.FocusLost += () => { Console.WriteLine("Lost focus"); Minimize(); };
+            //Context.Window.FocusLost += () => { Console.WriteLine("Lost focus"); Minimize(); };
+
+            _scriptHost = new ScriptHost("Resources/Layouts/Default/Default.csx");
+            //_scriptHost.Interop.Services.Add(() => Context);
+            _scriptHost.Interop.Add(() => Context);
+            _scriptHost.Interop.Add(() => SysMon);
+            _scriptHost.Compile();
         }
+
+        private ScriptHost _scriptHost;
 
         public override void Draw()
         {
+            if (Context.Input.IsKeyDown(Key.F5))
+            {
+                try
+                {
+                    _scriptHost.Compile().GetAwaiter().GetResult();
+                }
+                catch (CompilationErrorException ex)
+                {
+                    Console.WriteLine("Error while compiling script:");
+                    ex.Diagnostics.ToList().ForEach(e => Console.WriteLine(e.ToString()));
+                }
+            }
+
             ImGui.PushStyleVar(StyleVar.WindowRounding, 0);
 
             ImGui.SetNextWindowPos(Vector2.Zero, Condition.Always, Vector2.Zero);
@@ -67,18 +91,20 @@ namespace MLaunch
                 ImGui.PushFont(Context.Font16);
                 ImGui.BeginChild("footer", false, WindowFlags.Default);
                 {
-                    // SysMon
-                    ImGui.Text($"CPU {SysMon.CpuUsage.ToString("0.00")}");
+                    //    // SysMon
+                    //    ImGui.Text($"CPU {SysMon.CpuUsage.ToString("0.00")}");
 
-                    ImGui.SameLine();
-                    ImGui.Text($"Mem {SysMon.MemUsage.ToString("0.00")}");
+                    //    ImGui.SameLine();
+                    //    ImGui.Text($"Mem {SysMon.MemUsage.ToString("0.00")}");
 
-                    foreach (var drive in SysMon.Drives)
-                    {
-                        ImGui.SameLine();
-                        ImGui.Text($"{drive.Name} {drive.Usage.ToString("0.00")}");
-                    }
-                    ////////////////////
+                    //    foreach (var drive in SysMon.Drives)
+                    //    {
+                    //        ImGui.SameLine();
+                    //        ImGui.Text($"{drive.Name} {drive.Usage.ToString("0.00")}");
+                    //    }
+                    //    ////////////////////
+
+                    _scriptHost.Run().GetAwaiter().GetResult();
                 }
                 ImGui.EndChild();
                 ImGui.PopFont();

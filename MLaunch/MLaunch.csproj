@@ -4,7 +4,7 @@
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<OutputType>Exe</OutputType>
 		<OutputPath>bin</OutputPath>
-		<TargetFramework>net462</TargetFramework>
+		<TargetFramework>netcoreapp2.1</TargetFramework>
 		<ApplicationIcon />
 		<StartupObject />
 	</PropertyGroup>
@@ -22,6 +22,7 @@
 		<ProjectReference Include="..\MLaunch.Indexing\MLaunch.Indexing.csproj" />
 		<ProjectReference Include="..\MLaunch.Plugins\MLaunch.Plugins.csproj" />
 		<ProjectReference Include="..\MUI.DI\MUI.DI.csproj" />
+		<ProjectReference Include="..\MUI.Scripting\MUI.Scripting.csproj" />
 		<ProjectReference Include="..\MUI.Utils\MUI.Utils.csproj" />
 		<ProjectReference Include="..\MUI\MUI.csproj" />
 		<ProjectReference Include="..\MUI.Win32\MUI.Win32.csproj" />

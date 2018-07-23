@@ -18,16 +18,16 @@ namespace MLaunch.Plugins.SysMon
 
         public List<DriveStat> Drives { get; set; } = new List<DriveStat>();
 
-        private PerformanceCounter _cpuCounter;
+        //private PerformanceCounter _cpuCounter;
 
         private Task _task;
 
         public SysMonService()
         {
-            _cpuCounter = new PerformanceCounter();
-            _cpuCounter.CategoryName = "Processor";
-            _cpuCounter.CounterName = "% Processor Time";
-            _cpuCounter.InstanceName = "_Total";
+            //_cpuCounter = new PerformanceCounter();
+            //_cpuCounter.CategoryName = "Processor";
+            //_cpuCounter.CounterName = "% Processor Time";
+            //_cpuCounter.InstanceName = "_Total";
 
             _task = StartBackgroundTask();
         }
@@ -42,7 +42,7 @@ namespace MLaunch.Plugins.SysMon
                     var memTotalIMB = PerformanceInfo.GetTotalMemoryInMiB();
                     var memUseMB = memTotalIMB - memAvailableMB;
 
-                    CpuUsage = (float)Math.Round(_cpuCounter.NextValue() / 100, 2);
+                    //CpuUsage = (float)Math.Round(_cpuCounter.NextValue() / 100, 2);
                     MemUsage = (float)Math.Round((float)memUseMB / memTotalIMB, 2);
 
                     Drives = DriveInfo
