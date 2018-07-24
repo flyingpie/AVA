@@ -11,8 +11,4 @@
     <ProjectReference Include="..\MUI.Win32\MUI.Win32.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Hosts\" />
-  </ItemGroup>
-
 </Project>
