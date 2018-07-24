@@ -29,8 +29,6 @@ namespace MUI
         //[RunAfterInject]
         public /*private*/ void Init()
         {
-            //DefaultImage = new Image(_textureLoader.LoadTexture(@"Resources\Images\crashlog-doom.png"));
-
             DefaultImage = LoadImage(@"Resources\Images\crashlog-doom.png");
         }
 
@@ -41,21 +39,22 @@ namespace MUI
 
         public Image LoadImage(string path)
         {
-            //return _loadedImages.GetOrAdd(path, key => new Image(LoadTexture(path)));
-
             return LoadImage(path, loader => new Image(loader.LoadTexture(path)));
         }
 
         public Image LoadImage(string cacheKey, byte[] data)
         {
-            //return _loadedImages.GetOrAdd(cacheKey, key => new Image(LoadTexture(data)));
-
             return LoadImage(cacheKey, loader => new Image(loader.LoadTexture(data)));
         }
 
         public Image LoadImage(string cacheKey, Func<TextureLoader, Image> factory)
         {
             return _loadedImages.GetOrAdd(cacheKey, key => factory(_textureLoader));
+        }
+
+        public bool TryGetCachedImage(string cacheKey, out Image image)
+        {
+            return _loadedImages.TryGetValue(cacheKey, out image);
         }
 
         #region Low-level

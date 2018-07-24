@@ -7,9 +7,15 @@ namespace MLaunch.Plugins.Settings
 {
     public class SettingsListQueryExecutor : ListQueryExecutor
     {
+        public override string Name => "Settings";
+
+        public override string Description => "Shows the settings set";
+
+        public override string ExampleUsage => Prefix;
+
         [Dependency] public Indexer Indexer { get; set; }
 
-        public override string Prefix => "settings";
+        public override string Prefix => "mlsettings";
 
         public override IList<IListQueryResult> GetQueryResults(string term)
         {

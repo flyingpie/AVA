@@ -8,6 +8,12 @@ namespace MLaunch.Plugins.Time
 {
     public class TimeQueryExecutor : ListQueryExecutor
     {
+        public override string Name => "Time";
+
+        public override string Description => "Lists times around the world";
+
+        public override string ExampleUsage => Prefix;
+
         public override int Order => 0;
 
         public override string Prefix => "time";

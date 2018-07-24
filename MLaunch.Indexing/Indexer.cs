@@ -163,11 +163,14 @@ namespace MLaunch.Indexing
 
         public List<QS> Query(string term)
         {
+            // TODO: Can we use an analyzer for this?
+            term = term.ToLowerInvariant();
+
             // TESTS
             // "code" -> Visual Studio Code.lnk (1 - 3)
             // "conem" => ConEmu.exe (1)
             // "remote" -> "Remote Desktop Connection", "mRemoteNG" (1, 2)
-
+            
             // Explain
             /////////
 

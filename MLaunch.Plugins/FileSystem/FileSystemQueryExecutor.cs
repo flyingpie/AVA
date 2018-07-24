@@ -5,6 +5,7 @@ using MUI.DI;
 using MUI.Extensions;
 using MUI.Graphics;
 using MUI.Win32.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -15,8 +16,13 @@ namespace MLaunch.Plugins.FileSystem
     {
         [Dependency] private ResourceManager _resourceManager;
         [Dependency] private Indexer _indexer;
-
         [Dependency] private UIContext _ui;
+
+        public override string Name => "File system";
+
+        public override string Description => "Search the file system for apps, shortcuts and media files";
+
+        public override string ExampleUsage => "notepad";
 
         private Image _defaultImage;
 
@@ -43,19 +49,26 @@ namespace MLaunch.Plugins.FileSystem
 
         private void Open(QS qs)
         {
-            var path = qs.Document.Get("path");
-
-            var startInfo = new ProcessStartInfo()
+            try
             {
-                FileName = path
-            };
+                var path = qs.Document.Get("path");
 
-            if (_ui.Input.IsKeyDown(Veldrid.Key.Enter, Veldrid.ModifierKeys.Control))
-            {
-                startInfo.Verb = "runas";
+                var startInfo = new ProcessStartInfo()
+                {
+                    FileName = path
+                };
+
+                if (_ui.Input.IsKeyDown(Veldrid.Key.Enter, Veldrid.ModifierKeys.Control))
+                {
+                    startInfo.Verb = "runas";
+                }
+
+                Process.Start(startInfo);
             }
-
-            Process.Start(startInfo);
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Wups: {ex.Message}");
+            }
         }
     }
 }

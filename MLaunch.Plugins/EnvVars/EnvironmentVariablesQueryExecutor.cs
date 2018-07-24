@@ -13,6 +13,12 @@ namespace MLaunch.Plugins.EnvVars
         [Dependency]
         private ResourceManager ResourceManager { get; set; }
 
+        public override string Name => "Environment variables";
+
+        public override string Description => "List and filters through environment variables";
+
+        public override string ExampleUsage => "env path";
+
         private List<EnvironmentVariable> _vars;
         private Image _icon;
 

@@ -14,6 +14,12 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
 
         [Dependency] private ResourceManager _resourceManager;
 
+        public abstract string Description { get; }
+
+        public abstract string Name { get; }
+
+        public abstract string ExampleUsage { get; }
+
         public IList<IListQueryResult> QueryResults { get; set; }
 
         public int SelectedItemIndex { get; set; }
@@ -51,6 +57,8 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
 
         public virtual bool TryHandle(string term)
         {
+            SelectedItemIndex = 0;
+
             // Require at least some term
             if (string.IsNullOrWhiteSpace(term)) return false;
 

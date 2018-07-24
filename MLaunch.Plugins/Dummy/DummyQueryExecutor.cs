@@ -13,6 +13,14 @@ namespace MLaunch.Plugins.Dummy
     {
         [Dependency] private ResourceManager _resourceManager;
 
+        public override string Name => "Dummy";
+
+        public override string Description => "Test plugin";
+
+        public override string ExampleUsage => "dummy ";
+
+        public override string Prefix => "dummy ";
+
         private Image _avatar;
 
         private ListQueryResult[] _dummyResults;

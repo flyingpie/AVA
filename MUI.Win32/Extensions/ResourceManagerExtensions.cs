@@ -36,5 +36,29 @@ namespace MUI.Win32.Extensions
                 return resourceManager.DefaultImage;
             }));
         }
+
+        public static Image LoadImageFromIcon(this ResourceManager resourceManager, string cacheKey, System.Drawing.Icon icon)
+        {
+            return resourceManager.LoadImage(cacheKey, textureLoader => new LazyImage(resourceManager.DefaultImage, () =>
+            {
+                try
+                {
+                    using (var bmpStream = new MemoryStream())
+                    {
+                        // Convert to bitmap
+                        icon.ToBitmap().Save(bmpStream, System.Drawing.Imaging.ImageFormat.Bmp);
+
+                        // Convert to texture
+                        return new Image(textureLoader.LoadTexture(bmpStream.ToArray()));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Could not load image '{cacheKey}': {ex.Message}");
+                }
+
+                return resourceManager.DefaultImage;
+            }));
+        }
     }
 }
