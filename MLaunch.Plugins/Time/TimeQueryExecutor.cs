@@ -18,29 +18,45 @@ namespace MLaunch.Plugins.Time
 
         public override string Prefix => "time";
 
-        private TimeZoneInfo[] _timeZones;
+        private IEnumerable<TimeZoneInfo> _allTimeZones;
+
+        private IEnumerable<TimeZoneInfo> _defaultTimeZones;
 
         [RunAfterInject]
         private void Init()
         {
-            var tz = TimeZoneInfo.GetSystemTimeZones().ToList();
+            _allTimeZones = TimeZoneInfo.GetSystemTimeZones().ToList();
 
-            _timeZones = new[]
+            _defaultTimeZones = new[]
             {
-                tz.FirstOrDefault(t => t.Id == "UTC"),
-                tz.FirstOrDefault(t => t.Id == "Pacific Standard Time"),
-                tz.FirstOrDefault(t => t.Id == "Eastern Standard Time"),
-                tz.FirstOrDefault(t => t.Id == "Russian Standard Time"),
-                tz.FirstOrDefault(t => t.Id == "Tokyo Standard Time"),
-                tz.FirstOrDefault(t => t.Id == "AUS Eastern Standard Time")
-            }.OrderBy(t => t.BaseUtcOffset).ToArray();
+                _allTimeZones.FirstOrDefault(t => t.Id == "UTC"),
+                _allTimeZones.FirstOrDefault(t => t.Id == "Pacific Standard Time"),
+                _allTimeZones.FirstOrDefault(t => t.Id == "Eastern Standard Time"),
+                _allTimeZones.FirstOrDefault(t => t.Id == "Russian Standard Time"),
+                _allTimeZones.FirstOrDefault(t => t.Id == "Tokyo Standard Time"),
+                _allTimeZones.FirstOrDefault(t => t.Id == "AUS Eastern Standard Time")
+            }.OrderBy(t => t.BaseUtcOffset).ToList();
         }
 
         public override IList<IListQueryResult> GetQueryResults(string term)
         {
+            term = term.Substring(Prefix.Length).Trim();
+
             var now = DateTimeOffset.UtcNow;
 
-            return _timeZones
+            var source = _defaultTimeZones;
+
+            if (!string.IsNullOrWhiteSpace(term))
+            {
+                source = _allTimeZones.Where(tz =>
+                        tz.Id.ContainsCaseInsensitive(term)
+                     || tz.DaylightName.ContainsCaseInsensitive(term)
+                     || tz.DisplayName.ContainsCaseInsensitive(term)
+                     || tz.StandardName.ContainsCaseInsensitive(term));
+            }
+
+            return source
+                .Take(6)
                 .Select(t =>
                 {
                     var dateTime = now.Add(t.BaseUtcOffset);
