@@ -40,22 +40,22 @@ namespace MLaunch.Plugins.Time
 
         public override IList<IListQueryResult> GetQueryResults(string term)
         {
-            term = term.Substring(Prefix.Length).Trim();
+            var terml = term.Substring(Prefix.Length).Trim();
 
             var now = DateTimeOffset.UtcNow;
 
             var source = _defaultTimeZones;
 
-            if (!string.IsNullOrWhiteSpace(term))
+            if (!string.IsNullOrWhiteSpace(terml))
             {
                 source = _allTimeZones.Where(tz =>
-                        tz.Id.ContainsCaseInsensitive(term)
-                     || tz.DaylightName.ContainsCaseInsensitive(term)
-                     || tz.DisplayName.ContainsCaseInsensitive(term)
-                     || tz.StandardName.ContainsCaseInsensitive(term));
+                        tz.Id.ContainsCaseInsensitive(terml)
+                     || tz.DaylightName.ContainsCaseInsensitive(terml)
+                     || tz.DisplayName.ContainsCaseInsensitive(terml)
+                     || tz.StandardName.ContainsCaseInsensitive(terml));
             }
 
-            return source
+            var results = source
                 .Take(6)
                 .Select(t =>
                 {
@@ -73,6 +73,10 @@ namespace MLaunch.Plugins.Time
                     };
                 })
                 .ToList();
+
+            if (!results.Any()) return new[] { new ListQueryResult() { Name = $"No timezone found matching term '{terml}'", Description = "" } };
+
+            return results;
         }
     }
 }

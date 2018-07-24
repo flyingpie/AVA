@@ -26,6 +26,8 @@ namespace MLaunch
 
         private IQueryExecutor _activeQueryExecutor;
 
+        private bool _isConsoleShown = true;
+
         public override void Load()
         {
             Context.Window.Width = 600;
@@ -38,10 +40,15 @@ namespace MLaunch
 
             // Minimize on focus lost
             Context.Window.FocusLost += () => { Console.WriteLine("Lost focus"); Minimize(); };
+
+            HideConsole();
         }
 
         public override void Draw()
         {
+            if (Context.Input.IsKeyDown(Key.F12)) ToggleConsole();
+            if (Context.Input.IsKeyDown(Key.Escape)) Minimize();
+
             ImGui.PushStyleVar(StyleVar.WindowRounding, 0);
 
             ImGui.SetNextWindowPos(Vector2.Zero, Condition.Always, Vector2.Zero);
@@ -57,31 +64,14 @@ namespace MLaunch
                 ImGui.Spacing();
 
                 // Query executor
-                ImGui.BeginChild("query-executor", new Vector2(ImGui.GetWindowContentRegionWidth(), ImGui.GetContentRegionAvailable().Y - 25), false, WindowFlags.Default);
+                ImGui.BeginChild("query-executor", new Vector2(ImGui.GetWindowContentRegionWidth(), ImGui.GetContentRegionAvailable().Y - 20), false, WindowFlags.Default);
                 {
                     _activeQueryExecutor?.Draw();
                 }
                 ImGui.EndChild();
 
                 // Footer
-                ImGui.PushFont(Context.Font16);
-                ImGui.BeginChild("footer", false, WindowFlags.Default);
-                {
-                    // SysMon
-                    ImGui.Text($"CPU {SysMon.CpuUsage.ToString("0.00")}");
-
-                    ImGui.SameLine();
-                    ImGui.Text($"Mem {SysMon.MemUsage.ToString("0.00")}");
-
-                    foreach (var drive in SysMon.Drives)
-                    {
-                        ImGui.SameLine();
-                        ImGui.Text($"{drive.Name} {drive.Usage.ToString("0.00")}");
-                    }
-                    ////////////////////
-                }
-                ImGui.EndChild();
-                ImGui.PopFont();
+                DrawFooter();
 
                 ImGui.PopFont();
             }
@@ -115,6 +105,28 @@ namespace MLaunch
             ImGui.PopFont();
         }
 
+        private void DrawFooter()
+        {
+            ImGui.PushFont(Context.Font16);
+            ImGui.BeginChild("footer", false, WindowFlags.Default);
+            {
+                // SysMon
+                ImGui.Text($"CPU {SysMon.CpuUsage.ToString("0.00")}");
+
+                ImGui.SameLine();
+                ImGui.Text($"Mem {SysMon.MemUsage.ToString("0.00")}");
+
+                foreach (var drive in SysMon.Drives)
+                {
+                    ImGui.SameLine();
+                    ImGui.Text($"{drive.Name} {drive.Usage.ToString("0.00")}");
+                }
+                ////////////////////
+            }
+            ImGui.EndChild();
+            ImGui.PopFont();
+        }
+
         private void Toggle()
         {
             if (Context.Window.Visible) Minimize();
@@ -138,6 +150,26 @@ namespace MLaunch
             Context.Window.Visible = false;
 
             _termBuffer.ClearBuffer();
+        }
+
+        public void ToggleConsole()
+        {
+            if (_isConsoleShown) HideConsole();
+            else ShowConsole();
+        }
+
+        public void ShowConsole()
+        {
+            PInvoke.ShowWindow(PInvoke.GetConsoleWindow(), PInvoke.SW_SHOW);
+
+            _isConsoleShown = true;
+        }
+
+        public void HideConsole()
+        {
+            PInvoke.ShowWindow(PInvoke.GetConsoleWindow(), PInvoke.SW_HIDE);
+
+            _isConsoleShown = false;
         }
     }
 }
