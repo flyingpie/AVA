@@ -1,6 +1,7 @@
 ﻿using MLaunch.Plugins.Dummy;
 using MUI;
 using MUI.DI;
+using System;
 using System.Linq;
 using System.Reflection;
 
@@ -8,6 +9,7 @@ namespace MLaunch
 {
     public class Program
     {
+        [STAThread]
         private static int Main(string[] args)
         {
             // TODO: Make nicer
