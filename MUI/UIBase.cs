@@ -2,8 +2,6 @@
 {
     public class UIBase
     {
-        //public UIContext Context { get; set; }
-
         public virtual void Load()
         {
         }

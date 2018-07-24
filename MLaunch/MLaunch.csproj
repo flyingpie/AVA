@@ -4,9 +4,8 @@
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 		<OutputType>Exe</OutputType>
 		<OutputPath>bin</OutputPath>
+		<PlatformTarget>x64</PlatformTarget>
 		<TargetFramework>net462</TargetFramework>
-		<ApplicationIcon />
-		<StartupObject />
 	</PropertyGroup>
 
 	<ItemGroup>

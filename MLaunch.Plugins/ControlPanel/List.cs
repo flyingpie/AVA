@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using Microsoft.Win32;
-using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace WindowsControlPanelItems
 {
@@ -21,32 +22,31 @@ namespace WindowsControlPanelItems
         IntPtr lParam);
 
         [DllImport("kernel32.dll", EntryPoint = "EnumResourceNamesW", CharSet = CharSet.Unicode, SetLastError = true)]
-        static extern bool EnumResourceNamesWithID(IntPtr hModule, uint lpszType, EnumResNameDelegate lpEnumFunc, IntPtr lParam);
+        private static extern bool EnumResourceNamesWithID(IntPtr hModule, uint lpszType, EnumResNameDelegate lpEnumFunc, IntPtr lParam);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        static extern IntPtr LoadLibraryEx(string lpFileName, IntPtr hFile, uint dwFlags);
+        private static extern IntPtr LoadLibraryEx(string lpFileName, IntPtr hFile, uint dwFlags);
 
         [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool FreeLibrary(IntPtr hModule);
+        private static extern bool FreeLibrary(IntPtr hModule);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        static extern int LoadString(IntPtr hInstance, uint uID, StringBuilder lpBuffer, int nBufferMax);
+        private static extern int LoadString(IntPtr hInstance, uint uID, StringBuilder lpBuffer, int nBufferMax);
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        static extern IntPtr LoadImage(IntPtr hinst, IntPtr lpszName, uint uType,
+        private static extern IntPtr LoadImage(IntPtr hinst, IntPtr lpszName, uint uType,
         int cxDesired, int cyDesired, uint fuLoad);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        extern static bool DestroyIcon(IntPtr handle);
+        private static extern bool DestroyIcon(IntPtr handle);
 
         [DllImport("kernel32.dll")]
-        static extern IntPtr FindResource(IntPtr hModule, IntPtr lpName, IntPtr lpType);
+        private static extern IntPtr FindResource(IntPtr hModule, IntPtr lpName, IntPtr lpType);
 
-        static IntPtr defaultIconPtr;
+        private static IntPtr defaultIconPtr;
 
-
-        static RegistryKey nameSpace = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ControlPanel\\NameSpace");
-        static RegistryKey clsid = Registry.ClassesRoot.OpenSubKey("CLSID");
+        private static RegistryKey nameSpace = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ControlPanel\\NameSpace");
+        private static RegistryKey clsid = Registry.ClassesRoot.OpenSubKey("CLSID");
 
         public static List<ControlPanelItem> Create(uint iconSize)
         {
@@ -78,7 +78,6 @@ namespace WindowsControlPanelItems
                             controlPanelItems.Add(new ControlPanelItem(localizedString, infoTip, executablePath, myIcon));
                         }
                     }
-
                 }
             }
 
@@ -104,7 +103,6 @@ namespace WindowsControlPanelItems
                 executablePath.FileName = "cmd.exe";
                 executablePath.Arguments = "/C " + input;
                 executablePath.WindowStyle = ProcessWindowStyle.Hidden;
-
             }
             else
             {
@@ -133,6 +131,8 @@ namespace WindowsControlPanelItems
                     localizedStringRaw[0] = Environment.ExpandEnvironmentVariables(localizedStringRaw[0]);
 
                     dataFilePointer = LoadLibraryEx(localizedStringRaw[0], IntPtr.Zero, LOAD_LIBRARY_AS_DATAFILE); //Load file with strings
+
+                    if (localizedStringRaw.Length == 1) return currentKey.GetValue(null).ToString(); //return Path.GetFileNameWithoutExtension(localizedStringRaw[0]);
 
                     stringTableIndex = sanitizeUint(localizedStringRaw[1]);
 
@@ -169,6 +169,7 @@ namespace WindowsControlPanelItems
             {
                 return null; //Cannot have item without title.
             }
+
             return localizedString;
         }
 
@@ -245,7 +246,7 @@ namespace WindowsControlPanelItems
                     if (iconPtr == IntPtr.Zero)
                     {
                         defaultIconPtr = IntPtr.Zero;
-                        EnumResourceNamesWithID(dataFilePointer, GROUP_ICON, new EnumResNameDelegate(EnumRes), IntPtr.Zero); //Iterate through resources. 
+                        EnumResourceNamesWithID(dataFilePointer, GROUP_ICON, new EnumResNameDelegate(EnumRes), IntPtr.Zero); //Iterate through resources.
 
                         iconPtr = LoadImage(dataFilePointer, defaultIconPtr, 1, iconSize, iconSize, 0);
                     }
