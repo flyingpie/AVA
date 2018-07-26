@@ -35,7 +35,7 @@ namespace MLaunch
             Context.Window.CenterToActiveMonitor();
 
             // Toggle on Alt-Space
-            HotKeyManager.RegisterHotKey(Keys.Space, KeyModifiers.Alt | KeyModifiers.Shift);
+            HotKeyManager.RegisterHotKey(Keys.Space, KeyModifiers.Alt);
             HotKeyManager.HotKeyPressed += (s, a) => Toggle();
 
             // Minimize on focus lost

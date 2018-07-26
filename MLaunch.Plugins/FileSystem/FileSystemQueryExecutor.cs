@@ -8,6 +8,7 @@ using MUI.Win32.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace MLaunch.Plugins.FileSystem
@@ -38,7 +39,7 @@ namespace MLaunch.Plugins.FileSystem
                 .Query(term)
                 .Select(r => (IListQueryResult)new ListQueryResult()
                 {
-                    Name = r.Document.Get("filename"),
+                    Name = Path.GetFileNameWithoutExtension(r.Document.Get("path")),
                     Description = r.Document.Get("path"),
                     Icon = _resourceManager.LoadImageFromIcon(r.Document.Get("path")),
                     OnExecute = t => Open(r)

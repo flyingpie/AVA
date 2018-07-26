@@ -100,7 +100,7 @@ namespace MLaunch.Indexing
 
             foreach (var path in files)
             {
-                var fileName = System.IO.Path.GetFileName(path);
+                var fileName = System.IO.Path.GetFileName(path).ToLowerInvariant();
                 var fileNameNoExt = System.IO.Path.GetFileNameWithoutExtension(fileName);
                 var ext = System.IO.Path.GetExtension(fileName);
 
@@ -108,6 +108,9 @@ namespace MLaunch.Indexing
 
                 doc.AddTextField("filename", fileName, Field.Store.YES);
                 doc.AddStringField("filename.keyword", fileName, Field.Store.YES);
+
+                doc.AddTextField("filename_no-ext", fileNameNoExt, Field.Store.YES);
+                doc.AddStringField("filename_no-ext.keyword", fileNameNoExt, Field.Store.YES);
 
                 doc.AddTextField("path", path, Field.Store.YES);
                 doc.AddStringField("path.keyword", path, Field.Store.YES);
@@ -170,7 +173,7 @@ namespace MLaunch.Indexing
             // "code" -> Visual Studio Code.lnk (1 - 3)
             // "conem" => ConEmu.exe (1)
             // "remote" -> "Remote Desktop Connection", "mRemoteNG" (1, 2)
-            
+
             // Explain
             /////////
 
@@ -178,6 +181,9 @@ namespace MLaunch.Indexing
             // Exact match
             bq.Add(new BooleanClause(new TermQuery(new Term("filename.keyword", term)) { Boost = 8 }, Occur.SHOULD));
             bq.Add(new BooleanClause(new TermQuery(new Term("filename", term)) { Boost = 1 }, Occur.SHOULD));
+
+            bq.Add(new BooleanClause(new TermQuery(new Term("filename_no-ext.keyword", term)) { Boost = 8 }, Occur.SHOULD));
+            bq.Add(new BooleanClause(new TermQuery(new Term("filename_no-ext", term)) { Boost = 1 }, Occur.SHOULD));
 
             // Starts with
             bq.Add(new BooleanClause(new PrefixQuery(new Term("filename.keyword", term)) { Boost = 3 }, Occur.SHOULD));
