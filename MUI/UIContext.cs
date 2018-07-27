@@ -63,8 +63,10 @@ namespace MUI
                 InputSnapshot snapshot = Window.PumpEvents();
                 Input = snapshot;
 
-                _controller.Update(1f / 60f, snapshot); // Feed the input events to our ImGui controller, which passes them through to ImGui.
+                ui.Update();
 
+                _controller.Update(1f / 60f, snapshot); // Feed the input events to our ImGui controller, which passes them through to ImGui.
+                
                 if (Window.Visible)
                 {
                     ui.Draw();

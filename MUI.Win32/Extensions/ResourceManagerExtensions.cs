@@ -18,11 +18,14 @@ namespace MUI.Win32.Extensions
                     Console.WriteLine($"Loading image '{path}'...");
 
                     // Extract icon from the specified path
-                    using (var icoExe = System.Drawing.Icon.ExtractAssociatedIcon(path))
+                    //using (var icoExe = System.Drawing.Icon.ExtractAssociatedIcon(path))
                     using (var bmpStream = new MemoryStream())
                     {
                         // Convert to bitmap
-                        icoExe.ToBitmap().Save(bmpStream, System.Drawing.Imaging.ImageFormat.Bmp);
+                        //icoExe.ToBitmap().Save(bmpStream, System.Drawing.Imaging.ImageFormat.Bmp);
+
+                        var bmp = ThumbnailLoader.GetThumbnail(path, 50, 50, ThumbnailOptions.None);
+                        bmp.Save(bmpStream, System.Drawing.Imaging.ImageFormat.Bmp);
 
                         // Convert to texture
                         return new Image(textureLoader.LoadTexture(bmpStream.ToArray()));

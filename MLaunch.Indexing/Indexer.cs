@@ -40,7 +40,9 @@ namespace MLaunch.Indexing
             var sw = new Stopwatch();
             sw.Start();
 
-            _analyzer = new StandardAnalyzer(LuceneVersion);
+            var stopWords = new Lucene.Net.Analysis.Util.CharArraySet(LuceneVersion, 0, false);
+
+            _analyzer = new StandardAnalyzer(LuceneVersion, stopWords);
 
             _indexWriter = new IndexWriter(_directory, new IndexWriterConfig(LuceneVersion, _analyzer));
             _indexWriter.Commit();
@@ -100,22 +102,26 @@ namespace MLaunch.Indexing
 
             foreach (var path in files)
             {
-                var fileName = System.IO.Path.GetFileName(path).ToLowerInvariant();
-                var fileNameNoExt = System.IO.Path.GetFileNameWithoutExtension(fileName);
-                var ext = System.IO.Path.GetExtension(fileName);
+                var filename = System.IO.Path.GetFileName(path);
+
+                var fileName_l = System.IO.Path.GetFileName(path).ToLowerInvariant();
+                var fileNameNoExt_l = System.IO.Path.GetFileNameWithoutExtension(fileName_l).ToLowerInvariant();
+                var ext_l = System.IO.Path.GetExtension(fileName_l).ToLowerInvariant();
 
                 var doc = new Document();
 
-                doc.AddTextField("filename", fileName, Field.Store.YES);
-                doc.AddStringField("filename.keyword", fileName, Field.Store.YES);
+                doc.AddStringField("filename", filename, Field.Store.YES);
 
-                doc.AddTextField("filename_no-ext", fileNameNoExt, Field.Store.YES);
-                doc.AddStringField("filename_no-ext.keyword", fileNameNoExt, Field.Store.YES);
+                doc.AddTextField("filename_l", fileName_l, Field.Store.YES);
+                doc.AddStringField("filename_l.keyword", fileName_l, Field.Store.YES);
+
+                doc.AddTextField("filename_l_no-ext", fileNameNoExt_l, Field.Store.YES);
+                doc.AddStringField("filename_l_no-ext.keyword", fileNameNoExt_l, Field.Store.YES);
 
                 doc.AddTextField("path", path, Field.Store.YES);
                 doc.AddStringField("path.keyword", path, Field.Store.YES);
 
-                doc.AddStringField("ext", ext, Field.Store.YES);
+                doc.AddStringField("ext_l", ext_l, Field.Store.YES);
 
                 _indexWriter.AddDocument(doc);
             }
@@ -173,36 +179,38 @@ namespace MLaunch.Indexing
             // "code" -> Visual Studio Code.lnk (1 - 3)
             // "conem" => ConEmu.exe (1)
             // "remote" -> "Remote Desktop Connection", "mRemoteNG" (1, 2)
+            // "tail" -> "TailBlazer" (1)
 
             // Explain
             /////////
 
             var bq = new BooleanQuery();
             // Exact match
-            bq.Add(new BooleanClause(new TermQuery(new Term("filename.keyword", term)) { Boost = 8 }, Occur.SHOULD));
-            bq.Add(new BooleanClause(new TermQuery(new Term("filename", term)) { Boost = 1 }, Occur.SHOULD));
+            //bq.Add(new BooleanClause(new TermQuery(new Term("filename.keyword", term)) { Boost = 8 }, Occur.SHOULD));
+            //bq.Add(new BooleanClause(new TermQuery(new Term("filename", term)) { Boost = 1 }, Occur.SHOULD));
 
-            bq.Add(new BooleanClause(new TermQuery(new Term("filename_no-ext.keyword", term)) { Boost = 8 }, Occur.SHOULD));
-            bq.Add(new BooleanClause(new TermQuery(new Term("filename_no-ext", term)) { Boost = 1 }, Occur.SHOULD));
+            //bq.Add(new BooleanClause(new TermQuery(new Term("filename_no-ext.keyword", term)) { Boost = 8 }, Occur.SHOULD));
+            //bq.Add(new BooleanClause(new TermQuery(new Term("filename_no-ext", term)) { Boost = 1 }, Occur.SHOULD));
 
-            // Starts with
-            bq.Add(new BooleanClause(new PrefixQuery(new Term("filename.keyword", term)) { Boost = 3 }, Occur.SHOULD));
-            //bq.Add(new BooleanClause(new PrefixQuery(new Term("filename", term)) { Boost = 3 }, Occur.SHOULD));
+            {
+                var b1 = new BooleanQuery();
 
-            // General query
-            //bq.Add(new BooleanClause(_queryParser.Parse(term), Occur.SHOULD));
+                // Starts with
+                b1.Add(new BooleanClause(new PrefixQuery(new Term("filename_l.keyword", term)) { Boost = 6 }, Occur.SHOULD));
 
-            // Contains
-            bq.Add(new BooleanClause(new WildcardQuery(new Term("filename", $"*{term}*")) { Boost = 8 }, Occur.SHOULD));
+                // Contains
+                b1.Add(new BooleanClause(new WildcardQuery(new Term("filename_l", $"*{term}*")) { Boost = 4 }, Occur.SHOULD));
 
-            // Prefer .exe
-            bq.Add(new BooleanClause(new TermQuery(new Term("ext", ".exe")) { Boost = 12 }, Occur.SHOULD));
+                bq.Add(new BooleanClause(b1, Occur.MUST));
+            }
 
-            // And don't mind .lnk
-            bq.Add(new BooleanClause(new TermQuery(new Term("ext", ".lnk")) { Boost = 10 }, Occur.SHOULD));
+            {
+                // Prefer .exe
+                bq.Add(new BooleanClause(new TermQuery(new Term("ext_l", ".exe")) { Boost = 16 }, Occur.SHOULD));
 
-            // Fuzzy
-            //bq.Add(new BooleanClause(new FuzzyQuery(new Term("filename", term)), Occur.SHOULD));
+                // And don't mind .lnk
+                bq.Add(new BooleanClause(new TermQuery(new Term("ext_l", ".lnk")) { Boost = 10 }, Occur.SHOULD));
+            }
 
             var hits = _indexSearcher.Search(bq, 15);
             var docs = hits.ScoreDocs

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text;
 
 namespace System
 {
@@ -12,6 +13,17 @@ namespace System
         public static void ClearBuffer(this byte[] buffer)
         {
             for (int i = 0; i < buffer.Length; i++) buffer[i] = 0;
+        }
+
+        public static void CopyToBuffer(this byte[] buffer, string text)
+        {
+            buffer.ClearBuffer();
+
+            if (string.IsNullOrWhiteSpace(text)) return;
+
+            var bytes = Encoding.UTF8.GetBytes(text);
+
+            for (int i = 0; i < text.Length && i < buffer.Length; i++) buffer[i] = bytes[i];
         }
 
         public static bool ContainsCaseInsensitive(this string source, string term)

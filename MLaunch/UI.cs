@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using MLaunch.Core;
 using MLaunch.Core.QueryExecutors;
 using MLaunch.Plugins.SysMon;
 using MUI;
@@ -17,6 +18,9 @@ namespace MLaunch
     public class UI : UIBase
     {
         [Dependency] public UIContext Context { get; set; }
+
+        [Dependency] public QueryContext QueryContext { get; set; }
+
         [Dependency] private IQueryExecutorManager QueryExecutorManager { get; set; }
 
         [Dependency] private SysMonService SysMon { get; set; }
@@ -42,6 +46,10 @@ namespace MLaunch
             Context.Window.FocusLost += () => { Console.WriteLine("Lost focus"); Minimize(); };
 
             HideConsole();
+        }
+
+        public override void Update()
+        {
         }
 
         public override void Draw()
@@ -78,12 +86,41 @@ namespace MLaunch
             ImGui.EndWindow();
         }
 
+        private byte[] _termBuffer2 = new byte[100];
+
+        private bool _off = false;
+
         private void DrawSearchBar()
         {
             ImGui.PushFont(Context.Font32);
             ImGui.PushItemWidth(-1);
 
-            ImGui.InputText("query", _termBuffer, (uint)_termBuffer.Length, InputTextFlags.EnterReturnsTrue, null);
+            unsafe
+            {
+                if (!_off)
+                {
+                    ImGui.InputText("query", _termBuffer, (uint)_termBuffer.Length, InputTextFlags.CallbackCompletion | InputTextFlags.CallbackAlways, new TextEditCallback(data =>
+                    {
+                        data->CursorPos = _term.Length;
+
+                        data->SelectionStart = 0;
+                        data->SelectionEnd = 0;
+
+                        return 0;
+                    }));
+
+                    if (!ImGui.IsLastItemActive()) ImGui.SetKeyboardFocusHere();
+                }
+            }
+
+            if (_off) _off = false;
+
+            if (QueryContext.Query != _term)
+            {
+                _termBuffer.CopyToBuffer(QueryContext.Query);
+
+                _off = true;
+            }
 
             if (Context.Input.IsKeyDown(Key.Enter))
             {
@@ -92,13 +129,16 @@ namespace MLaunch
                 if (_activeQueryExecutor.TryExecute(_term)) Minimize();
             }
 
-            ImGui.SetKeyboardFocusHere();
+            //ImGui.Text("Ac: " + ImGui.IsAnyItemActive());
+            //ImGui.SetKeyboardFocusHere();
 
             var term = _termBuffer.BufferToString();
             if (_term != term)
             {
                 _term = term;
                 _activeQueryExecutor = QueryExecutorManager.GetQueryExecutor(term);
+
+                QueryContext.Query = _term;
             }
 
             ImGui.PopItemWidth();
