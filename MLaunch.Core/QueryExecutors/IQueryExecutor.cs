@@ -12,7 +12,7 @@
 
         bool TryHandle(string term);
 
-        bool TryExecute(string term);
+        bool TryExecute(QueryContext query);
 
         void Draw();
     }

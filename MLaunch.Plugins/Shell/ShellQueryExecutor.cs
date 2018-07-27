@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using MLaunch.Core;
 using MLaunch.Core.QueryExecutors;
 using MUI;
 using MUI.DI;
@@ -27,8 +28,9 @@ namespace MLaunch.Plugins.Shell
             return term.StartsWith(">");
         }
 
-        public bool TryExecute(string term)
+        public bool TryExecute(QueryContext query)
         {
+            var term = query.Query;
             if (term.Length <= 1) return false;
 
             var cmd = term.Substring(1);

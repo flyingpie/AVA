@@ -18,7 +18,7 @@ namespace MLaunch.Core.QueryExecutors.CommandQuery
 
         public abstract void Draw();
 
-        public virtual bool TryExecute(string term) => false;
+        public virtual bool TryExecute(QueryContext query) => false;
 
         public virtual bool TryHandle(string term)
         {

@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using MLaunch.Core;
 using MLaunch.Core.QueryExecutors;
 using MUI.DI;
 using System.Diagnostics;
@@ -27,7 +28,7 @@ namespace MLaunch.Plugins.Uri
             ImGui.Text($"Open url '{_url}'");
         }
 
-        public bool TryExecute(string term)
+        public bool TryExecute(QueryContext query)
         {
             Process.Start(_url);
 

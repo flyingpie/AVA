@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using MLaunch.Core;
 using MLaunch.Core.QueryExecutors.CommandQuery;
 using MUI;
 using MUI.DI;
@@ -66,8 +67,9 @@ namespace MLaunch.Plugins.WebQuery
             return _command != null;
         }
 
-        public override bool TryExecute(string term)
+        public override bool TryExecute(QueryContext query)
         {
+            var term = query.Query;
             var terml = term.ToLowerInvariant();
 
             foreach (var command in _commands)

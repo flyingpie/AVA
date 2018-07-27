@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using MLaunch.Core;
 using MLaunch.Core.QueryExecutors.CommandQuery;
 using System.Diagnostics;
 
@@ -14,7 +15,7 @@ namespace MLaunch.Plugins.Hosts
 
         public override string ExampleUsage => CommandPrefixes[0];
 
-        public override bool TryExecute(string term)
+        public override bool TryExecute(QueryContext query)
         {
             Process.Start(new ProcessStartInfo()
             {

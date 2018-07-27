@@ -1,4 +1,5 @@
-﻿using MLaunch.Core.QueryExecutors;
+﻿using MLaunch.Core;
+using MLaunch.Core.QueryExecutors;
 using MLaunch.Core.QueryExecutors.ListQuery;
 using MUI;
 using MUI.DI;
@@ -12,8 +13,9 @@ namespace MLaunch.Plugins.Help
     public class HelpQueryExecutor : ListQueryExecutor
     {
         [Dependency] public ResourceManager ResourceManager { get; set; }
-        [Dependency] public IQueryExecutor[] QueryExecutors { get; set; }
 
+        [Dependency] public IQueryExecutor[] QueryExecutors { get; set; }
+        
         public override string Name => "Help";
 
         public override string Description => "Displays this listing";
@@ -37,7 +39,12 @@ namespace MLaunch.Plugins.Help
                 .Select(qe => (IListQueryResult)new ListQueryResult()
                 {
                     Name = $"{qe.Name} (eg. '{qe.ExampleUsage}')",
-                    Description = qe.Description
+                    Description = qe.Description,
+                    OnExecute = t =>
+                    {
+                        t.Query = qe.ExampleUsage;
+                        t.HideUI = false;
+                    }
                 })
                 .ToList();
         }

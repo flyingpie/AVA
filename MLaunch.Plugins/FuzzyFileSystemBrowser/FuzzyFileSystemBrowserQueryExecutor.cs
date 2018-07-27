@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using MLaunch.Core;
 using MLaunch.Core.QueryExecutors;
 using MUI.DI;
 using System;
@@ -23,7 +24,7 @@ namespace MLaunch.Plugins.FuzzyFileSystemBrowser
             return System.Uri.TryCreate(term, UriKind.Absolute, out _uri) && _uri.IsFile;
         }
 
-        public bool TryExecute(string term)
+        public bool TryExecute(QueryContext query)
         {
             throw new NotImplementedException();
         }

@@ -6,6 +6,6 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
     {
         void Draw(UIContext context, bool isSelected);
 
-        void Execute(string term);
+        void Execute(QueryContext query);
     }
 }

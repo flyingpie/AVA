@@ -18,7 +18,7 @@ namespace MLaunch.Plugins.ControlPanel
 
         public override string Description => "Search through and opens control panel items";
 
-        public override string ExampleUsage => "cp <term?>";
+        public override string ExampleUsage => "cp network";
 
         public override int Order => 0;
 

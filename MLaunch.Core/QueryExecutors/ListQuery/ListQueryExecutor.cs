@@ -72,11 +72,11 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
             return QueryResults.Any();
         }
 
-        public virtual bool TryExecute(string term)
+        public virtual bool TryExecute(QueryContext query)
         {
             if (IsSelectable && QueryResults.Count > SelectedItemIndex)
             {
-                QueryResults[SelectedItemIndex].Execute(term);
+                QueryResults[SelectedItemIndex].Execute(query);
 
                 return true;
             }

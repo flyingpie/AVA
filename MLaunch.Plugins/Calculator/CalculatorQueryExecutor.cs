@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using MLaunch.Core;
 using MLaunch.Core.QueryExecutors;
 using MUI;
 using MUI.DI;
@@ -43,7 +44,7 @@ namespace MLaunch.Plugins.Calculator
             return false;
         }
 
-        public bool TryExecute(string term)
+        public bool TryExecute(QueryContext query)
         {
             if (!string.IsNullOrWhiteSpace(_parsedExpression))
             {

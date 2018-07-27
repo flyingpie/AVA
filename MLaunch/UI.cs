@@ -19,11 +19,11 @@ namespace MLaunch
     {
         [Dependency] public UIContext Context { get; set; }
 
-        [Dependency] public QueryContext QueryContext { get; set; }
-
         [Dependency] private IQueryExecutorManager QueryExecutorManager { get; set; }
 
         [Dependency] private SysMonService SysMon { get; set; }
+
+        private QueryContext _queryContext;
 
         private byte[] _termBuffer = new byte[1024];
         private string _term;
@@ -31,6 +31,11 @@ namespace MLaunch
         private IQueryExecutor _activeQueryExecutor;
 
         private bool _isConsoleShown = true;
+
+        public UI()
+        {
+            _queryContext = new QueryContext();
+        }
 
         public override void Load()
         {
@@ -89,23 +94,29 @@ namespace MLaunch
         private byte[] _termBuffer2 = new byte[100];
 
         private bool _off = false;
+        private bool _resetSelection = false;
 
         private void DrawSearchBar()
         {
             ImGui.PushFont(Context.Font32);
             ImGui.PushItemWidth(-1);
 
+            // TODO: Make this a bit nicer
             unsafe
             {
                 if (!_off)
                 {
                     ImGui.InputText("query", _termBuffer, (uint)_termBuffer.Length, InputTextFlags.CallbackCompletion | InputTextFlags.CallbackAlways, new TextEditCallback(data =>
                     {
-                        data->CursorPos = _term.Length;
+                        if (_resetSelection)
+                        {
+                            data->CursorPos = _term.Length;
 
-                        data->SelectionStart = 0;
-                        data->SelectionEnd = 0;
+                            data->SelectionStart = 0;
+                            data->SelectionEnd = 0;
 
+                            _resetSelection = false;
+                        }
                         return 0;
                     }));
 
@@ -115,18 +126,24 @@ namespace MLaunch
 
             if (_off) _off = false;
 
-            if (QueryContext.Query != _term)
+            if (_queryContext.Query != _term)
             {
-                _termBuffer.CopyToBuffer(QueryContext.Query);
+                _termBuffer.CopyToBuffer(_queryContext.Query);
 
                 _off = true;
+                _resetSelection = true;
             }
 
             if (Context.Input.IsKeyDown(Key.Enter))
             {
                 Console.WriteLine($"ENTER");
 
-                if (_activeQueryExecutor.TryExecute(_term)) Minimize();
+                if (_activeQueryExecutor.TryExecute(_queryContext))
+                {
+                    if (_queryContext.HideUI) Minimize();
+
+                    _queryContext.HideUI = true;
+                }
             }
 
             //ImGui.Text("Ac: " + ImGui.IsAnyItemActive());
@@ -138,7 +155,7 @@ namespace MLaunch
                 _term = term;
                 _activeQueryExecutor = QueryExecutorManager.GetQueryExecutor(term);
 
-                QueryContext.Query = _term;
+                _queryContext.Query = _term;
             }
 
             ImGui.PopItemWidth();

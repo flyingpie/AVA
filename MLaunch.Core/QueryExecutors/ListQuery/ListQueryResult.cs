@@ -16,7 +16,7 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
 
         public Image Icon { get; set; }
 
-        public Action<string> OnExecute { get; set; }
+        public Action<QueryContext> OnExecute { get; set; }
 
         private static readonly int Height = 50;
 
@@ -67,9 +67,9 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
             if (isSelected) ImGui.SetScrollHere();
         }
 
-        public void Execute(string term)
+        public void Execute(QueryContext query)
         {
-            OnExecute?.Invoke(term);
+            OnExecute?.Invoke(query);
         }
     }
 }

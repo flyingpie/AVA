@@ -2,9 +2,10 @@
 
 namespace MLaunch.Core
 {
-    [Service]
     public class QueryContext
     {
+        public bool HideUI { get; set; } = true;
+
         public string Query { get; set; }
     }
 }

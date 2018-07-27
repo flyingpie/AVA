@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using MLaunch.Core;
 using MLaunch.Core.QueryExecutors;
 using MUI.DI;
 
@@ -21,7 +22,7 @@ namespace MLaunch.Plugins.NoResults
             ImGui.Text("That didn't work :(");
         }
 
-        public bool TryExecute(string term) => false;
+        public bool TryExecute(QueryContext query) => false;
 
         public bool TryHandle(string term) => true;
     }
