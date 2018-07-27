@@ -64,7 +64,7 @@ namespace MLaunch.Plugins.FileSystem
                     startInfo.Verb = "runas";
                 }
 
-                Process.Start(startInfo);
+                Process.Start(startInfo).Dispose();
             }
             catch (Exception ex)
             {

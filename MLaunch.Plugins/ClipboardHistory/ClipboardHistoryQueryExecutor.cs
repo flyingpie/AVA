@@ -1,6 +1,7 @@
 ﻿using MLaunch.Core.QueryExecutors.ListQuery;
 using MUI;
 using MUI.DI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -33,15 +34,19 @@ namespace MLaunch.Plugins.ClipboardHistory
         public override IList<IListQueryResult> GetQueryResults(string term)
         {
             return ClipboardService.History
-                .OrderByDescending(h => h.Timestamp)
                 .Select(h =>
                 {
                     var res = new ListQueryResult()
                     {
                         Name = h.Timestamp.ToString("s"),
                         Description = "",
-                        OnExecute = t => h.Restore()
+                        OnExecute = t => ClipboardService.Restore(h)
                     };
+
+                    if(!string.IsNullOrEmpty(h.Text))
+                    {
+                        res.Description = string.Join("", h.Text.Replace(Environment.NewLine, "").Take(40));
+                    }
 
                     if (h.ImageThumbnail != null)
                     {

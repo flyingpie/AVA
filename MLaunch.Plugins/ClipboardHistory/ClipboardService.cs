@@ -3,7 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Text;
 using System.Windows.Forms;
 
 namespace MLaunch.Plugins.ClipboardHistory
@@ -11,17 +14,46 @@ namespace MLaunch.Plugins.ClipboardHistory
     [Service]
     public class ClipboardService
     {
-        public Queue<ClipboardData> History { get; set; }
+        public List<ClipboardData> History { get; set; }
 
         public ClipboardService()
         {
-            History = new Queue<ClipboardData>();
+            History = new List<ClipboardData>();
 
             ClipboardNotification.ClipboardUpdate += (s, a) =>
             {
-                History.Enqueue(ClipboardData.Create());
+                Console.WriteLine("UPDATE");
+                History.Insert(0, ClipboardData.Create());
+                Console.WriteLine("/UPDATE");
+
+                RemoveDupes();
+
+                while (History.Count > 10) History.RemoveAt(History.Count - 1);
             };
-            
+        }
+
+        public void Restore(ClipboardData data)
+        {
+            //History.Remove(data);
+            //History.Insert(0, data);
+
+            Console.WriteLine("RESTORE");
+            data.Restore();
+            Console.WriteLine("/RESTORE");
+        }
+
+        public void RemoveDupes()
+        {
+            History
+                .GroupBy(h => h.Hash)
+                .Where(g => g.Count() > 1)
+                .ToList()
+                .ForEach(h =>
+                {
+                    Console.WriteLine($"Removing dupe '{h.ToString()}'");
+
+                    History.Remove(h.Last());
+                });
         }
     }
 
@@ -29,31 +61,22 @@ namespace MLaunch.Plugins.ClipboardHistory
     {
         public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.Now;
 
-        public IDataObject DataObject { get; set; }
-
         public bool IsText { get; set; }
 
         public string Text { get; set; }
 
         public bool IsImage { get; set; }
 
-        public byte[] Image { get; set; }
-
-        public Stream ImageStr { get; set; }
+        public MemoryStream Image { get; set; }
 
         public byte[] ImageThumbnail { get; set; }
 
         public static ClipboardData Create()
         {
-            var dataObj = Clipboard.GetDataObject();
-
             var isText = Clipboard.ContainsText();
             var isImage = Clipboard.ContainsImage();
 
-            var cd = new ClipboardData()
-            {
-                DataObject = dataObj
-            };
+            var cd = new ClipboardData();
 
             if (isText)
             {
@@ -71,8 +94,7 @@ namespace MLaunch.Plugins.ClipboardHistory
                 {
                     var img = Clipboard.GetImage();
                     img.Save(imgStream, ImageFormat.Png);
-                    //cd.Image = imgStream.ToArray();
-                    cd.ImageStr = imgStream;
+                    cd.Image = imgStream;
 
                     var thumb = img.GetThumbnailImage(50, 50, new System.Drawing.Image.GetThumbnailImageAbort(() => false), IntPtr.Zero);
                     thumb.Save(thumbStream, ImageFormat.Png);
@@ -83,10 +105,25 @@ namespace MLaunch.Plugins.ClipboardHistory
             return cd;
         }
 
+        private string _hash;
+
+        public string Hash
+        {
+            get
+            {
+                if (_hash == null)
+                {
+                    if (IsText) _hash = Text.HashSHA1();
+
+                    if (IsImage) _hash = Image.ToArray().HashSHA1();
+                }
+
+                return _hash;
+            }
+        }
+
         public void Restore()
         {
-            //Clipboard.SetDataObject(DataObject);
-
             if (IsText)
             {
                 Clipboard.SetText(Text);
@@ -95,9 +132,16 @@ namespace MLaunch.Plugins.ClipboardHistory
 
             if (IsImage)
             {
-                Clipboard.SetImage(System.Drawing.Image.FromStream(ImageStr));
+                Clipboard.SetImage(System.Drawing.Image.FromStream(Image));
                 return;
             }
+        }
+
+        public override string ToString()
+        {
+            if (IsText) return string.Join("", Text.Take(10));
+
+            return "[IMAGE]";
         }
     }
 
@@ -119,11 +163,7 @@ namespace MLaunch.Plugins.ClipboardHistory
         /// <param name="e">Event arguments for the event.</param>
         private static void OnClipboardUpdate(EventArgs e)
         {
-            var handler = ClipboardUpdate;
-            if (handler != null)
-            {
-                handler(null, e);
-            }
+            ClipboardUpdate?.Invoke(null, e);
         }
 
         /// <summary>
@@ -164,5 +204,23 @@ namespace MLaunch.Plugins.ClipboardHistory
         // See http://msdn.microsoft.com/en-us/library/ms649033%28VS.85%29.aspx
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+    }
+
+    public static class Extensions
+    {
+        public static string HashSHA1(this string data)
+        {
+            return HashSHA1(Encoding.UTF8.GetBytes(data));
+        }
+
+        public static string HashSHA1(this byte[] data)
+        {
+            using (var algo = SHA1.Create())
+            {
+                var hash = algo.ComputeHash(data);
+
+                return Encoding.UTF8.GetString(hash);
+            }
+        }
     }
 }
