@@ -1,5 +1,7 @@
 ﻿using ImGuiNET;
 using MLaunch.Core.QueryExecutors.CommandQuery;
+using MUI;
+using MUI.DI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,6 +11,8 @@ namespace MLaunch.Plugins.WebQuery
 {
     public class WebQueryExecutor : CommandQueryExecutor
     {
+        [Dependency] public UIContext UI { get; set; }
+
         public override string Description => "Search sites and open urls";
 
         public override string Name => "Web queries";
@@ -22,30 +26,42 @@ namespace MLaunch.Plugins.WebQuery
             new Command()
             {
                 Prefix = "ddg ",
-                Execute = term => Process.Start($"https://duckduckgo.com/?q={term}"),
+                Execute = term => Process.Start($"https://duckduckgo.com/?q={term}").Dispose(),
                 Description = "Duck Duck Go"
             },
             new Command()
             {
                 Prefix = "gh ",
-                Execute = term => Process.Start($"https://github.com/search?q={term}"),
+                Execute = term => Process.Start($"https://github.com/search?q={term}").Dispose(),
                 Description = "GitHub"
             },
             new Command()
             {
+                Prefix = "nuget ",
+                Execute = term => Process.Start($"https://www.nuget.org/packages?q={term}").Dispose(),
+                Description = "NuGet"
+            },
+            new Command()
+            {
                 Prefix = "wiki ",
-                Execute = term => Process.Start($"https://en.wikipedia.org/w/index.php?search={term}"),
+                Execute = term => Process.Start($"https://en.wikipedia.org/w/index.php?search={term}").Dispose(),
                 Description = "Wikipedia"
             }
         };
 
         private Command _command;
+        private string _term;
 
         public override bool TryHandle(string term)
         {
             var terml = term.ToLowerInvariant();
 
             _command = _commands.FirstOrDefault(c => terml.StartsWith(c.Prefix));
+
+            if (_command != null)
+            {
+                _term = term.Substring(_command.Prefix.Length);
+            }
 
             return _command != null;
         }
@@ -58,9 +74,9 @@ namespace MLaunch.Plugins.WebQuery
             {
                 if (terml.StartsWith(command.Prefix))
                 {
-                    term = term.Substring(command.Prefix.Length);
+                    _term = term.Substring(command.Prefix.Length);
 
-                    command.Execute(term);
+                    command.Execute(_term);
 
                     return true;
                 }
@@ -71,7 +87,11 @@ namespace MLaunch.Plugins.WebQuery
 
         public override void Draw()
         {
+            // TODO: Icon
             ImGui.Text(_command?.Description ?? "");
+            ImGui.PushFont(UI.Font32);
+            ImGui.Text(_term);
+            ImGui.PopFont();
         }
 
         private class Command
