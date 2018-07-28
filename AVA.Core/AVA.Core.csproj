@@ -2,16 +2,11 @@
 
     <PropertyGroup>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-        <OutputPath>bin</OutputPath>
         <TargetFramework>net462</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\MUI\MUI.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Reference Include="System.Windows.Forms" />
     </ItemGroup>
 
 </Project>

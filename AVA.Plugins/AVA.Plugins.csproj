@@ -2,12 +2,17 @@
 
     <PropertyGroup>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-        <OutputPath>bin</OutputPath>
         <TargetFramework>net462</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\MUI\MUI.csproj" />
+        <PackageReference Include="NCalc2" Version="2.1.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\AVA.Core\AVA.Core.csproj" />
+        <ProjectReference Include="..\AVA.Indexing\AVA.Indexing.csproj" />
+        <ProjectReference Include="..\MUI.Win32\MUI.Win32.csproj" />
     </ItemGroup>
 
     <ItemGroup>

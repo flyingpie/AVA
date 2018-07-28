@@ -3,23 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLaunch", "MLaunch\MLaunch.csproj", "{E11AA550-8A43-4A41-A4D3-1A19E41A5B04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA", "AVA\AVA.csproj", "{E11AA550-8A43-4A41-A4D3-1A19E41A5B04}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MUI.Win32", "MUI.Win32\MUI.Win32.csproj", "{54E88EB7-315D-4D99-97BD-8C012A0CA196}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MUI", "MUI\MUI.csproj", "{C0ADF8A3-CEB9-461B-8C5E-5C9D7C8BC8A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MUI.Scripting", "MUI.Scripting\MUI.Scripting.csproj", "{7EB6AEB4-5CBD-4774-9FA9-19389B59C8D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MUI.Scripting", "MUI.Scripting\MUI.Scripting.csproj", "{7EB6AEB4-5CBD-4774-9FA9-19389B59C8D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLaunch.Indexing", "MLaunch.Indexing\MLaunch.Indexing.csproj", "{BE5CA627-E6D0-455C-81C1-463427D1D537}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA.Indexing", "AVA.Indexing\AVA.Indexing.csproj", "{BE5CA627-E6D0-455C-81C1-463427D1D537}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLaunch.Plugins", "MLaunch.Plugins\MLaunch.Plugins.csproj", "{2B09A575-F4D1-4C0D-B6E9-401BBFA23DC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA.Plugins", "AVA.Plugins\AVA.Plugins.csproj", "{2B09A575-F4D1-4C0D-B6E9-401BBFA23DC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLaunch.Core", "MLaunch.Core\MLaunch.Core.csproj", "{63A0589F-15B2-44BC-92BC-DDF4A8A8FD0E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MUI.DI", "MUI.DI\MUI.DI.csproj", "{0927B903-03EB-4697-AA9C-21B3284DC23D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MUI.Utils", "MUI.Utils\MUI.Utils.csproj", "{3E2176B8-57D9-4FDD-8C86-397D3E463548}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA.Core", "AVA.Core\AVA.Core.csproj", "{63A0589F-15B2-44BC-92BC-DDF4A8A8FD0E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,14 +51,6 @@ Global
 		{63A0589F-15B2-44BC-92BC-DDF4A8A8FD0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63A0589F-15B2-44BC-92BC-DDF4A8A8FD0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63A0589F-15B2-44BC-92BC-DDF4A8A8FD0E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0927B903-03EB-4697-AA9C-21B3284DC23D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0927B903-03EB-4697-AA9C-21B3284DC23D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0927B903-03EB-4697-AA9C-21B3284DC23D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0927B903-03EB-4697-AA9C-21B3284DC23D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3E2176B8-57D9-4FDD-8C86-397D3E463548}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3E2176B8-57D9-4FDD-8C86-397D3E463548}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3E2176B8-57D9-4FDD-8C86-397D3E463548}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3E2176B8-57D9-4FDD-8C86-397D3E463548}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
