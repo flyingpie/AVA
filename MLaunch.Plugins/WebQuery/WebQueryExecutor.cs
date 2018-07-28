@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 
 namespace MLaunch.Plugins.WebQuery
 {
@@ -77,6 +78,7 @@ namespace MLaunch.Plugins.WebQuery
                 if (terml.StartsWith(command.Prefix))
                 {
                     _term = term.Substring(command.Prefix.Length);
+                    _term = WebUtility.UrlEncode(_term);
 
                     command.Execute(_term);
 
