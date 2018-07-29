@@ -1,4 +1,5 @@
 ﻿using MUI.Graphics;
+using MUI.Logging;
 using System;
 using System.IO;
 
@@ -10,30 +11,27 @@ namespace MUI.Win32.Extensions
         {
             return resourceManager.LoadImage(path, textureLoader => new LazyImage(resourceManager.DefaultImage, () =>
             {
+                var _log = Log.Get<ResourceManager>();
+
                 try
                 {
                     // Normalize path
                     path = Path.GetFullPath(path);
 
-                    Console.WriteLine($"Loading image '{path}'...");
+                    _log.Info($"Loading image '{path}'...");
 
-                    // Extract icon from the specified path
-                    //using (var icoExe = System.Drawing.Icon.ExtractAssociatedIcon(path))
                     using (var bmpStream = new MemoryStream())
                     {
-                        // Convert to bitmap
-                        //icoExe.ToBitmap().Save(bmpStream, System.Drawing.Imaging.ImageFormat.Bmp);
-
                         var bmp = ThumbnailLoader.GetThumbnail(path, 50, 50, ThumbnailOptions.None);
                         bmp.Save(bmpStream, System.Drawing.Imaging.ImageFormat.Bmp);
 
                         // Convert to texture
-                        return new Image(textureLoader.LoadTexture(bmpStream.ToArray()));
+                        return textureLoader.Load(bmpStream.ToArray());
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Could not load image '{path}': {ex.Message}");
+                    _log.Info($"Could not load image '{path}': {ex.Message}");
                 }
 
                 return resourceManager.DefaultImage;
@@ -44,6 +42,8 @@ namespace MUI.Win32.Extensions
         {
             return resourceManager.LoadImage(cacheKey, textureLoader => new LazyImage(resourceManager.DefaultImage, () =>
             {
+                var _log = Log.Get<ResourceManager>();
+
                 try
                 {
                     using (var bmpStream = new MemoryStream())
@@ -52,12 +52,12 @@ namespace MUI.Win32.Extensions
                         icon.ToBitmap().Save(bmpStream, System.Drawing.Imaging.ImageFormat.Bmp);
 
                         // Convert to texture
-                        return new Image(textureLoader.LoadTexture(bmpStream.ToArray()));
+                        return textureLoader.Load(bmpStream.ToArray());
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Could not load image '{cacheKey}': {ex.Message}");
+                    _log.Info($"Could not load image '{cacheKey}': {ex.Message}");
                 }
 
                 return resourceManager.DefaultImage;

@@ -1,9 +1,9 @@
 ﻿using ImGuiNET;
-using MLaunch.Core;
-using MLaunch.Core.QueryExecutors;
+using AVA.Core;
+using AVA.Core.QueryExecutors;
 using MUI.DI;
 
-namespace MLaunch.Plugins.NoResults
+namespace AVA.Plugins.NoResults
 {
     [Service]
     public class NoResultsQueryExecutor : IQueryExecutor

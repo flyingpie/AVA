@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MLaunch.Plugins.FileSystem.QueryResults
+namespace AVA.Plugins.FileSystem.QueryResults
 {
     class ImageQueryResult
     {

@@ -1,6 +1,6 @@
 ﻿using MUI.DI;
 
-namespace MLaunch.Core
+namespace AVA.Core
 {
     public class QueryContext
     {

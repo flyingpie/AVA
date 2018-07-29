@@ -1,11 +1,11 @@
-﻿using MLaunch.Core.QueryExecutors.ListQuery;
+﻿using AVA.Core.QueryExecutors.ListQuery;
 using MUI;
 using MUI.DI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MLaunch.Plugins.ClipboardHistory
+namespace AVA.Plugins.ClipboardHistory
 {
     public class ClipboardHistoryQueryExecutor : ListQueryExecutor
     {
@@ -21,17 +21,7 @@ namespace MLaunch.Plugins.ClipboardHistory
 
         public override string Prefix => "cb ";
 
-        public ClipboardHistoryQueryExecutor()
-        {
-            //ClipboardNotification.ClipboardUpdate += ClipboardNotification_ClipboardUpdate;
-        }
-
-        //private void ClipboardNotification_ClipboardUpdate(object sender, EventArgs e)
-        //{
-        //    Console.WriteLine($"Sup: ");
-        //}
-
-        public override IList<IListQueryResult> GetQueryResults(string term)
+        public override IEnumerable<IListQueryResult> GetQueryResults(string term)
         {
             return ClipboardService.History
                 .Select(h =>
@@ -43,7 +33,7 @@ namespace MLaunch.Plugins.ClipboardHistory
                         OnExecute = t => ClipboardService.Restore(h)
                     };
 
-                    if(!string.IsNullOrEmpty(h.Text))
+                    if (!string.IsNullOrEmpty(h.Text))
                     {
                         res.Description = string.Join("", h.Text.Replace(Environment.NewLine, "").Take(40));
                     }
@@ -54,10 +44,7 @@ namespace MLaunch.Plugins.ClipboardHistory
                     }
 
                     return (IListQueryResult)res;
-                })
-                .ToList();
-
-            //return new List<IListQueryResult>();
+                });
         }
     }
 }

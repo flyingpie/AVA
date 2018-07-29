@@ -1,8 +1,8 @@
 ﻿using ImGuiNET;
-using MLaunch.Core.QueryExecutors.CommandQuery;
+using AVA.Core.QueryExecutors.CommandQuery;
 using MUI.DI;
 
-namespace MLaunch.Plugins.SysMon
+namespace AVA.Plugins.SysMon
 {
     [Service]
     public class SysMonQueryExecutor : CommandQueryExecutor

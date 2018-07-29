@@ -1,9 +1,9 @@
 ﻿using ImGuiNET;
-using MLaunch.Core;
-using MLaunch.Core.QueryExecutors.CommandQuery;
+using AVA.Core;
+using AVA.Core.QueryExecutors.CommandQuery;
 using System.Diagnostics;
 
-namespace MLaunch.Plugins.Hosts
+namespace AVA.Plugins.Hosts
 {
     public class HostsCommandQueryExecutor : CommandQueryExecutor
     {

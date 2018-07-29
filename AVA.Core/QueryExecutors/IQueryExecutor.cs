@@ -1,4 +1,4 @@
-﻿namespace MLaunch.Core.QueryExecutors
+﻿namespace AVA.Core.QueryExecutors
 {
     public interface IQueryExecutor
     {

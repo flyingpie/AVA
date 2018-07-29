@@ -1,7 +1,7 @@
 ﻿using MUI.DI;
 using System.Linq;
 
-namespace MLaunch.Core.QueryExecutors.CommandQuery
+namespace AVA.Core.QueryExecutors.CommandQuery
 {
     [Service]
     public abstract class CommandQueryExecutor : IQueryExecutor

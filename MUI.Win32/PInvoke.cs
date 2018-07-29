@@ -6,7 +6,7 @@ namespace MUI.Win32
     public static class PInvoke
     {
         [DllImport("user32.dll")]
-        public static extern int SetForegroundWindow(int hwnd);
+        public static extern int SetForegroundWindow(IntPtr hwnd);
 
         [DllImport("kernel32.dll")]
         public static extern IntPtr GetConsoleWindow();

@@ -1,9 +1,9 @@
-﻿using ImGuiNET;
-using MLaunch.Core.QueryExecutors.ListQuery;
+﻿using AVA.Core.QueryExecutors.ListQuery;
+using ImGuiNET;
 using MUI;
 using System;
 
-namespace MLaunch.Plugins.Time
+namespace AVA.Plugins.Time
 {
     public class TimeListQueryResult : ListQueryResult
     {
@@ -11,19 +11,19 @@ namespace MLaunch.Plugins.Time
 
         public bool IsDst { get; set; }
 
-        public override void Draw(UIContext context, bool isSelected)
+        public override void Draw(bool isSelected)
         {
             ImGui.BeginChild(" ");
             ImGui.Columns(2, Guid.NewGuid().ToString(), true);
 
             {
-                ImGui.PushFont(context.Font32);
+                ImGui.PushFont(Fonts.Regular32);
                 ImGui.Text(DateTime.ToString("HH:mm"));
                 ImGui.PopFont();
 
                 ImGui.SameLine();
 
-                ImGui.PushFont(context.Font16);
+                ImGui.PushFont(Fonts.Regular16);
                 ImGui.Text(DateTime.ToString("dd-MM"));
                 ImGui.PopFont();
             }
@@ -31,7 +31,7 @@ namespace MLaunch.Plugins.Time
             ImGui.NextColumn();
 
             {
-                ImGui.PushFont(context.Font24);
+                ImGui.PushFont(Fonts.Regular24);
                 ImGui.Text(Name);
                 ImGui.PopFont();
             }

@@ -1,19 +1,16 @@
-﻿using ImGuiNET;
-using MLaunch.Core;
-using MLaunch.Core.QueryExecutors;
-using MLaunch.Plugins.SysMon;
+﻿using AVA.Core;
+using AVA.Core.QueryExecutors;
+using AVA.Plugins.SysMon;
+using ImGuiNET;
 using MUI;
 using MUI.DI;
-using MUI.Extensions;
+using MUI.Logging;
 using MUI.Win32;
-using MUI.Win32.Extensions;
 using MUI.Win32.Input;
 using System;
 using System.Numerics;
-using System.Windows.Forms;
-using Veldrid;
 
-namespace MLaunch
+namespace AVA
 {
     public class UI : UIBase
     {
@@ -32,45 +29,44 @@ namespace MLaunch
 
         private bool _isConsoleShown = true;
 
+        private ILog _log;
+        private ILog _sdlLog;
+
         public UI()
         {
+            _log = Log.Get(this);
             _queryContext = new QueryContext();
         }
 
         public override void Load()
         {
-            Context.Window.Width = 600;
-            Context.Window.Height = 300;
-            Context.Window.CenterToActiveMonitor();
+            Maximize();
 
             // Toggle on Alt-Space
-            HotKeyManager.RegisterHotKey(Keys.Space, KeyModifiers.Alt);
+            HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.Z, KeyModifiers.Alt);
             HotKeyManager.HotKeyPressed += (s, a) => Toggle();
 
             // Minimize on focus lost
-            Context.Window.FocusLost += () => { Console.WriteLine("Lost focus"); Minimize(); };
+            Context.FocusGained += (s, a) => _log.Info("Gained focus");
+            Context.FocusLost += (s, a) => { _log.Info("Lost focus"); Minimize(); };
 
             HideConsole();
         }
 
-        public override void Update()
-        {
-        }
-
         public override void Draw()
         {
-            if (Context.Input.IsKeyDown(Key.F12)) ToggleConsole();
-            if (Context.Input.IsKeyDown(Key.Escape)) Minimize();
+            if (Input.IsKeyDownOnce(Keys.F12)) ToggleConsole();
+            if (Input.IsKeyDownOnce(Keys.Escape)) Minimize();
 
             ImGui.PushStyleVar(StyleVar.WindowRounding, 0);
 
-            ImGui.SetNextWindowPos(Vector2.Zero, Condition.Always, Vector2.Zero);
-            ImGui.SetNextWindowSize(new Vector2(Context.Window.Width, Context.Window.Height), Condition.Always);
+            ImGui.SetNextWindowPos(Vector2.Zero, Condition.Always);
+            ImGui.SetNextWindowSize(new Vector2(Context.Window.ClientBounds.Width, Context.Window.ClientBounds.Height), Condition.Always);
 
             ImGui.BeginWindow(string.Empty, WindowFlags.NoMove | WindowFlags.NoResize | WindowFlags.NoTitleBar);
             {
                 // Search bar
-                ImGui.PushFont(Context.Font24);
+                ImGui.PushFont(Fonts.Regular24);
 
                 DrawSearchBar();
 
@@ -83,7 +79,7 @@ namespace MLaunch
                 }
                 ImGui.EndChild();
 
-                // Footer
+                //// Footer
                 DrawFooter();
 
                 ImGui.PopFont();
@@ -98,7 +94,7 @@ namespace MLaunch
 
         private void DrawSearchBar()
         {
-            ImGui.PushFont(Context.Font32);
+            ImGui.PushFont(Fonts.Regular32);
             ImGui.PushItemWidth(-1);
 
             // TODO: Make this a bit nicer
@@ -106,7 +102,7 @@ namespace MLaunch
             {
                 if (!_off)
                 {
-                    ImGui.InputText("query", _termBuffer, (uint)_termBuffer.Length, InputTextFlags.CallbackCompletion | InputTextFlags.CallbackAlways, new TextEditCallback(data =>
+                    ImGui.InputText("query", _termBuffer, (uint)_termBuffer.Length, InputTextFlags.CallbackAlways, new TextEditCallback(data =>
                     {
                         if (_resetSelection)
                         {
@@ -134,9 +130,9 @@ namespace MLaunch
                 _resetSelection = true;
             }
 
-            if (Context.Input.IsKeyDown(Key.Enter))
+            if (Input.IsKeyDownOnce(Keys.Enter))
             {
-                Console.WriteLine($"ENTER");
+                _log.Info($"ENTER");
 
                 if (_activeQueryExecutor.TryExecute(_queryContext))
                 {
@@ -145,9 +141,6 @@ namespace MLaunch
                     _queryContext.HideUI = true;
                 }
             }
-
-            //ImGui.Text("Ac: " + ImGui.IsAnyItemActive());
-            //ImGui.SetKeyboardFocusHere();
 
             var term = _termBuffer.BufferToString();
             if (_term != term)
@@ -164,7 +157,7 @@ namespace MLaunch
 
         private void DrawFooter()
         {
-            ImGui.PushFont(Context.Font16);
+            ImGui.PushFont(Fonts.Regular16);
             ImGui.BeginChild("footer", false, WindowFlags.Default);
             {
                 // SysMon
@@ -178,7 +171,6 @@ namespace MLaunch
                     ImGui.SameLine();
                     ImGui.Text($"{drive.Name} {drive.Usage.ToString("0.00")}");
                 }
-                ////////////////////
             }
             ImGui.EndChild();
             ImGui.PopFont();
@@ -186,25 +178,25 @@ namespace MLaunch
 
         private void Toggle()
         {
-            if (Context.Window.Visible) Minimize();
+            if (Context.IsVisible) Minimize();
             else Maximize();
         }
 
         private void Maximize()
         {
-            Console.WriteLine("Maximize");
+            _log.Info("Maximize");
 
-            Context.Window.CenterToActiveMonitor();
-            Context.Window.Visible = true;
+            Context.IsVisible = true;
 
-            PInvoke.SetForegroundWindow((int)Context.Window.Handle);
+            Context.CenterWindowToDisplayWithMouse(Context.Window.Handle);
+            Context.Focus();
         }
 
         private void Minimize()
         {
-            Console.WriteLine("Minimize");
+            _log.Info("Minimize");
 
-            Context.Window.Visible = false;
+            Context.IsVisible = false;
 
             _termBuffer.ClearBuffer();
         }

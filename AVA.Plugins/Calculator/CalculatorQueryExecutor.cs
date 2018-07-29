@@ -1,12 +1,12 @@
-﻿using ImGuiNET;
-using MLaunch.Core;
-using MLaunch.Core.QueryExecutors;
+﻿using AVA.Core;
+using AVA.Core.QueryExecutors;
+using ImGuiNET;
 using MUI;
 using MUI.DI;
 using NCalc2;
 using System.Windows.Forms;
 
-namespace MLaunch.Plugins.Calculator
+namespace AVA.Plugins.Calculator
 {
     [Service]
     public class CalculatorQueryExecutor : IQueryExecutor
@@ -57,11 +57,11 @@ namespace MLaunch.Plugins.Calculator
 
         public void Draw()
         {
-            ImGui.PushFont(UI.Font32);
+            ImGui.PushFont(Fonts.Regular32);
             ImGui.Text($"{_expression} = {_parsedExpression}");
             ImGui.PopFont();
 
-            ImGui.PushFont(UI.Font16);
+            ImGui.PushFont(Fonts.Regular16);
             ImGui.Text("Press <Enter> to copy the result to the clipboard");
             ImGui.PopFont();
         }

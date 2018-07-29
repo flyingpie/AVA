@@ -1,9 +1,9 @@
-﻿using MLaunch.Core.QueryExecutors.ListQuery;
-using MLaunch.Indexing;
+﻿using AVA.Core.QueryExecutors.ListQuery;
+using AVA.Indexing;
 using MUI.DI;
 using System.Collections.Generic;
 
-namespace MLaunch.Plugins.Settings
+namespace AVA.Plugins.Settings
 {
     public class SettingsListQueryExecutor : ListQueryExecutor
     {
@@ -15,9 +15,9 @@ namespace MLaunch.Plugins.Settings
 
         [Dependency] public Indexer Indexer { get; set; }
 
-        public override string Prefix => "mlsettings";
+        public override string Prefix => "ava";
 
-        public override IList<IListQueryResult> GetQueryResults(string term)
+        public override IEnumerable<IListQueryResult> GetQueryResults(string term)
         {
             return new[]
             {

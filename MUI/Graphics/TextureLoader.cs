@@ -1,41 +1,36 @@
-﻿using System;
-using Veldrid;
-using Veldrid.ImageSharp;
+﻿using ImGuiNET;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.IO;
 
 namespace MUI.Graphics
 {
     public class TextureLoader
     {
         private GraphicsDevice _graphicsDevice;
-        private ImGuiController _controller;
+        private IImGuiRenderer _imGuiRenderer;
 
-        private object _lock = new object();
-
-        public TextureLoader(GraphicsDevice graphicsDevice, ImGuiController controller)
+        public TextureLoader(GraphicsDevice graphicsDevice, IImGuiRenderer imGuiRenderer)
         {
             _graphicsDevice = graphicsDevice ?? throw new ArgumentNullException(nameof(graphicsDevice));
-            _controller = controller ?? throw new ArgumentNullException(nameof(controller));
+            _imGuiRenderer = imGuiRenderer ?? throw new ArgumentNullException(nameof(imGuiRenderer));
         }
 
-        public IntPtr LoadTexture(string path)
+        public Image Load(string path)
         {
-            return LoadTexture(new ImageSharpTexture(path));
+            // TODO: Size cap
+
+            return Load(File.ReadAllBytes(path));
         }
 
-        public IntPtr LoadTexture(byte[] data)
+        public Image Load(byte[] bytes)
         {
-            var image = SixLabors.ImageSharp.Image.Load(data);
-
-            return LoadTexture(new ImageSharpTexture(image));
-        }
-
-        public IntPtr LoadTexture(ImageSharpTexture imageSharpTexture)
-        {
-            lock (_lock)
+            using (var stream = new MemoryStream(bytes))
             {
-                var texture = imageSharpTexture.CreateDeviceTexture(_graphicsDevice, _graphicsDevice.ResourceFactory);
+                var tex2d = Texture2D.FromStream(_graphicsDevice, stream);
+                var pointer = _imGuiRenderer.BindTexture(tex2d);
 
-                return _controller.GetOrCreateImGuiBinding(_graphicsDevice.ResourceFactory, texture);
+                return new Image(pointer);
             }
         }
     }

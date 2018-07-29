@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MUI.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace MUI.Graphics
@@ -9,9 +10,12 @@ namespace MUI.Graphics
 
         private Task _asc;
 
+        private ILog _log;
+
         public LazyImage(Image defaultImage, Func<Image> loader)
         {
             _image = defaultImage;
+            _log = Log.Get(this);
 
             _asc = Task.Run(() =>
             {
@@ -19,11 +23,11 @@ namespace MUI.Graphics
                 {
                     _image = loader();
 
-                    Console.WriteLine($"Loaded image");
+                    _log.Info($"Loaded image");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Could not load image: {ex.Message}");
+                    _log.Info($"Could not load image: {ex.Message}");
                 }
             });
         }

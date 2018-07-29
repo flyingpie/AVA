@@ -1,19 +1,13 @@
 ﻿using MUI;
 using MUI.DI;
-using MUI.Extensions;
 using System.Collections.Generic;
 using System.Linq;
-using Veldrid;
 
-namespace MLaunch.Core.QueryExecutors.ListQuery
+namespace AVA.Core.QueryExecutors.ListQuery
 {
     [Service]
     public abstract class ListQueryExecutor : IQueryExecutor
     {
-        [Dependency] private UIContext _context;
-
-        [Dependency] private ResourceManager _resourceManager;
-
         public abstract string Description { get; }
 
         public abstract string Name { get; }
@@ -37,7 +31,7 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
 
         public virtual bool IsSelectable => true;
 
-        public abstract IList<IListQueryResult> GetQueryResults(string term);
+        public abstract IEnumerable<IListQueryResult> GetQueryResults(string term);
 
         public void NextItem()
         {
@@ -66,7 +60,7 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
             if (Prefix != null && !term.ToLowerInvariant().StartsWith(Prefix.ToLowerInvariant())) return false;
 
             // Execute the query
-            QueryResults = GetQueryResults(term);
+            QueryResults = GetQueryResults(term).ToList();
 
             // Succeeds when something was returned
             return QueryResults.Any();
@@ -87,14 +81,14 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
         public void Draw()
         {
             // Previous
-            if (_context.Input.IsKeyDown(Key.Up) || _context.Input.IsKeyDown(Key.K, ModifierKeys.Control) || _context.Input.IsKeyDown(Key.Tab, ModifierKeys.Shift)) PreviousItem();
+            if (Input.IsKeyDownOnce(Keys.Up) || (Input.IsKeyDownOnce(Keys.K) && Input.IsKeyDownOnce(Keys.LeftControl)) || Input.IsKeyDownOnce(Keys.Tab) || Input.IsKeyDownOnce(Keys.LeftShift)) PreviousItem();
 
             // Next
-            if (_context.Input.IsKeyDown(Key.Down) || _context.Input.IsKeyDown(Key.J, ModifierKeys.Control) || _context.Input.IsKeyDown(Key.Tab, ModifierKeys.None)) NextItem();
+            if (Input.IsKeyDownOnce(Keys.Down) || (Input.IsKeyDownOnce(Keys.J) && Input.IsKeyDownOnce(Keys.LeftControl)) || Input.IsKeyDownOnce(Keys.Tab)) NextItem();
 
             for (int i = 0; i < QueryResults.Count; i++)
             {
-                QueryResults[i].Draw(_context, IsSelectable && i == SelectedItemIndex);
+                QueryResults[i].Draw(IsSelectable && i == SelectedItemIndex);
             }
         }
 

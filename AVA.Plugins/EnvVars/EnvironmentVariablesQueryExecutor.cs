@@ -1,4 +1,4 @@
-﻿using MLaunch.Core.QueryExecutors.ListQuery;
+﻿using AVA.Core.QueryExecutors.ListQuery;
 using MUI;
 using MUI.DI;
 using MUI.Graphics;
@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MLaunch.Plugins.EnvVars
+namespace AVA.Plugins.EnvVars
 {
     public class EnvironmentVariablesQueryExecutor : ListQueryExecutor
     {
@@ -53,7 +53,7 @@ namespace MLaunch.Plugins.EnvVars
             }
         }
 
-        public override IList<IListQueryResult> GetQueryResults(string term)
+        public override IEnumerable<IListQueryResult> GetQueryResults(string term)
         {
             var split = term.Split(new[] { ' ' });
             var filter = split.Length > 1 ? split[1] : "";
@@ -65,8 +65,7 @@ namespace MLaunch.Plugins.EnvVars
                     Name = $"{env.Scope} - {env.Name}",
                     Description = env.Value,
                     Icon = _icon
-                })
-                .ToList();
+                });
         }
 
         public class EnvironmentVariable

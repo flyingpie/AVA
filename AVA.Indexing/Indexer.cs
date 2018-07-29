@@ -7,12 +7,13 @@ using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
 using MUI.DI;
+using MUI.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using Diag = System.Diagnostics;
 
-namespace MLaunch.Indexing
+namespace AVA.Indexing
 {
     [Service(ServiceLifetime.Singleton)]
     public class Indexer
@@ -29,6 +30,8 @@ namespace MLaunch.Indexing
 
         private QueryParser _queryParser;
 
+        private ILog _log = Log.Get<Indexer>();
+
         public Indexer()
         {
             _directory = FSDirectory.Open("index");
@@ -37,7 +40,7 @@ namespace MLaunch.Indexing
 
         private void Open()
         {
-            var sw = new Stopwatch();
+            var sw = new Diag.Stopwatch();
             sw.Start();
 
             var stopWords = new Lucene.Net.Analysis.Util.CharArraySet(LuceneVersion, 0, false);
@@ -53,12 +56,12 @@ namespace MLaunch.Indexing
 
             _queryParser = new QueryParser(LuceneVersion, "filename", _analyzer);
 
-            Console.WriteLine($"Opened index in {sw.Elapsed}");
+            _log.Info($"Opened index in {sw.Elapsed}");
         }
 
         private void Close()
         {
-            var sw = new Stopwatch();
+            var sw = new Diag.Stopwatch();
             sw.Start();
 
             _analyzer?.Dispose();
@@ -73,12 +76,12 @@ namespace MLaunch.Indexing
 
             _indexSearcher = null;
 
-            Console.WriteLine($"Closed index in {sw.Elapsed}");
+            _log.Info($"Closed index in {sw.Elapsed}");
         }
 
         public void Rebuild()
         {
-            Console.WriteLine("Rebuilding index...");
+            _log.Info("Rebuilding index...");
 
             Close();
 
@@ -86,7 +89,7 @@ namespace MLaunch.Indexing
 
             Open();
 
-            var sww = new Stopwatch();
+            var sww = new Diag.Stopwatch();
             sww.Start();
 
             var folders = new[]
@@ -134,7 +137,7 @@ namespace MLaunch.Indexing
 
             sww.Stop();
 
-            Console.WriteLine($"Indexed {files.Count} documents in {sww.Elapsed}");
+            _log.Info($"Indexed {files.Count} documents in {sww.Elapsed}");
         }
 
         public void SearchRepl()
@@ -149,9 +152,9 @@ namespace MLaunch.Indexing
                 Console.Write("> ");
                 term = Console.ReadLine();
                 Console.Clear();
-                Console.WriteLine($"Term: '{term}'");
+                _log.Info($"Term: '{term}'");
 
-                var sw = new Stopwatch();
+                var sw = new Diag.Stopwatch();
                 sw.Start();
 
                 var docs = Query(term);
@@ -160,10 +163,10 @@ namespace MLaunch.Indexing
 
                 foreach (var doc in docs)
                 {
-                    Console.WriteLine($"{doc.ScoreDoc.Score} {doc.Document.Fields.First(f => f.Name == "path").GetStringValue()}");
+                    _log.Info($"{doc.ScoreDoc.Score} {doc.Document.Fields.First(f => f.Name == "path").GetStringValue()}");
                 }
 
-                Console.WriteLine(sw.Elapsed.ToString());
+                _log.Info(sw.Elapsed.ToString());
             }
             while (!string.IsNullOrWhiteSpace(term));
 

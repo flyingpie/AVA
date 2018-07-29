@@ -1,9 +1,9 @@
 ﻿using ImGuiNET;
+using Microsoft.Xna.Framework.Graphics;
 using MUI.Graphics;
 using System;
 using System.Collections.Concurrent;
-using Veldrid;
-using Veldrid.ImageSharp;
+using System.IO;
 
 namespace MUI
 {
@@ -11,85 +11,51 @@ namespace MUI
     {
         public Image DefaultImage { get; private set; }
 
-        private GraphicsDevice _graphicsDevice;
-        private ImGuiController _controller;
+        private ConcurrentDictionary<string, Image> _loadedImages;
         private TextureLoader _textureLoader;
 
-        private ConcurrentDictionary<string, Image> _loadedImages;
+        private GraphicsDevice _graphicsDevice;
+        private IImGuiRenderer _imGuiRenderer;
 
-        public ResourceManager(GraphicsDevice graphicsDevice, ImGuiController controller)
+        public ResourceManager(GraphicsDevice graphicsDevice, IImGuiRenderer imGuiRenderer)
         {
-            _graphicsDevice = graphicsDevice;
-            _controller = controller;
-            _textureLoader = new TextureLoader(graphicsDevice, controller);
-
             _loadedImages = new ConcurrentDictionary<string, Image>();
+            _textureLoader = new TextureLoader(graphicsDevice, imGuiRenderer);
+
+            _graphicsDevice = graphicsDevice;
+            _imGuiRenderer = imGuiRenderer;
         }
 
-        //[RunAfterInject]
-        public /*private*/ void Init()
+        public void Init()
         {
+            // TODO: Move this
             DefaultImage = LoadImage(@"Resources\Images\crashlog-doom.png");
         }
 
         public Font LoadFont(string path, int pixelSize)
         {
-            return ImGui.GetIO().FontAtlas.AddFontFromFileTTF(path, pixelSize);
+            var font = ImGui.GetIO().FontAtlas.AddFontFromFileTTF(path, pixelSize);
+
+            _imGuiRenderer.RebuildFontAtlas();
+
+            return font;
         }
 
+        // TODO: Add size cap
         public Image LoadImage(string path)
         {
-            return LoadImage(path, loader => new Image(loader.LoadTexture(path)));
+            return LoadImage(path, File.ReadAllBytes(path));
         }
 
+        // TODO: Add size cap
         public Image LoadImage(string cacheKey, byte[] data)
         {
-            return LoadImage(cacheKey, loader => new Image(loader.LoadTexture(data)));
+            return LoadImage(cacheKey, factory => factory.Load(data));
         }
 
         public Image LoadImage(string cacheKey, Func<TextureLoader, Image> factory)
         {
             return _loadedImages.GetOrAdd(cacheKey, key => factory(_textureLoader));
         }
-
-        public bool TryGetCachedImage(string cacheKey, out Image image)
-        {
-            return _loadedImages.TryGetValue(cacheKey, out image);
-        }
-
-        #region Low-level
-
-        //public IntPtr LoadTexture(string path)
-        //{
-        //    return LoadTexture(new ImageSharpTexture(path));
-        //}
-
-        //public IntPtr LoadTexture(byte[] data)
-        //{
-        //    var image = SixLabors.ImageSharp.Image.Load(data);
-
-        //    return LoadTexture(new ImageSharpTexture(image));
-        //}
-
-        //public IntPtr LoadTexture(ImageSharpTexture imageSharpTexture)
-        //{
-        //    lock (_lock)
-        //    {
-        //        var texture = imageSharpTexture.CreateDeviceTexture(_graphicsDevice, _graphicsDevice.ResourceFactory);
-
-        //        return _controller.GetOrCreateImGuiBinding(_graphicsDevice.ResourceFactory, texture);
-        //    }
-        //}
-
-        #endregion Low-level
-    }
-
-    public class TextureBinding
-    {
-        public ImageSharpTexture IST { get; set; }
-
-        public Texture Texture { get; set; }
-
-        public IntPtr Pointer { get; set; }
     }
 }

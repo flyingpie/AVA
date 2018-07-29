@@ -1,4 +1,4 @@
-﻿using MLaunch.Core.QueryExecutors.ListQuery;
+﻿using AVA.Core.QueryExecutors.ListQuery;
 using MUI;
 using MUI.DI;
 using MUI.Win32;
@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using WindowsControlPanelItems;
 
-namespace MLaunch.Plugins.ControlPanel
+namespace AVA.Plugins.ControlPanel
 {
     public class ControlPanelQueryExecutor : ListQueryExecutor
     {
@@ -32,7 +32,7 @@ namespace MLaunch.Plugins.ControlPanel
             _items = List.Create(32);
         }
 
-        public override IList<IListQueryResult> GetQueryResults(string term)
+        public override IEnumerable<IListQueryResult> GetQueryResults(string term)
         {
             term = term.Substring(Prefix.Length).ToLowerInvariant();
 
@@ -48,10 +48,9 @@ namespace MLaunch.Plugins.ControlPanel
                     {
                         var proc = Process.Start(i.ExecutablePath);
 
-                        PInvoke.SetForegroundWindow((int)proc.MainWindowHandle);
+                        PInvoke.SetForegroundWindow(proc.MainWindowHandle);
                     }
-                })
-                .ToList();
+                });
         }
     }
 }

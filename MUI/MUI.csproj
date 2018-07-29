@@ -7,26 +7,20 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="ImGui.NET" Version="0.4.7" />
-        <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0004" />
-        <PackageReference Include="Veldrid" Version="4.3.3" />
-        <PackageReference Include="Veldrid.ImageSharp" Version="4.3.3" />
-        <PackageReference Include="Veldrid.SDL2" Version="4.3.3" />
+        <PackageReference Include="morelinq" Version="3.0.0" />
+        <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Update="Resources\Shaders\Vulkan.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Vulkan.resx</DependentUpon>
-        </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-        <EmbeddedResource Update="Resources\Shaders\Vulkan.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>Vulkan.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
+        <Reference Include="FNA">
+            <HintPath>..\_Libs\FNA.dll</HintPath>
+        </Reference>
+        <Reference Include="ImGui.NET">
+            <HintPath>..\_Libs\ImGui.NET.dll</HintPath>
+        </Reference>
+        <Reference Include="ImGui.NET.FNA">
+            <HintPath>..\_Libs\ImGui.NET.FNA.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
 </Project>

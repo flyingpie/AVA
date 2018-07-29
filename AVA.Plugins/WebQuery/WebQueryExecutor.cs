@@ -1,6 +1,6 @@
-﻿using ImGuiNET;
-using MLaunch.Core;
-using MLaunch.Core.QueryExecutors.CommandQuery;
+﻿using AVA.Core;
+using AVA.Core.QueryExecutors.CommandQuery;
+using ImGuiNET;
 using MUI;
 using MUI.DI;
 using System;
@@ -9,7 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 
-namespace MLaunch.Plugins.WebQuery
+namespace AVA.Plugins.WebQuery
 {
     public class WebQueryExecutor : CommandQueryExecutor
     {
@@ -93,7 +93,7 @@ namespace MLaunch.Plugins.WebQuery
         {
             // TODO: Icon
             ImGui.Text(_command?.Description ?? "");
-            ImGui.PushFont(UI.Font32);
+            ImGui.PushFont(Fonts.Regular32);
             ImGui.Text(_term);
             ImGui.PopFont();
         }

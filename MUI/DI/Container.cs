@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MUI.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -36,10 +37,12 @@ namespace MUI.DI
     public class Container : IContainer
     {
         private Dictionary<Type, ServiceRegistration> _registrations;
+        private ILog _log;
 
         public Container()
         {
             _registrations = new Dictionary<Type, ServiceRegistration>();
+            _log = Log.Get(this);
 
             Register(this);
         }
@@ -49,7 +52,7 @@ namespace MUI.DI
         {
             return Register<TInterface, TImplementation>(c =>
             {
-                Console.WriteLine($"Creating instance of type '{typeof(TInterface).FullName}', using implementation of type '{typeof(TImplementation).FullName}'...");
+                _log.Info($"Creating instance of type '{typeof(TInterface).FullName}', using implementation of type '{typeof(TImplementation).FullName}'...");
 
                 return Activator.CreateInstance<TImplementation>();
             }, lifetime);
@@ -69,7 +72,7 @@ namespace MUI.DI
 
         public IContainer Register(Type type, ServiceLifetime lifetime = ServiceLifetime.Singleton)
         {
-            Console.WriteLine($"Registering service of type '{type.FullName}' with lifetime '{lifetime}'");
+            _log.Info($"Registering service of type '{type.FullName}' with lifetime '{lifetime}'");
 
             return Register(type, c => Activator.CreateInstance(type), lifetime);
         }
@@ -115,7 +118,7 @@ namespace MUI.DI
 
         public void Wireup(object instance)
         {
-            Console.WriteLine($"Wiring up instance of type '{instance}'...");
+            _log.Info($"Wiring up instance of type '{instance}'...");
 
             // TODO: Test - Circular reference
 
@@ -155,7 +158,7 @@ namespace MUI.DI
                     {
                         var dependency = Resolve(fieldType);
 
-                        Console.WriteLine($"Injecting dependency of type '{dependency.GetType().FullName}' into instance field ('{instance.GetType().FullName}')'{field.Name}'");
+                        _log.Info($"Injecting dependency of type '{dependency.GetType().FullName}' into instance field ('{instance.GetType().FullName}')'{field.Name}'");
 
                         field.SetValue(instance, dependency);
                     }
@@ -181,7 +184,7 @@ namespace MUI.DI
                     {
                         var dependency = Resolve(propertyType);
 
-                        Console.WriteLine($"Injecting dependency of type '{dependency.GetType().FullName}' into instance field ('{instance.GetType().FullName}')'{property.Name}'");
+                        _log.Info($"Injecting dependency of type '{dependency.GetType().FullName}' into instance field ('{instance.GetType().FullName}')'{property.Name}'");
 
                         property.SetValue(instance, dependency);
                     }

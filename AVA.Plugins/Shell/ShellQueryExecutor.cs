@@ -1,12 +1,11 @@
 ﻿using ImGuiNET;
-using MLaunch.Core;
-using MLaunch.Core.QueryExecutors;
+using AVA.Core;
+using AVA.Core.QueryExecutors;
 using MUI;
 using MUI.DI;
-using MUI.Extensions;
 using System.Diagnostics;
 
-namespace MLaunch.Plugins.Shell
+namespace AVA.Plugins.Shell
 {
     [Service]
     public class ShellQueryExecutor : IQueryExecutor
@@ -49,7 +48,7 @@ namespace MLaunch.Plugins.Shell
                 Arguments = args
             };
 
-            if (UIContext.Input.IsKeyDown(Veldrid.Key.Enter, Veldrid.ModifierKeys.Control))
+            if (Input.IsKeyDown(Keys.LeftControl))
             {
                 startInfo.Verb = "runas";
             }

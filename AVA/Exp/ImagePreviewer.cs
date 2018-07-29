@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MLaunch.Exp
+namespace AVA.Exp
 {
     public class ImagePreviewer
     {

@@ -1,9 +1,8 @@
-﻿using MLaunch.Core.QueryExecutors.ListQuery;
-using MLaunch.Indexing;
+﻿using AVA.Core.QueryExecutors.ListQuery;
+using AVA.Indexing;
 using MUI;
 using MUI.DI;
-using MUI.Extensions;
-using MUI.Graphics;
+using MUI.Logging;
 using MUI.Win32.Extensions;
 using System;
 using System.Collections.Generic;
@@ -11,13 +10,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
-namespace MLaunch.Plugins.FileSystem
+namespace AVA.Plugins.FileSystem
 {
     public class FileSystemQueryExecutor : ListQueryExecutor
     {
-        [Dependency] private ResourceManager _resourceManager;
-        [Dependency] private Indexer _indexer;
-        [Dependency] private UIContext _ui;
+        [Dependency] public Indexer Indexer { get; set; }
+
+        [Dependency] public ResourceManager ResourceManager { get; set; }
 
         public override string Name => "File system";
 
@@ -25,28 +24,18 @@ namespace MLaunch.Plugins.FileSystem
 
         public override string ExampleUsage => "notepad";
 
-        private Image _defaultImage;
+        private ILog _log = Log.Get<FileSystemQueryExecutor>();
 
-        [RunAfterInject]
-        private void Init()
-        {
-            _defaultImage = _resourceManager.LoadImage(@"Resources\Images\crashlog-doom.png");
-        }
-
-        public override IList<IListQueryResult> GetQueryResults(string term)
-        {
-            return _indexer
-                .Query(term)
-                .Select(r => (IListQueryResult)new ListQueryResult()
-                {
-                    Name = Path.GetFileNameWithoutExtension(r.Document.Get("path")),
-                    Description = r.Document.Get("path"),
-                    Icon = _resourceManager.LoadImageFromIcon(r.Document.Get("path")),
-                    OnExecute = t => Open(r)
-                })
-                .Take(4)
-                .ToList();
-        }
+        public override IEnumerable<IListQueryResult> GetQueryResults(string term) => Indexer
+            .Query(term)
+            .Select(r => (IListQueryResult)new ListQueryResult()
+            {
+                Name = Path.GetFileNameWithoutExtension(r.Document.Get("path")),
+                Description = r.Document.Get("path"),
+                Icon = ResourceManager.LoadImageFromIcon(r.Document.Get("path")),
+                OnExecute = t => Open(r)
+            })
+            .Take(4);
 
         private void Open(QS qs)
         {
@@ -59,7 +48,7 @@ namespace MLaunch.Plugins.FileSystem
                     FileName = path
                 };
 
-                if (_ui.Input.IsKeyDown(Veldrid.Key.Enter, Veldrid.ModifierKeys.Control))
+                if (Input.IsKeyDown(Keys.LeftControl))
                 {
                     startInfo.Verb = "runas";
                 }
@@ -68,7 +57,7 @@ namespace MLaunch.Plugins.FileSystem
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Wups: {ex.Message}");
+                _log.Info($"Wups: {ex.Message}");
             }
         }
     }

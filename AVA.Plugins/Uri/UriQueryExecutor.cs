@@ -1,11 +1,11 @@
 ﻿using ImGuiNET;
-using MLaunch.Core;
-using MLaunch.Core.QueryExecutors;
+using AVA.Core;
+using AVA.Core.QueryExecutors;
 using MUI.DI;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
-namespace MLaunch.Plugins.Uri
+namespace AVA.Plugins.Uri
 {
     // TODO: Make QueryExecutor abstract class with Service attr
     // TODO: Rename Service to something like Export or Injectable or Dependable

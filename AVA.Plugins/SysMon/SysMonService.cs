@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MLaunch.Plugins.SysMon
+namespace AVA.Plugins.SysMon
 {
     [Service]
     public class SysMonService

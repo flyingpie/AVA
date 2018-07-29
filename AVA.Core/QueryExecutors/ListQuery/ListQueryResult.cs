@@ -4,7 +4,7 @@ using MUI.Graphics;
 using System;
 using System.Numerics;
 
-namespace MLaunch.Core.QueryExecutors.ListQuery
+namespace AVA.Core.QueryExecutors.ListQuery
 {
     public class ListQueryResult : IListQueryResult
     {
@@ -20,11 +20,9 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
 
         private static readonly int Height = 50;
 
-        private static readonly int BorderWidth = 1;
-
-        public virtual void Draw(UIContext context, bool isSelected)
+        public virtual void Draw(bool isSelected)
         {
-            ImGui.PushFont(context.Font24);
+            ImGui.PushFont(Fonts.Regular24);
 
             // Selection
             if (isSelected) ImGui.PushStyleColor(ColorTarget.ChildBg, new Vector4(1, 1, 1, .1f));
@@ -51,7 +49,7 @@ namespace MLaunch.Core.QueryExecutors.ListQuery
                 {
                     ImGui.Text(Name);
 
-                    ImGui.PushFont(context.Font16);
+                    ImGui.PushFont(Fonts.Regular16);
                     ImGui.Text(Description, new Vector4(1f, 1f, 1f, 0.5f));
                     ImGui.PopFont();
                 }

@@ -1,99 +1,132 @@
 ﻿using ImGuiNET;
-using System.Numerics;
+using ImGuiNET.FNA;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using MUI.Extensions;
+using MUI.Logging;
+using SDL2;
+using System;
 using System.Threading;
-using Veldrid;
-using Veldrid.Sdl2;
 
 namespace MUI
 {
-    public class UIContext
+    public class UIContext : Game
     {
-        public Font Font32 { get; set; }
+        public ResourceManager ResourceManager { get; set; }
 
-        public Font Font24 { get; set; }
+        public event EventHandler FocusGained = delegate { };
 
-        public Font Font16 { get; set; }
+        public event EventHandler FocusLost = delegate { };
 
-        public InputSnapshot Input { get; set; }
+        private GraphicsDeviceManager _graphics;
+        private IImGuiRenderer _imGuiRenderer;
 
-        public Vector3 ClearColor { get; set; } = new Vector3(0.45f, 0.55f, 0.6f);
+        private bool _isVisible = true;
 
-        public ResourceManager ResourceManager { get; private set; }
-
-        public Sdl2Window Window => _window;
-
-        private CommandList _cl;
-        private ImGuiController _controller;
-        private GraphicsDevice _graphicsDevice;
-        private Sdl2Window _window;
-
-        public UIContext()
+        public bool IsVisible
         {
-            VeldridStartup.CreateWindowAndGraphicsDevice(
-                new WindowCreateInfo(0, 0, 800, 600),
-                new GraphicsDeviceOptions(true, null, true),
-                out _window,
-                out _graphicsDevice);
+            get => _isVisible;
+            set
+            {
+                if (value) SDL.SDL_ShowWindow(Window.Handle);
+                else SDL.SDL_HideWindow(Window.Handle);
 
-            _cl = _graphicsDevice.ResourceFactory.CreateCommandList();
-
-            _controller = new ImGuiController(_graphicsDevice, _graphicsDevice.MainSwapchain.Framebuffer.OutputDescription, Window.Width, Window.Height);
-
-            ResourceManager = new ResourceManager(_graphicsDevice, _controller);
-
-            // TODO: Move
-            Font16 = ResourceManager.LoadFont(@"Resources\Fonts\OpenSans\OpenSans-Light.ttf", 16);
-            Font24 = ResourceManager.LoadFont(@"Resources\Fonts\OpenSans\OpenSans-Light.ttf", 24);
-            Font32 = ResourceManager.LoadFont(@"Resources\Fonts\OpenSans\OpenSans-Light.ttf", 32);
-
-            _controller.Initialize();
-            _controller.PostInit();
-
-            ResourceManager.Init();
+                _isVisible = value;
+            }
         }
 
-        public int Run(UIBase ui)
+        private bool _wasActive;
+
+        private UIBase _ui;
+
+        public UIContext(int width, int height)
         {
-            ui.Load();
+            _graphics = new GraphicsDeviceManager(this);
+            _graphics.PreferredBackBufferWidth = width;
+            _graphics.PreferredBackBufferHeight = height;
+            _graphics.PreferMultiSampling = true;
 
-            while (Window.Exists)
+            _imGuiRenderer = new GuiXNAState(this);
+
+            ResourceManager = new ResourceManager(GraphicsDevice, _imGuiRenderer);
+            Fonts.Load(ResourceManager);
+
+            Window.IsBorderlessEXT = true;
+            IsMouseVisible = true;
+        }
+
+        private ILog _sdlLog = Log.Get(typeof(SDL));
+
+        public void CenterWindowToDisplayWithMouse(IntPtr windowHandle)
+        {
+            Sdl2Extensions.CenterWindowToDisplayWithMouse(Window.Handle);
+        }
+
+        public void Focus()
+        {
+            SDL.SDL_RaiseWindow(Window.Handle);
+        }
+
+        public void Run(UIBase ui)
+        {
+            _ui = ui;
+
+            Run();
+        }
+
+        protected override void Initialize()
+        {
+            ResourceManager.Init();
+
+            _imGuiRenderer.RebuildFontAtlas();
+
+            base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            _ui.Load();
+
+            base.LoadContent();
+        }
+
+        protected override void UnloadContent()
+        {
+            _ui.Unload();
+
+            base.UnloadContent();
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            if (IsActive && !_wasActive) FocusGained(this, EventArgs.Empty);
+            if (!IsActive && _wasActive) FocusLost(this, EventArgs.Empty);
+
+            if (!IsActive || !IsVisible)
             {
-                if (!Window.Exists) { break; }
+                SuppressDraw();
 
-                InputSnapshot snapshot = Window.PumpEvents();
-                Input = snapshot;
-
-                ui.Update();
-
-                _controller.Update(1f / 60f, snapshot); // Feed the input events to our ImGui controller, which passes them through to ImGui.
-                
-                if (Window.Visible)
-                {
-                    ui.Draw();
-
-                    _cl.Begin();
-                    _cl.SetFramebuffer(_graphicsDevice.MainSwapchain.Framebuffer);
-                    _cl.ClearColorTarget(0, new RgbaFloat(ClearColor.X, ClearColor.Y, ClearColor.Z, 1f));
-                    _controller.Render(_graphicsDevice, _cl);
-                    _cl.End();
-                    _graphicsDevice.SubmitCommands(_cl);
-                    _graphicsDevice.SwapBuffers(_graphicsDevice.MainSwapchain);
-                }
-                else
-                {
-                    Thread.Sleep(1);
-                }
+                Thread.Sleep(10);
             }
 
-            ui.Unload();
+            Input.InputSnapshot.Update();
 
-            // Clean up Veldrid resources
-            _graphicsDevice.WaitForIdle();
-            _controller.Dispose();
-            _cl.Dispose();
-            _graphicsDevice.Dispose();
+            _wasActive = IsActive;
 
-            return 0;
+            base.Update(gameTime);
+        }
+
+        protected override void Draw(GameTime gameTime)
+        {
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            _imGuiRenderer.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+
+            _ui.Draw();
+
+            _imGuiRenderer.Render();
+
+            base.Draw(gameTime);
         }
     }
 }

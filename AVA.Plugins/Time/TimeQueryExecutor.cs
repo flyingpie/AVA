@@ -1,10 +1,10 @@
-﻿using MLaunch.Core.QueryExecutors.ListQuery;
+﻿using AVA.Core.QueryExecutors.ListQuery;
 using MUI.DI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MLaunch.Plugins.Time
+namespace AVA.Plugins.Time
 {
     public class TimeQueryExecutor : ListQueryExecutor
     {
@@ -38,7 +38,7 @@ namespace MLaunch.Plugins.Time
             }.OrderBy(t => t.BaseUtcOffset).ToList();
         }
 
-        public override IList<IListQueryResult> GetQueryResults(string term)
+        public override IEnumerable<IListQueryResult> GetQueryResults(string term)
         {
             var terml = term.Substring(Prefix.Length).Trim();
 

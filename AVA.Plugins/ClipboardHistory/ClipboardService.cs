@@ -1,4 +1,5 @@
 ﻿using MUI.DI;
+using MUI.Logging;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
@@ -9,12 +10,14 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 
-namespace MLaunch.Plugins.ClipboardHistory
+namespace AVA.Plugins.ClipboardHistory
 {
     [Service]
     public class ClipboardService
     {
         public List<ClipboardData> History { get; set; }
+
+        private ILog _log = Log.Get<ClipboardService>();
 
         public ClipboardService()
         {
@@ -22,9 +25,9 @@ namespace MLaunch.Plugins.ClipboardHistory
 
             ClipboardNotification.ClipboardUpdate += (s, a) =>
             {
-                Console.WriteLine("UPDATE");
+                _log.Info("UPDATE");
                 History.Insert(0, ClipboardData.Create());
-                Console.WriteLine("/UPDATE");
+                _log.Info("/UPDATE");
 
                 RemoveDupes();
 
@@ -37,9 +40,9 @@ namespace MLaunch.Plugins.ClipboardHistory
             //History.Remove(data);
             //History.Insert(0, data);
 
-            Console.WriteLine("RESTORE");
+            _log.Info("RESTORE");
             data.Restore();
-            Console.WriteLine("/RESTORE");
+            _log.Info("/RESTORE");
         }
 
         public void RemoveDupes()
@@ -50,7 +53,7 @@ namespace MLaunch.Plugins.ClipboardHistory
                 .ToList()
                 .ForEach(h =>
                 {
-                    Console.WriteLine($"Removing dupe '{h.ToString()}'");
+                    _log.Info($"Removing dupe '{h.ToString()}'");
 
                     History.Remove(h.Last());
                 });

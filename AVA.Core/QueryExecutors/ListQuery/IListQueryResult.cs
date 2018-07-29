@@ -1,10 +1,10 @@
 ﻿using MUI;
 
-namespace MLaunch.Core.QueryExecutors.ListQuery
+namespace AVA.Core.QueryExecutors.ListQuery
 {
     public interface IListQueryResult
     {
-        void Draw(UIContext context, bool isSelected);
+        void Draw(bool isSelected);
 
         void Execute(QueryContext query);
     }
