@@ -4,9 +4,7 @@
     {
         bool IsKeyDown(Keys key);
 
-        bool IsKeyDownOnce(Keys key);
-
-        bool IsKeyPressed(Keys key);
+        bool WasKeyDown(Keys key);
 
         void Update();
     }

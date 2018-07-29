@@ -4,7 +4,7 @@ namespace MUI.Logging
 {
     public static class Log
     {
-        public static Func<string, ILog> Factory { get; set; } = category => new ConsoleLogger(category);
+        public static Func<string, ILog> Factory { get; set; } = category => new FileLogger(category); //new ConsoleLogger(category);
 
         public static ILog Get(string category) => Factory(category);
 

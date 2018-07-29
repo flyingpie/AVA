@@ -32,6 +32,8 @@ namespace AVA.Plugins.Calculator
 
         public bool TryHandle(string term)
         {
+            if (string.IsNullOrWhiteSpace(term)) return false;
+
             try
             {
                 _expression = term;

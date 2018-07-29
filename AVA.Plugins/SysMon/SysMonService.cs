@@ -47,6 +47,7 @@ namespace AVA.Plugins.SysMon
 
                     Drives = DriveInfo
                         .GetDrives()
+                        .Where(d => d.IsReady)
                         .Select(d => new DriveStat()
                         {
                             Name = d.Name.Substring(0, 2),

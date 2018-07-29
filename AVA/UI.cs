@@ -24,13 +24,14 @@ namespace AVA
 
         private byte[] _termBuffer = new byte[1024];
         private string _term;
+        private bool _reset = false;
+        private bool _resetSelection = false;
 
         private IQueryExecutor _activeQueryExecutor;
 
         private bool _isConsoleShown = true;
 
         private ILog _log;
-        private ILog _sdlLog;
 
         public UI()
         {
@@ -55,8 +56,8 @@ namespace AVA
 
         public override void Draw()
         {
-            if (Input.IsKeyDownOnce(Keys.F12)) ToggleConsole();
-            if (Input.IsKeyDownOnce(Keys.Escape)) Minimize();
+            if (Input.IsKeyPressed(Keys.F12)) ToggleConsole();
+            if (Input.IsKeyPressed(Keys.Escape)) Minimize();
 
             ImGui.PushStyleVar(StyleVar.WindowRounding, 0);
 
@@ -87,50 +88,47 @@ namespace AVA
             ImGui.EndWindow();
         }
 
-        private byte[] _termBuffer2 = new byte[100];
-
-        private bool _off = false;
-        private bool _resetSelection = false;
-
         private void DrawSearchBar()
         {
             ImGui.PushFont(Fonts.Regular32);
             ImGui.PushItemWidth(-1);
 
             // TODO: Make this a bit nicer
-            unsafe
-            {
-                if (!_off)
-                {
-                    ImGui.InputText("query", _termBuffer, (uint)_termBuffer.Length, InputTextFlags.CallbackAlways, new TextEditCallback(data =>
-                    {
-                        if (_resetSelection)
-                        {
-                            data->CursorPos = _term.Length;
+            //unsafe
+            //{
+            //    if (!_reset)
+            //    {
+            //        ImGui.InputText("query", _termBuffer, (uint)_termBuffer.Length, InputTextFlags.CallbackAlways, new TextEditCallback(data =>
+            //        {
+            //            if (_resetSelection)
+            //            {
+            //                data->CursorPos = _term.Length;
 
-                            data->SelectionStart = 0;
-                            data->SelectionEnd = 0;
+            //                data->SelectionStart = 0;
+            //                data->SelectionEnd = 0;
 
-                            _resetSelection = false;
-                        }
-                        return 0;
-                    }));
+            //                _resetSelection = false;
+            //            }
+            //            return 0;
+            //        }));
 
-                    if (!ImGui.IsLastItemActive()) ImGui.SetKeyboardFocusHere();
-                }
-            }
+            //        if (!ImGui.IsLastItemActive()) ImGui.SetKeyboardFocusHere();
+            //    }
+            //}
 
-            if (_off) _off = false;
+            ImGuiEx.InputText("query", _termBuffer, ref _reset, ref _resetSelection);
+
+            if (_reset) _reset = false;
 
             if (_queryContext.Query != _term)
             {
                 _termBuffer.CopyToBuffer(_queryContext.Query);
 
-                _off = true;
+                _reset = true;
                 _resetSelection = true;
             }
 
-            if (Input.IsKeyDownOnce(Keys.Enter))
+            if (Input.IsKeyPressed(Keys.Enter))
             {
                 _log.Info($"ENTER");
 
@@ -199,6 +197,8 @@ namespace AVA
             Context.IsVisible = false;
 
             _termBuffer.ClearBuffer();
+
+            _reset = true;
         }
 
         public void ToggleConsole()

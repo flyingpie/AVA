@@ -81,10 +81,10 @@ namespace AVA.Core.QueryExecutors.ListQuery
         public void Draw()
         {
             // Previous
-            if (Input.IsKeyDownOnce(Keys.Up) || (Input.IsKeyDownOnce(Keys.K) && Input.IsKeyDownOnce(Keys.LeftControl)) || Input.IsKeyDownOnce(Keys.Tab) || Input.IsKeyDownOnce(Keys.LeftShift)) PreviousItem();
+            if (Input.IsKeyPressed(Keys.Up) || (Input.IsKeyPressed(Keys.K) && Input.IsKeyDown(Keys.LeftControl)) || (Input.IsKeyPressed(Keys.Tab) && Input.IsKeyDown(Keys.LeftShift))) PreviousItem();
 
             // Next
-            if (Input.IsKeyDownOnce(Keys.Down) || (Input.IsKeyDownOnce(Keys.J) && Input.IsKeyDownOnce(Keys.LeftControl)) || Input.IsKeyDownOnce(Keys.Tab)) NextItem();
+            if (Input.IsKeyPressed(Keys.Down) || (Input.IsKeyPressed(Keys.J) && Input.IsKeyDown(Keys.LeftControl)) || (Input.IsKeyPressed(Keys.Tab) && !Input.IsKeyDown(Keys.LeftShift))) NextItem();
 
             for (int i = 0; i < QueryResults.Count; i++)
             {

@@ -15,18 +15,9 @@ namespace MUI
             return _currentKeyboardState.IsKeyDown((Microsoft.Xna.Framework.Input.Keys)key);
         }
 
-        public bool IsKeyDownOnce(Keys key)
+        public bool WasKeyDown(Keys key)
         {
-            var xnaKey = (Microsoft.Xna.Framework.Input.Keys)key;
-
-            return _currentKeyboardState.IsKeyDown(xnaKey) && !_lastKeyboardState.IsKeyDown(xnaKey);
-        }
-
-        public bool IsKeyPressed(Keys key)
-        {
-            var xnaKey = (Microsoft.Xna.Framework.Input.Keys)key;
-
-            return !_currentKeyboardState.IsKeyDown(xnaKey) && _lastKeyboardState.IsKeyDown(xnaKey);
+            return _lastKeyboardState.IsKeyDown((Microsoft.Xna.Framework.Input.Keys)key);
         }
 
         public void Update()
