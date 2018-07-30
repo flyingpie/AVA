@@ -37,6 +37,8 @@ namespace AVA
 
         public override void Load()
         {
+            SDL2.SDL.SDL_SetWindowOpacity(Context.Window.Handle, .9f);
+
             Maximize();
 
             // Toggle on Alt-Space
