@@ -1,5 +1,4 @@
-﻿using ImGuiNET;
-using ImGuiNET.FNA;
+﻿using ImGuiNET.FNA;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MUI.Extensions;
@@ -19,7 +18,7 @@ namespace MUI
         public event EventHandler FocusLost = delegate { };
 
         private GraphicsDeviceManager _graphics;
-        private IImGuiRenderer _imGuiRenderer;
+        private ImGuiRenderer _imGuiRenderer;
 
         private bool _isVisible = true;
 
@@ -46,7 +45,7 @@ namespace MUI
             _graphics.PreferredBackBufferHeight = height;
             _graphics.PreferMultiSampling = true;
 
-            _imGuiRenderer = new GuiXNAState(this);
+            _imGuiRenderer = new ImGuiRenderer(GraphicsDevice);
 
             ResourceManager = new ResourceManager(GraphicsDevice, _imGuiRenderer);
             Fonts.Load(ResourceManager);
@@ -120,11 +119,11 @@ namespace MUI
 
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _imGuiRenderer.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+            _imGuiRenderer.BeforeLayout(gameTime);
 
             _ui.Draw();
 
-            _imGuiRenderer.Render();
+            _imGuiRenderer.AfterLayout();
 
             base.Draw(gameTime);
         }

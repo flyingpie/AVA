@@ -1,4 +1,4 @@
-﻿using ImGuiNET;
+﻿using ImGuiNET.FNA;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
@@ -8,9 +8,9 @@ namespace MUI.Graphics
     public class TextureLoader
     {
         private GraphicsDevice _graphicsDevice;
-        private IImGuiRenderer _imGuiRenderer;
+        private ImGuiRenderer _imGuiRenderer;
 
-        public TextureLoader(GraphicsDevice graphicsDevice, IImGuiRenderer imGuiRenderer)
+        public TextureLoader(GraphicsDevice graphicsDevice, ImGuiRenderer imGuiRenderer)
         {
             _graphicsDevice = graphicsDevice ?? throw new ArgumentNullException(nameof(graphicsDevice));
             _imGuiRenderer = imGuiRenderer ?? throw new ArgumentNullException(nameof(imGuiRenderer));

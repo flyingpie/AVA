@@ -1,4 +1,5 @@
 ﻿using ImGuiNET;
+using ImGuiNET.FNA;
 using Microsoft.Xna.Framework.Graphics;
 using MUI.Graphics;
 using System;
@@ -15,9 +16,9 @@ namespace MUI
         private TextureLoader _textureLoader;
 
         private GraphicsDevice _graphicsDevice;
-        private IImGuiRenderer _imGuiRenderer;
+        private ImGuiRenderer _imGuiRenderer;
 
-        public ResourceManager(GraphicsDevice graphicsDevice, IImGuiRenderer imGuiRenderer)
+        public ResourceManager(GraphicsDevice graphicsDevice, ImGuiRenderer imGuiRenderer)
         {
             _loadedImages = new ConcurrentDictionary<string, Image>();
             _textureLoader = new TextureLoader(graphicsDevice, imGuiRenderer);
