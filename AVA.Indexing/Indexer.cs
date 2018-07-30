@@ -99,8 +99,6 @@ namespace AVA.Indexing
                 @"%NEXTCLOUD%"
             }.Select(f => Environment.ExpandEnvironmentVariables(f)).ToList();
 
-            //var files = folders.Select(folder = > System.IO.Directory.GetFiles(, "*", System.IO.SearchOption.AllDirectories);
-
             var files = folders.GetFilesRecursive();
 
             foreach (var path in files)

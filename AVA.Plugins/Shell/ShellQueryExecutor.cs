@@ -1,6 +1,6 @@
-﻿using ImGuiNET;
-using AVA.Core;
+﻿using AVA.Core;
 using AVA.Core.QueryExecutors;
+using ImGuiNET;
 using MUI;
 using MUI.DI;
 using System.Diagnostics;
@@ -20,16 +20,16 @@ namespace AVA.Plugins.Shell
 
         public int Order => 0;
 
-        public bool TryHandle(string term)
+        public bool TryHandle(QueryContext query)
         {
-            if (string.IsNullOrWhiteSpace(term)) return false;
+            if (query.IsEmpty) return false;
 
-            return term.StartsWith(">");
+            return query.Text.StartsWith(">");
         }
 
         public bool TryExecute(QueryContext query)
         {
-            var term = query.Query;
+            var term = query.Text;
             if (term.Length <= 1) return false;
 
             var cmd = term.Substring(1);

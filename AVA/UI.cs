@@ -5,7 +5,6 @@ using ImGuiNET;
 using MUI;
 using MUI.DI;
 using MUI.Logging;
-using MUI.Win32;
 using MUI.Win32.Input;
 using System;
 using System.Numerics;
@@ -24,12 +23,9 @@ namespace AVA
 
         private byte[] _termBuffer = new byte[1024];
         private string _term;
+
         private bool _reset = false;
         private bool _resetSelection = false;
-
-        private IQueryExecutor _activeQueryExecutor;
-
-        private bool _isConsoleShown = true;
 
         private ILog _log;
 
@@ -44,19 +40,16 @@ namespace AVA
             Maximize();
 
             // Toggle on Alt-Space
-            HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.Z, KeyModifiers.Alt);
+            HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.Space, KeyModifiers.Alt);
             HotKeyManager.HotKeyPressed += (s, a) => Toggle();
 
             // Minimize on focus lost
             Context.FocusGained += (s, a) => _log.Info("Gained focus");
             Context.FocusLost += (s, a) => { _log.Info("Lost focus"); Minimize(); };
-
-            HideConsole();
         }
 
         public override void Draw()
         {
-            if (Input.IsKeyPressed(Keys.F12)) ToggleConsole();
             if (Input.IsKeyPressed(Keys.Escape)) Minimize();
 
             ImGui.PushStyleVar(StyleVar.WindowRounding, 0);
@@ -76,7 +69,7 @@ namespace AVA
                 // Query executor
                 ImGui.BeginChild("query-executor", new Vector2(ImGui.GetWindowContentRegionWidth(), ImGui.GetContentRegionAvailable().Y - 20), false, WindowFlags.Default);
                 {
-                    _activeQueryExecutor?.Draw();
+                    QueryExecutorManager.Draw();
                 }
                 ImGui.EndChild();
 
@@ -93,64 +86,46 @@ namespace AVA
             ImGui.PushFont(Fonts.Regular32);
             ImGui.PushItemWidth(-1);
 
-            // TODO: Make this a bit nicer
-            //unsafe
-            //{
-            //    if (!_reset)
-            //    {
-            //        ImGui.InputText("query", _termBuffer, (uint)_termBuffer.Length, InputTextFlags.CallbackAlways, new TextEditCallback(data =>
-            //        {
-            //            if (_resetSelection)
-            //            {
-            //                data->CursorPos = _term.Length;
-
-            //                data->SelectionStart = 0;
-            //                data->SelectionEnd = 0;
-
-            //                _resetSelection = false;
-            //            }
-            //            return 0;
-            //        }));
-
-            //        if (!ImGui.IsLastItemActive()) ImGui.SetKeyboardFocusHere();
-            //    }
-            //}
-
-            ImGuiEx.InputText("query", _termBuffer, ref _reset, ref _resetSelection);
-
-            if (_reset) _reset = false;
-
-            if (_queryContext.Query != _term)
+            // Update input buffer based on the query context
+            if (_term != _queryContext.Text)
             {
-                _termBuffer.CopyToBuffer(_queryContext.Query);
+                _termBuffer.CopyToBuffer(_queryContext.Text);
+                _term = _queryContext.Text;
 
                 _reset = true;
                 _resetSelection = true;
             }
 
+            ImGuiEx.InputText("query", _termBuffer, _reset, _resetSelection);
+
+            // Execute when ENTER was pressed
             if (Input.IsKeyPressed(Keys.Enter))
             {
                 _log.Info($"ENTER");
 
-                if (_activeQueryExecutor.TryExecute(_queryContext))
+                if (QueryExecutorManager.TryExecute(_queryContext))
                 {
                     if (_queryContext.HideUI) Minimize();
 
-                    _queryContext.HideUI = true;
+                    if (_queryContext.ResetText) _queryContext.Reset();
                 }
             }
 
+            // Update the query context if the input buffer was changed
             var term = _termBuffer.BufferToString();
             if (_term != term)
             {
                 _term = term;
-                _activeQueryExecutor = QueryExecutorManager.GetQueryExecutor(term);
+                _queryContext.Text = term;
 
-                _queryContext.Query = _term;
+                QueryExecutorManager.TryHandle(_queryContext);
             }
 
             ImGui.PopItemWidth();
             ImGui.PopFont();
+
+            _reset = false;
+            _resetSelection = false;
         }
 
         private void DrawFooter()
@@ -196,29 +171,9 @@ namespace AVA
 
             Context.IsVisible = false;
 
-            _termBuffer.ClearBuffer();
+            _queryContext.Reset();
 
             _reset = true;
-        }
-
-        public void ToggleConsole()
-        {
-            if (_isConsoleShown) HideConsole();
-            else ShowConsole();
-        }
-
-        public void ShowConsole()
-        {
-            PInvoke.ShowWindow(PInvoke.GetConsoleWindow(), PInvoke.SW_SHOW);
-
-            _isConsoleShown = true;
-        }
-
-        public void HideConsole()
-        {
-            PInvoke.ShowWindow(PInvoke.GetConsoleWindow(), PInvoke.SW_HIDE);
-
-            _isConsoleShown = false;
         }
     }
 }

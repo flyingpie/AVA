@@ -20,9 +20,9 @@ namespace AVA.Core.QueryExecutors.CommandQuery
 
         public virtual bool TryExecute(QueryContext query) => false;
 
-        public virtual bool TryHandle(string term)
+        public virtual bool TryHandle(QueryContext query)
         {
-            term = term.ToLowerInvariant();
+            var term = query.Text.ToLowerInvariant();
 
             return CommandPrefixes.Any(cp => term.StartsWith(cp));
         }

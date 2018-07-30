@@ -24,6 +24,6 @@ namespace AVA.Plugins.NoResults
 
         public bool TryExecute(QueryContext query) => false;
 
-        public bool TryHandle(string term) => true;
+        public bool TryHandle(QueryContext query) => true;
     }
 }

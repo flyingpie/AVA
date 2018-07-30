@@ -5,13 +5,11 @@ namespace MUI
 {
     public static class ImGuiEx
     {
-        public static bool InputText(string id, byte[] buffer, ref bool reset, ref bool resetSelection)
+        public static bool InputText(string id, byte[] buffer, bool reset, bool resetSelection)
         {
-            var resetSele = resetSelection ? new IntPtr(1) : new IntPtr(0);
-
             unsafe
             {
-                if (reset) return reset = false;
+                if (reset) return false;
 
                 var result = ImGui.InputText("query", buffer, (uint)buffer.Length, InputTextFlags.CallbackAlways, new TextEditCallback(data =>
                 {
@@ -23,7 +21,7 @@ namespace MUI
                         data->SelectionEnd = 0;
                     }
                     return 0;
-                }), resetSele);
+                }), new IntPtr(resetSelection ? 1 : 0));
 
                 if (!ImGui.IsLastItemActive()) ImGui.SetKeyboardFocusHere();
 

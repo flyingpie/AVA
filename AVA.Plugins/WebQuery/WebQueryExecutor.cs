@@ -54,15 +54,15 @@ namespace AVA.Plugins.WebQuery
         private Command _command;
         private string _term;
 
-        public override bool TryHandle(string term)
+        public override bool TryHandle(QueryContext query)
         {
-            var terml = term.ToLowerInvariant();
+            var terml = query.Text.ToLowerInvariant();
 
             _command = _commands.FirstOrDefault(c => terml.StartsWith(c.Prefix));
 
             if (_command != null)
             {
-                _term = term.Substring(_command.Prefix.Length);
+                _term = query.Text.Substring(_command.Prefix.Length);
             }
 
             return _command != null;
@@ -70,7 +70,7 @@ namespace AVA.Plugins.WebQuery
 
         public override bool TryExecute(QueryContext query)
         {
-            var term = query.Query;
+            var term = query.Text;
             var terml = term.ToLowerInvariant();
 
             foreach (var command in _commands)

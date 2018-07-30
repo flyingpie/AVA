@@ -1,4 +1,5 @@
-﻿using AVA.Core.QueryExecutors;
+﻿using AVA.Core;
+using AVA.Core.QueryExecutors;
 using AVA.Core.QueryExecutors.ListQuery;
 using MUI;
 using MUI.DI;
@@ -29,7 +30,7 @@ namespace AVA.Plugins.Help
             QueryResults = GetQueryResults(null).ToList();
         }
 
-        public override bool TryHandle(string term) => string.IsNullOrWhiteSpace(term) || term.ContainsCaseInsensitive("help");
+        public override bool TryHandle(QueryContext query) => query.IsEmpty || query.Text.ContainsCaseInsensitive("help");
 
         public override IEnumerable<IListQueryResult> GetQueryResults(string term)
         {
@@ -41,7 +42,7 @@ namespace AVA.Plugins.Help
                     Description = qe.Description,
                     OnExecute = t =>
                     {
-                        t.Query = qe.ExampleUsage;
+                        t.Text = qe.ExampleUsage;
                         t.HideUI = false;
                     }
                 });

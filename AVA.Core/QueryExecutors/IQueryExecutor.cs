@@ -10,7 +10,7 @@
 
         int Order { get; }
 
-        bool TryHandle(string term);
+        bool TryHandle(QueryContext query);
 
         bool TryExecute(QueryContext query);
 

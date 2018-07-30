@@ -2,6 +2,10 @@
 {
     public interface IQueryExecutorManager
     {
-        IQueryExecutor GetQueryExecutor(string term);
+        void Draw();
+
+        bool TryHandle(QueryContext query);
+
+        bool TryExecute(QueryContext query);
     }
 }

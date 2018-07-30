@@ -49,18 +49,18 @@ namespace AVA.Core.QueryExecutors.ListQuery
 
         #region Query executor
 
-        public virtual bool TryHandle(string term)
+        public virtual bool TryHandle(QueryContext query)
         {
             SelectedItemIndex = 0;
 
             // Require at least some term
-            if (string.IsNullOrWhiteSpace(term)) return false;
+            if (string.IsNullOrWhiteSpace(query.Text)) return false;
 
             // Require a prefix (when specified in the plugin)
-            if (Prefix != null && !term.ToLowerInvariant().StartsWith(Prefix.ToLowerInvariant())) return false;
+            if (Prefix != null && !query.Text.ToLowerInvariant().StartsWith(Prefix.ToLowerInvariant())) return false;
 
             // Execute the query
-            QueryResults = GetQueryResults(term).ToList();
+            QueryResults = GetQueryResults(query.Text).ToList();
 
             // Succeeds when something was returned
             return QueryResults.Any();

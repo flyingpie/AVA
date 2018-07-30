@@ -30,14 +30,14 @@ namespace AVA.Plugins.Calculator
             _parsedExpression = new Expression("1 + 1").Evaluate().ToString();
         }
 
-        public bool TryHandle(string term)
+        public bool TryHandle(QueryContext query)
         {
-            if (string.IsNullOrWhiteSpace(term)) return false;
+            if (query.IsEmpty) return false;
 
             try
             {
-                _expression = term;
-                _parsedExpression = new Expression(term).Evaluate().ToString();
+                _expression = query.Text;
+                _parsedExpression = new Expression(query.Text).Evaluate().ToString();
 
                 return true;
             }

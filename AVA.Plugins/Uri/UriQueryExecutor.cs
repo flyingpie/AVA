@@ -35,13 +35,13 @@ namespace AVA.Plugins.Uri
             return true;
         }
 
-        public bool TryHandle(string term)
+        public bool TryHandle(QueryContext query)
         {
-            var isMatch = reg.IsMatch(term);
+            var isMatch = reg.IsMatch(query.Text);
 
             if (isMatch)
             {
-                _url = FormatUrl(term);
+                _url = FormatUrl(query.Text);
             }
 
             return isMatch;
