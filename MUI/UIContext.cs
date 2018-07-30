@@ -109,8 +109,6 @@ namespace MUI
                 Thread.Sleep(10);
             }
 
-            Input.InputSnapshot.Update();
-
             _wasActive = IsActive;
 
             base.Update(gameTime);
@@ -118,6 +116,8 @@ namespace MUI
 
         protected override void Draw(GameTime gameTime)
         {
+            Input.InputSnapshot.Update();
+
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _imGuiRenderer.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
