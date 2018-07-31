@@ -1,27 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <TargetFramework>net462</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="morelinq" Version="3.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\MUI\MUI.csproj" />
+        <PackageReference Include="morelinq" Version="3.0.0" />
+        <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
     </ItemGroup>
 
     <ItemGroup>
         <Reference Include="FNA">
-            <HintPath>..\_Libs\FNA.dll</HintPath>
+            <HintPath>..\..\deps\FNA.dll</HintPath>
         </Reference>
         <Reference Include="ImGui.NET">
-            <HintPath>..\_Libs\ImGui.NET.dll</HintPath>
+            <HintPath>..\..\deps\ImGui.NET.dll</HintPath>
         </Reference>
         <Reference Include="ImGui.NET.FNA">
-            <HintPath>..\_Libs\ImGui.NET.FNA.dll</HintPath>
+            <HintPath>..\..\deps\ImGui.NET.FNA.dll</HintPath>
         </Reference>
     </ItemGroup>
 

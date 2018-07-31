@@ -2,6 +2,7 @@
 using MUI;
 using MUI.DI;
 using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -12,6 +13,8 @@ namespace AVA
         [STAThread]
         private static void Main(string[] args)
         {
+            SetupNativeDependencies();
+
             // TODO: Make nicer
             typeof(DummyQueryExecutor).GetType();
             typeof(Indexing.Indexer).GetType();
@@ -30,6 +33,35 @@ namespace AVA
             container.Resolve<Indexing.Indexer>().Query("conemu");
 
             uiContext.Run(container.Resolve<UI>());
+        }
+
+        private static void SetupNativeDependencies()
+        {
+            var output = Path.GetDirectoryName(new Uri(typeof(Program).Assembly.CodeBase).LocalPath);
+
+            foreach (var dependency in Directory.GetFiles(GetDependenciesDirectory()))
+            {
+                var fileName = Path.GetFileName(dependency);
+                var target = Path.Combine(output, fileName);
+                if (!File.Exists(target))
+                {
+                    File.Copy(dependency, target);
+                }
+            }
+        }
+
+        private static string GetDependenciesDirectory()
+        {
+            var root = "Deps/";
+            var is64 = Environment.Is64BitOperatingSystem;
+
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Win32NT:
+                    return is64 ? root + "x64" : root + "x86";
+            }
+
+            throw new NotSupportedException($"Apparently, platform is not supported: '{Environment.OSVersion}'");
         }
 
         private static void RegisterServices(IContainer container) => Assembly
