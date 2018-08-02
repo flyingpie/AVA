@@ -161,9 +161,10 @@ namespace AVA
         {
             _log.Info("Maximize");
 
+            Context.CenterWindowToDisplayWithMouse(Context.Window.Handle);
+
             Context.IsVisible = true;
 
-            Context.CenterWindowToDisplayWithMouse(Context.Window.Handle);
             Context.Focus();
         }
 
