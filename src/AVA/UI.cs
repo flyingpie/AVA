@@ -25,7 +25,7 @@ namespace AVA
         private string _term;
 
         private bool _reset = false;
-        private bool _resetSelection = false;
+        private int _id;
 
         private ILog _log;
 
@@ -88,6 +88,8 @@ namespace AVA
             ImGui.PushFont(Fonts.Regular32);
             ImGui.PushItemWidth(-1);
 
+            var isQcUpdated = false;
+
             // Update input buffer based on the query context
             if (_term != _queryContext.Text)
             {
@@ -95,10 +97,12 @@ namespace AVA
                 _term = _queryContext.Text;
 
                 _reset = true;
-                _resetSelection = true;
+                _id++;
+
+                isQcUpdated = true;
             }
 
-            ImGuiEx.InputText("query", _termBuffer, _reset, _resetSelection);
+            ImGuiEx.InputText(_id, _termBuffer, ref _reset);
 
             // Execute when ENTER was pressed
             if (Input.IsKeyPressed(Keys.Enter))
@@ -115,7 +119,7 @@ namespace AVA
 
             // Update the query context if the input buffer was changed
             var term = _termBuffer.BufferToString();
-            if (_term != term)
+            if (_term != term || isQcUpdated)
             {
                 _term = term;
                 _queryContext.Text = term;
@@ -125,9 +129,6 @@ namespace AVA
 
             ImGui.PopItemWidth();
             ImGui.PopFont();
-
-            _reset = false;
-            _resetSelection = false;
         }
 
         private void DrawFooter()
@@ -171,11 +172,9 @@ namespace AVA
         {
             _log.Info("Minimize");
 
-            Context.IsVisible = false;
-
             _queryContext.Reset();
 
-            _reset = true;
+            Context.IsVisible = false;
         }
     }
 }
