@@ -1,29 +1,37 @@
 ﻿using ImGuiNET;
-using System;
 
 namespace MUI
 {
     public static class ImGuiEx
     {
-        public static bool InputText(string id, byte[] buffer, bool reset, bool resetSelection)
+        public static bool InputText(int id, byte[] buffer, ref bool reset)
         {
             unsafe
             {
-                if (reset) return false;
-
-                var result = ImGui.InputText("query", buffer, (uint)buffer.Length, InputTextFlags.CallbackAlways, new TextEditCallback(data =>
+                if (reset)
                 {
-                    if (data->UserData == (IntPtr)1)
+                    reset = false;
+
+                    buffer[buffer.Length - 1] = 1;
+                }
+
+                var result = ImGui.InputText("q" + id, buffer, (uint)buffer.Length - 1, InputTextFlags.CallbackAlways, new TextEditCallback(data =>
+                {
+                    if (buffer[buffer.Length - 1] == 1)
                     {
-                        data->CursorPos = buffer.Length;
+                        data->CursorPos = data->BufTextLen;
 
                         data->SelectionStart = 0;
                         data->SelectionEnd = 0;
+
+                        buffer[buffer.Length - 1] = 0;
                     }
                     return 0;
-                }), new IntPtr(resetSelection ? 1 : 0));
+                }));
 
-                if (!ImGui.IsLastItemActive()) ImGui.SetKeyboardFocusHere();
+                if (!ImGui.IsAnyItemActive()) ImGui.SetKeyboardFocusHere();
+
+
 
                 return result;
             }

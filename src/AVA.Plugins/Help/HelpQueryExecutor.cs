@@ -44,6 +44,7 @@ namespace AVA.Plugins.Help
                     {
                         t.Text = qe.ExampleUsage;
                         t.HideUI = false;
+                        t.ResetText = false;
                     }
                 });
         }
