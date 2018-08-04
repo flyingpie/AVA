@@ -23,30 +23,6 @@ namespace MUI.Extensions
             var numDisplays = SDL.SDL_GetNumVideoDisplays();
             if (numDisplays == 0) _log.Error("Could not get num video displays");
 
-            //var displays = new SDL.SDL_Rect[numDisplays];
-
-            //for (int displayIndex = 0; displayIndex < numDisplays; displayIndex++)
-            //{
-            //    if (SDL.SDL_GetCurrentDisplayMode(displayIndex, out var mode) != 0) { _log.Error($"Could not get current display mode for display {displayIndex}"); }
-            //    if (SDL.SDL_GetDisplayBounds(displayIndex, out var dpBounds) != 0) { _log.Error($"Could not get display bounds for display {displayIndex}"); }
-
-            //    displays[displayIndex] = dpBounds;
-            //}
-
-            //var displayWithMouse = displays[0];
-
-            //// Get display with mouse
-            //for (int i = 0; i < displays.Length; i++)
-            //{
-            //    //if ((mouseX > b.x && mouseX < b.x + b.w) && (mouseY > b.y && mouseY < b.y + b.h))
-            //    if (SDL.SDL_PointInRect(ref mouse, ref displays[i]) == SDL.SDL_bool.SDL_TRUE)
-            //    {
-            //        displayWithMouse = displays[i];
-            //    }
-            //}
-
-            //var displays = new SDL.SDL_Rect[numDisplays];
-
             var displayWithMouse = new SDL.SDL_Rect();
 
             for (int displayIndex = 0; displayIndex < numDisplays; displayIndex++)

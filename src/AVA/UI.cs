@@ -4,10 +4,11 @@ using AVA.Plugins.SysMon;
 using ImGuiNET;
 using MUI;
 using MUI.DI;
+using MUI.ImGuiControls;
 using MUI.Logging;
 using MUI.Win32.Input;
-using System;
 using System.Numerics;
+using System.Threading.Tasks;
 
 namespace AVA
 {
@@ -21,11 +22,7 @@ namespace AVA
 
         private QueryContext _queryContext;
 
-        private byte[] _termBuffer = new byte[1024];
-        private string _term;
-
-        private bool _reset = false;
-        private int _id;
+        private TextBox _queryBox;
 
         private ILog _log;
 
@@ -33,11 +30,12 @@ namespace AVA
         {
             _log = Log.Get(this);
             _queryContext = new QueryContext();
+            _queryBox = new TextBox();
         }
 
         public override void Load()
         {
-            SDL2.SDL.SDL_SetWindowOpacity(Context.Window.Handle, .9f);
+            Context.Opacity = .9f;
 
             Maximize();
 
@@ -75,7 +73,7 @@ namespace AVA
                 }
                 ImGui.EndChild();
 
-                //// Footer
+                // Footer
                 DrawFooter();
 
                 ImGui.PopFont();
@@ -86,23 +84,14 @@ namespace AVA
         private void DrawSearchBar()
         {
             ImGui.PushFont(Fonts.Regular32);
-            ImGui.PushItemWidth(-1);
-
-            var isQcUpdated = false;
 
             // Update input buffer based on the query context
-            if (_term != _queryContext.Text)
+            if (_queryBox.Text != _queryContext.Text)
             {
-                _termBuffer.CopyToBuffer(_queryContext.Text);
-                _term = _queryContext.Text;
-
-                _reset = true;
-                _id++;
-
-                isQcUpdated = true;
+                _queryBox.Text = _queryContext.Text;
             }
 
-            ImGuiEx.InputText(_id, _termBuffer, ref _reset);
+            _queryBox.Draw();
 
             // Execute when ENTER was pressed
             if (Input.IsKeyPressed(Keys.Enter))
@@ -118,16 +107,15 @@ namespace AVA
             }
 
             // Update the query context if the input buffer was changed
-            var term = _termBuffer.BufferToString();
-            if (_term != term || isQcUpdated)
+            if (_queryBox.IsChanged)
             {
-                _term = term;
-                _queryContext.Text = term;
+                _queryContext.Text = _queryBox.Text;
 
                 QueryExecutorManager.TryHandle(_queryContext);
             }
 
-            ImGui.PopItemWidth();
+            _queryBox.ResetChanged();
+
             ImGui.PopFont();
         }
 
@@ -171,11 +159,14 @@ namespace AVA
 
         private void Minimize()
         {
-            _log.Info("Minimize");
+            Task.Run(() =>
+            {
+                _log.Info("Minimize");
 
-            _queryContext.Reset();
+                _queryContext.Reset();
 
-            Context.IsVisible = false;
+                Context.IsVisible = false;
+            });
         }
     }
 }

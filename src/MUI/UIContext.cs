@@ -34,6 +34,11 @@ namespace MUI
             }
         }
 
+        public float Opacity
+        {
+            set => SDL.SDL_SetWindowOpacity(Window.Handle, value);
+        }
+
         private bool _wasActive;
 
         private UIBase _ui;
