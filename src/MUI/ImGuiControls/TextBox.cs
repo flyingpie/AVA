@@ -25,6 +25,8 @@ namespace MUI.ImGuiControls
 
                 _reset = true;
                 _id++;
+
+                IsChanged = true;
             }
         }
 
