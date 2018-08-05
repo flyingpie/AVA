@@ -6,6 +6,7 @@ using MUI.DI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace AVA.Plugins.Help
 {
@@ -14,19 +15,22 @@ namespace AVA.Plugins.Help
     {
         [Dependency] public ResourceManager ResourceManager { get; set; }
 
-        [Dependency] public IQueryExecutor[] QueryExecutors { get; set; }
-
-        public override string Name => "Help";
-
-        public override string Description => "Displays this listing";
-
-        public override string ExampleUsage => "help";
-
         public override int Order => 999;
+
+        private List<HelpAttribute> _helpAttrs;
 
         [RunAfterInject]
         private void Init()
         {
+            _helpAttrs = AppDomain.CurrentDomain
+                .GetAssemblies()
+                .SelectMany(ass => ass.GetTypes())
+                .Select(t => t.GetCustomAttribute<HelpAttribute>())
+                .Where(attr => attr != null)
+                .OrderBy(attr => attr.Name)
+                .ToList()
+            ;
+
             QueryResults = GetQueryResults(null).ToList();
         }
 
@@ -34,7 +38,7 @@ namespace AVA.Plugins.Help
 
         public override IEnumerable<IListQueryResult> GetQueryResults(string term)
         {
-            return QueryExecutors
+            return _helpAttrs
                 .OrderBy(qe => qe.Name)
                 .Select(qe => (IListQueryResult)new ListQueryResult()
                 {

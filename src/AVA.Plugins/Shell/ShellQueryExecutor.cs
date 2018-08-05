@@ -7,16 +7,10 @@ using System.Diagnostics;
 
 namespace AVA.Plugins.Shell
 {
-    [Service]
+    [Service, Help(Name = "Shell", Description = "Execute shell commands", ExampleUsage = ">ipconfig")]
     public class ShellQueryExecutor : IQueryExecutor
     {
         [Dependency] public UIContext UIContext { get; set; }
-
-        public string Name => "Shell";
-
-        public string Description => "Execute shell commands";
-
-        public string ExampleUsage => ">ipconfig";
 
         public int Order => 0;
 
@@ -53,7 +47,7 @@ namespace AVA.Plugins.Shell
                 startInfo.Verb = "runas";
             }
 
-            Process.Start(startInfo);
+            Process.Start(startInfo).Dispose();
 
             return true;
         }

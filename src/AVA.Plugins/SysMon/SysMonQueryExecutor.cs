@@ -1,18 +1,13 @@
-﻿using ImGuiNET;
+﻿using AVA.Core.QueryExecutors;
 using AVA.Core.QueryExecutors.CommandQuery;
+using ImGuiNET;
 using MUI.DI;
 
 namespace AVA.Plugins.SysMon
 {
-    [Service]
+    [Service, Help(Name = "Sys mon", Description = "Shows information about the system's resources", ExampleUsage = "sys")]
     public class SysMonQueryExecutor : CommandQueryExecutor
     {
-        public override string Name => "Sys mon";
-
-        public override string Description => "Shows information about the system's resources";
-
-        public override string ExampleUsage => "sys";
-
         public override string[] CommandPrefixes => new[] { "sys" };
 
         public override void Draw()

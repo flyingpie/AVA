@@ -3,13 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace WindowsControlPanelItems
 {
-    public static class List
+    public static class ControlPanelShortcuts
     {
         private const uint GROUP_ICON = 14;
         private const uint LOAD_LIBRARY_AS_DATAFILE = 0x00000002;

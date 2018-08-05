@@ -1,4 +1,5 @@
-﻿using AVA.Core.QueryExecutors.ListQuery;
+﻿using AVA.Core.QueryExecutors;
+using AVA.Core.QueryExecutors.ListQuery;
 using MUI;
 using MUI.DI;
 using System;
@@ -7,19 +8,14 @@ using System.Linq;
 
 namespace AVA.Plugins.ClipboardHistory
 {
+    [Help(Name = "Clipboard history", Description = "View and reactivate past clips", ExampleUsage = "cc <term?>")]
     public class ClipboardHistoryQueryExecutor : ListQueryExecutor
     {
         [Dependency] public ClipboardService ClipboardService { get; set; }
 
         [Dependency] public ResourceManager ResourceManager { get; set; }
 
-        public override string Name => "Clipboard history";
-
-        public override string Description => "View and reactivate past clips";
-
-        public override string ExampleUsage => "cb <term?>";
-
-        public override string Prefix => "cb ";
+        public override string Prefix => "cc ";
 
         public override IEnumerable<IListQueryResult> GetQueryResults(string term)
         {

@@ -1,4 +1,5 @@
-﻿using AVA.Core.QueryExecutors.ListQuery;
+﻿using AVA.Core.QueryExecutors;
+using AVA.Core.QueryExecutors.ListQuery;
 using AVA.Indexing;
 using MUI;
 using MUI.DI;
@@ -12,17 +13,12 @@ using System.Linq;
 
 namespace AVA.Plugins.FileSystem
 {
+    [Help(Name = "File system", Description = "Search the file system for apps, shortcuts and media files", ExampleUsage = "notepad")]
     public class FileSystemQueryExecutor : ListQueryExecutor
     {
         [Dependency] public Indexer Indexer { get; set; }
 
         [Dependency] public ResourceManager ResourceManager { get; set; }
-
-        public override string Name => "File system";
-
-        public override string Description => "Search the file system for apps, shortcuts and media files";
-
-        public override string ExampleUsage => "notepad";
 
         private ILog _log = Log.Get<FileSystemQueryExecutor>();
 

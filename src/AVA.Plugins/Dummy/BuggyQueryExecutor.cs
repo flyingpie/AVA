@@ -9,12 +9,6 @@ namespace AVA.Plugins.Dummy
     [Service]
     public class BuggyQueryExecutor : IQueryExecutor
     {
-        public string Name => "Buggy executor";
-
-        public string Description => "Executor which crashes";
-
-        public string ExampleUsage => "bug [execute|handle]";
-
         public int Order => 0;
 
         public bool TryHandle(QueryContext query)

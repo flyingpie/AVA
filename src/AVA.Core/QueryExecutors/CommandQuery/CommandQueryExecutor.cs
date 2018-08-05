@@ -8,12 +8,6 @@ namespace AVA.Core.QueryExecutors.CommandQuery
     {
         public abstract string[] CommandPrefixes { get; }
 
-        public abstract string Description { get; }
-
-        public abstract string Name { get; }
-
-        public abstract string ExampleUsage { get; }
-
         public virtual int Order => 0;
 
         public abstract void Draw();

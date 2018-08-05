@@ -1,4 +1,5 @@
-﻿using AVA.Core.QueryExecutors.ListQuery;
+﻿using AVA.Core.QueryExecutors;
+using AVA.Core.QueryExecutors.ListQuery;
 using MUI;
 using MUI.DI;
 using MUI.Win32;
@@ -10,15 +11,10 @@ using WindowsControlPanelItems;
 
 namespace AVA.Plugins.ControlPanel
 {
+    [Help(Name = "Control panel", Description = "Search through and opens control panel items", ExampleUsage = "cp network")]
     public class ControlPanelQueryExecutor : ListQueryExecutor
     {
         [Dependency] public ResourceManager ResourceManager { get; set; }
-
-        public override string Name => "Control panel";
-
-        public override string Description => "Search through and opens control panel items";
-
-        public override string ExampleUsage => "cp network";
 
         public override int Order => 0;
 
@@ -29,7 +25,7 @@ namespace AVA.Plugins.ControlPanel
         [RunAfterInject]
         public void Init()
         {
-            _items = List.Create(32);
+            _items = ControlPanelShortcuts.Create(32);
         }
 
         public override IEnumerable<IListQueryResult> GetQueryResults(string term)

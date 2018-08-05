@@ -1,4 +1,5 @@
-﻿using AVA.Core.QueryExecutors.ListQuery;
+﻿using AVA.Core.QueryExecutors;
+using AVA.Core.QueryExecutors.ListQuery;
 using AVA.Indexing;
 using MUI;
 using MUI.DI;
@@ -6,17 +7,12 @@ using System.Collections.Generic;
 
 namespace AVA.Plugins.Settings
 {
+    [Help(Name = "Settings", Description = "Shows the settings set", ExampleUsage = "ava")]
     public class SettingsListQueryExecutor : ListQueryExecutor
     {
         [Dependency] public Indexer Indexer { get; set; }
 
         [Dependency] public ResourceManager ResourceManager { get; set; }
-
-        public override string Name => "Settings";
-
-        public override string Description => "Shows the settings set";
-
-        public override string ExampleUsage => Prefix;
 
         public override string Prefix => "ava";
 

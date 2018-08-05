@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace AVA.Plugins.Calculator
 {
-    [Service]
+    [Service, Help(Name = "Calculator", Description = "1 + 1 = 11", ExampleUsage = "1 + 1")]
     public class CalculatorQueryExecutor : IQueryExecutor
     {
         [Dependency] public UIContext UI { get; set; }

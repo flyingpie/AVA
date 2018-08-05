@@ -1,24 +1,16 @@
-﻿using ImGuiNET;
-using AVA.Core;
+﻿using AVA.Core;
 using AVA.Core.QueryExecutors;
+using ImGuiNET;
 using MUI.DI;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace AVA.Plugins.Uri
 {
-    // TODO: Make QueryExecutor abstract class with Service attr
     // TODO: Rename Service to something like Export or Injectable or Dependable
-    [Service]
+    [Service, Help(Name = "Uri", Description = "Opens uri-like queries", ExampleUsage = "reddit.com")]
     public class UriQueryExecutor : IQueryExecutor
     {
-        // TODO: Use attributes for these?
-        public string Name => "Uri";
-
-        public string Description => "Opens uri-like queries";
-
-        public string ExampleUsage => "reddit.com";
-
         public int Order => 0;
 
         private string _url;

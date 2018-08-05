@@ -1,36 +1,28 @@
-﻿using AVA.Core.QueryExecutors.ListQuery;
+﻿using AVA.Core.QueryExecutors;
+using AVA.Core.QueryExecutors.ListQuery;
 using MUI;
 using MUI.DI;
-using MUI.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AVA.Plugins.EnvVars
 {
+    [Help(Name = "Environment variables", Description = "List and filters through environment variables", ExampleUsage = "env path")]
     public class EnvironmentVariablesQueryExecutor : ListQueryExecutor
     {
         [Dependency]
-        private ResourceManager ResourceManager { get; set; }
-
-        public override string Name => "Environment variables";
-
-        public override string Description => "List and filters through environment variables";
-
-        public override string ExampleUsage => "env path";
-
-        private List<EnvironmentVariable> _vars;
-        private Image _icon;
+        public ResourceManager ResourceManager { get; set; }
 
         public override int Order => 0;
 
         public override string Prefix => "env ";
 
+        private List<EnvironmentVariable> _vars;
+
         [RunAfterInject]
         private void Init()
         {
-            _icon = ResourceManager.LoadImage(@"Resources\Images\crashlog-doom.png");
-
             // Load environment variables
             _vars = new List<EnvironmentVariable>();
 
@@ -63,8 +55,7 @@ namespace AVA.Plugins.EnvVars
                 .Select(env => (IListQueryResult)new ListQueryResult()
                 {
                     Name = $"{env.Scope} - {env.Name}",
-                    Description = env.Value,
-                    Icon = _icon
+                    Description = env.Value
                 });
         }
 

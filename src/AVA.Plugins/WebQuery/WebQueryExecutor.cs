@@ -1,4 +1,5 @@
 ﻿using AVA.Core;
+using AVA.Core.QueryExecutors;
 using AVA.Core.QueryExecutors.CommandQuery;
 using ImGuiNET;
 using MUI;
@@ -13,6 +14,7 @@ using System.Numerics;
 
 namespace AVA.Plugins.WebQuery
 {
+    [Help(Name = "Web queries", Description = "Search sites and open urls", ExampleUsage = "ddg <Duck Duck Go Search Term>")]
     public class WebQueryExecutor : CommandQueryExecutor
     {
         [Dependency] public ResourceManager ResourceManager { get; set; }
@@ -20,12 +22,6 @@ namespace AVA.Plugins.WebQuery
         [Dependency] public UIContext UI { get; set; }
 
         public static int IconWidth = 140;
-
-        public override string Description => "Search sites and open urls";
-
-        public override string Name => "Web queries";
-
-        public override string ExampleUsage => "ddg <Duck Duck Go Search Term>";
 
         public override string[] CommandPrefixes => _commands.Select(c => c.Prefix).ToArray();
 

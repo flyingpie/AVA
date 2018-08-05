@@ -2,19 +2,15 @@
 using AVA.Core;
 using AVA.Core.QueryExecutors.CommandQuery;
 using System.Diagnostics;
+using AVA.Core.QueryExecutors;
 
 namespace AVA.Plugins.Hosts
 {
+    [Help(Name = "Hosts", Description = "Opens the local hosts file", ExampleUsage = "hosts")]
     public class HostsCommandQueryExecutor : CommandQueryExecutor
     {
         public override string[] CommandPrefixes => new[] { "hosts" };
-
-        public override string Description => "Opens the local hosts file";
-
-        public override string Name => "Hosts";
-
-        public override string ExampleUsage => CommandPrefixes[0];
-
+        
         public override bool TryExecute(QueryContext query)
         {
             Process.Start(new ProcessStartInfo()
@@ -22,7 +18,7 @@ namespace AVA.Plugins.Hosts
                 FileName = "notepad",
                 Arguments = @"C:\Windows\System32\drivers\etc\hosts",
                 Verb = "RunAs"
-            });
+            }).Dispose();
 
             return true;
         }

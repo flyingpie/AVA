@@ -4,7 +4,6 @@ using MUI.DI;
 using MUI.Graphics;
 using MUI.Logging;
 using MUI.Win32.Extensions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -13,12 +12,6 @@ namespace AVA.Plugins.Dummy
     public class DummyQueryExecutor : ListQueryExecutor
     {
         [Dependency] public ResourceManager ResourceManager { get; set; }
-
-        public override string Name => "Dummy";
-
-        public override string Description => "Test plugin";
-
-        public override string ExampleUsage => Prefix;
 
         public override string Prefix => "dummy ";
 

@@ -9,12 +9,6 @@ namespace AVA.Core.QueryExecutors.ListQuery
     [Service]
     public abstract class ListQueryExecutor : IAsyncQueryExecutor
     {
-        public abstract string Description { get; }
-
-        public abstract string Name { get; }
-
-        public abstract string ExampleUsage { get; }
-
         public IList<IListQueryResult> QueryResults { get; set; }
 
         public int SelectedItemIndex { get; set; }

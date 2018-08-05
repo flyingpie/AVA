@@ -1,4 +1,5 @@
-﻿using AVA.Core.QueryExecutors.ListQuery;
+﻿using AVA.Core.QueryExecutors;
+using AVA.Core.QueryExecutors.ListQuery;
 using MUI.DI;
 using System;
 using System.Collections.Generic;
@@ -6,14 +7,9 @@ using System.Linq;
 
 namespace AVA.Plugins.Time
 {
+    [Help(Name = "Time", Description = "Lists times around the world", ExampleUsage = "time")]
     public class TimeQueryExecutor : ListQueryExecutor
     {
-        public override string Name => "Time";
-
-        public override string Description => "Lists times around the world";
-
-        public override string ExampleUsage => Prefix;
-
         public override int Order => 0;
 
         public override string Prefix => "time";
