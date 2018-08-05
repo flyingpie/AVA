@@ -21,6 +21,7 @@
         <Reference Include="ImGui.NET.FNA">
             <HintPath>..\..\deps\ImGui.NET.FNA.dll</HintPath>
         </Reference>
+        <Reference Include="System.Net.Http" />
     </ItemGroup>
 
 </Project>

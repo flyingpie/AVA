@@ -94,6 +94,8 @@ namespace AVA
 
                     if (_queryContext.ResetText) _queryContext.Reset();
                 }
+
+                _queryBox.Focus();
             }
         }
 
@@ -158,6 +160,7 @@ namespace AVA
             Context.IsVisible = true;
 
             Context.Focus();
+            _queryBox.Focus();
         }
 
         private void Minimize()

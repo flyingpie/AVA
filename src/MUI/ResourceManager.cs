@@ -2,9 +2,11 @@
 using ImGuiNET.FNA;
 using Microsoft.Xna.Framework.Graphics;
 using MUI.Graphics;
+using MUI.Logging;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Net.Http;
 
 namespace MUI
 {
@@ -20,8 +22,12 @@ namespace MUI
         private GraphicsDevice _graphicsDevice;
         private ImGuiRenderer _imGuiRenderer;
 
+        private ILog _log;
+
         public ResourceManager(GraphicsDevice graphicsDevice, ImGuiRenderer imGuiRenderer)
         {
+            _log = Log.Get(this);
+
             _loadedImages = new ConcurrentDictionary<string, Image>();
             _textureLoader = new TextureLoader(graphicsDevice, imGuiRenderer);
 
@@ -45,6 +51,26 @@ namespace MUI
             _imGuiRenderer.RebuildFontAtlas();
 
             return font;
+        }
+
+        public Image LoadImageFromUri(Uri uri)
+        {
+            return LoadImage(uri.ToString(), loader =>
+            {
+                try
+                {
+                    var response = new HttpClient().GetAsync(uri).Result;
+                    var data = response.Content.ReadAsByteArrayAsync().Result;
+
+                    return loader.Load(data);
+                }
+                catch (Exception ex)
+                {
+                    _log.Error($"Could not load image from url '{uri}': '{ex.Message}'");
+                }
+
+                return DefaultImage;
+            });
         }
 
         // TODO: Add size cap

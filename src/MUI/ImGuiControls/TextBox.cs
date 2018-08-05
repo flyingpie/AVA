@@ -11,6 +11,8 @@ namespace MUI.ImGuiControls
         private bool _reset = false;
         private int _id;
 
+        private bool _focus;
+
         public string Id { get; set; } = Guid.NewGuid().ToString();
 
         public bool IsChanged { get; private set; }
@@ -28,6 +30,11 @@ namespace MUI.ImGuiControls
 
                 IsChanged = true;
             }
+        }
+
+        public void Focus()
+        {
+            _focus = true;
         }
 
         public void ResetChanged()
@@ -55,7 +62,11 @@ namespace MUI.ImGuiControls
                     return 0;
                 }));
 
-                if (!ImGui.IsAnyItemActive()) ImGui.SetKeyboardFocusHere();
+                if (_focus)
+                {
+                    ImGui.SetKeyboardFocusHere();
+                    _focus = false;
+                }
             }
 
             var term = _termBuffer.BufferToString();

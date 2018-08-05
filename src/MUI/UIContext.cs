@@ -14,6 +14,8 @@ namespace MUI
     {
         public ResourceManager ResourceManager { get; set; }
 
+        public SpriteBatch SpriteBatch { get; private set; }
+
         public event EventHandler FocusGained = delegate { };
 
         public event EventHandler FocusLost = delegate { };
@@ -50,6 +52,8 @@ namespace MUI
             _graphics.PreferredBackBufferWidth = width;
             _graphics.PreferredBackBufferHeight = height;
             _graphics.PreferMultiSampling = true;
+
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
 
             _imGuiRenderer = new ImGuiRenderer(GraphicsDevice);
 
@@ -106,6 +110,8 @@ namespace MUI
 
         protected override void Update(GameTime gameTime)
         {
+            Input.InputSnapshot.Update();
+
             if (IsActive && !_wasActive) FocusGained(this, EventArgs.Empty);
             if (!IsActive && _wasActive) FocusLost(this, EventArgs.Empty);
 
@@ -129,13 +135,15 @@ namespace MUI
 
         protected override void Draw(GameTime gameTime)
         {
-            Input.InputSnapshot.Update();
-
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            SpriteBatch.Begin();
 
             _imGuiRenderer.BeforeLayout(gameTime);
 
             _ui.Draw();
+
+            SpriteBatch.End();
 
             _imGuiRenderer.AfterLayout();
 
