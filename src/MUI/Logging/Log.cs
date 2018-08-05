@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Concurrent;
 
 namespace MUI.Logging
 {
     public static class Log
     {
-        public static Func<string, ILog> Factory { get; set; } = category => new FileLogger(category); //new ConsoleLogger(category);
+        private static ConcurrentDictionary<string, ILog> _loggerCache = new ConcurrentDictionary<string, ILog>();
+
+        public static Func<string, ILog> Factory { get; set; } = category => _loggerCache.GetOrAdd(category, c => new FileLogger(category));
 
         public static ILog Get(string category) => Factory(category);
 

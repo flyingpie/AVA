@@ -87,7 +87,11 @@ namespace MUI
 
         public Image LoadImage(string cacheKey, Func<TextureLoader, Image> factory)
         {
-            return _loadedImages.GetOrAdd(cacheKey, key => factory(_textureLoader));
+            var image = _loadedImages.GetOrAdd(cacheKey, key => factory(_textureLoader));
+
+            image.Initialize();
+
+            return image;
         }
     }
 }

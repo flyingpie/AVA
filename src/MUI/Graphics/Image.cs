@@ -18,6 +18,10 @@ namespace MUI.Graphics
             Pointer = texture;
         }
 
+        public virtual void Initialize()
+        {
+        }
+
         public virtual void Draw(Vector2 size, Vector4 tintColor, Vector4 borderColor)
         {
             ImGui.Image(Pointer, size, Vector2.Zero, Vector2.One, tintColor, borderColor);
