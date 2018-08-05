@@ -330,8 +330,8 @@ namespace MUI.ImGuiEx
                         _graphicsDevice.DrawIndexedPrimitives(
                             primitiveType: PrimitiveType.TriangleList,
                             baseVertex: vtxOffset,
-                            minVertexIndex: vtxOffset,
-                            numVertices: (int)(drawCmd->ElemCount / 3),
+                            minVertexIndex: 0,
+                            numVertices: cmdList->VtxBuffer.Size,
                             startIndex: idxOffset,
                             primitiveCount: (int)drawCmd->ElemCount / 3
                         );
