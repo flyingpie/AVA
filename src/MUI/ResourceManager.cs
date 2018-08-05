@@ -38,7 +38,7 @@ namespace MUI
         public void Init()
         {
             // TODO: Move this
-            DefaultImage = LoadImage(@"Resources\Images\default-image.png");
+            DefaultImage = LoadImage("Resources/Images/default-image.png");
             LoadingImage = new AnimatedImage(LoadImage("Resources/Images/loading-image.png"), 9, 5, 40, Direction.TopToBottom, 5);
 
             var x = 2;
@@ -53,24 +53,15 @@ namespace MUI
             return font;
         }
 
-        public Image LoadImageFromUri(Uri uri)
+        public Image LoadImageFromUrl(string url)
         {
-            return LoadImage(uri.ToString(), loader =>
+            return LoadImage(url, loader => new LazyImage(DefaultImage, () =>
             {
-                try
-                {
-                    var response = new HttpClient().GetAsync(uri).Result;
-                    var data = response.Content.ReadAsByteArrayAsync().Result;
+                var response = new HttpClient().GetAsync(url).Result;
+                var data = response.Content.ReadAsByteArrayAsync().Result;
 
-                    return loader.Load(data);
-                }
-                catch (Exception ex)
-                {
-                    _log.Error($"Could not load image from url '{uri}': '{ex.Message}'");
-                }
-
-                return DefaultImage;
-            });
+                return loader.Load(data);
+            }));
         }
 
         // TODO: Add size cap

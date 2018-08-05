@@ -32,4 +32,10 @@
         </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="WebQuery\Resources\**\*">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

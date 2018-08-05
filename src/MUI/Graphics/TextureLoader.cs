@@ -16,13 +16,6 @@ namespace MUI.Graphics
             _imGuiRenderer = imGuiRenderer ?? throw new ArgumentNullException(nameof(imGuiRenderer));
         }
 
-        public Image Load(string path)
-        {
-            // TODO: Size cap
-
-            return Load(File.ReadAllBytes(path));
-        }
-
         public Image Load(byte[] bytes)
         {
             using (var stream = new MemoryStream(bytes))
@@ -30,7 +23,7 @@ namespace MUI.Graphics
                 var tex2d = Texture2D.FromStream(_graphicsDevice, stream);
                 var pointer = _imGuiRenderer.BindTexture(tex2d);
 
-                return new Image(pointer);
+                return new Image(pointer, tex2d.Width, tex2d.Height);
             }
         }
     }

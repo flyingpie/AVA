@@ -8,14 +8,25 @@ namespace MUI.Graphics
     {
         public IntPtr Pointer { get; private set; }
 
+        public int Width { get; set; }
+
+        public int Height { get; set; }
+
+        public float Ratio { get; set; }
+
         public Image()
         { }
 
-        public Image(IntPtr texture)
+        public Image(IntPtr texture, int width, int height)
         {
             if (texture.ToInt32() == 0) throw new ArgumentOutOfRangeException(nameof(texture));
 
             Pointer = texture;
+
+            Width = width;
+            Height = height;
+
+            Ratio = (float)height / (float)width;
         }
 
         public virtual void Initialize()
