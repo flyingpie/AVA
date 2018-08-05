@@ -20,9 +20,6 @@
         <Reference Include="ImGui.NET">
             <HintPath>..\..\deps\ImGui.NET.dll</HintPath>
         </Reference>
-        <Reference Include="ImGui.NET.FNA">
-            <HintPath>..\..\deps\ImGui.NET.FNA.dll</HintPath>
-        </Reference>
     </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
-﻿using ImGuiNET.FNA;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MUI.Extensions;
+using MUI.ImGuiEx;
 using MUI.Logging;
 using SDL2;
 using System;
