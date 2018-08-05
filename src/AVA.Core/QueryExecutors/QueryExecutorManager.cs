@@ -1,5 +1,6 @@
 ﻿using MUI.DI;
 using MUI.Logging;
+using System;
 using System.Linq;
 
 namespace AVA.Core.QueryExecutors
@@ -22,7 +23,19 @@ namespace AVA.Core.QueryExecutors
 
         public bool TryHandle(QueryContext query)
         {
-            _activeQueryExecutor = QueryExecutors.FirstOrDefault(qe => qe.TryHandle(query));
+            _activeQueryExecutor = QueryExecutors.FirstOrDefault(qe =>
+            {
+                try
+                {
+                    return qe.TryHandle(query);
+                }
+                catch (Exception ex)
+                {
+                    _log.Error($"Error while calling 'TryHandle' on query executor '{qe}': '{ex.Message}'");
+                }
+
+                return false;
+            });
 
             _log.Info($"Term '{query}', selected query executor: {_activeQueryExecutor}");
 
@@ -31,7 +44,16 @@ namespace AVA.Core.QueryExecutors
 
         public bool TryExecute(QueryContext query)
         {
-            return _activeQueryExecutor?.TryExecute(query) ?? false;
+            try
+            {
+                return _activeQueryExecutor?.TryExecute(query) ?? false;
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"Error while calling 'TryExecute' on query executor '{_activeQueryExecutor}': '{ex.Message}'");
+            }
+
+            return false;
         }
 
         public void Draw()

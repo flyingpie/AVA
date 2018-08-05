@@ -18,7 +18,7 @@ namespace AVA.Plugins.Dummy
 
         public override string Description => "Test plugin";
 
-        public override string ExampleUsage => "dummy ";
+        public override string ExampleUsage => Prefix;
 
         public override string Prefix => "dummy ";
 
