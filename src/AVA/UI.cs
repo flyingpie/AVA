@@ -81,6 +81,22 @@ namespace AVA
             ImGui.EndWindow();
         }
 
+        public override async Task Update()
+        {
+            // Execute when ENTER was pressed
+            if (Input.IsKeyPressed(Keys.Enter))
+            {
+                _log.Info($"ENTER");
+
+                if (await QueryExecutorManager.TryExecuteAsync(_queryContext))
+                {
+                    if (_queryContext.HideUI) Minimize();
+
+                    if (_queryContext.ResetText) _queryContext.Reset();
+                }
+            }
+        }
+
         private void DrawSearchBar()
         {
             ImGui.PushFont(Fonts.Regular32);
@@ -92,19 +108,6 @@ namespace AVA
             }
 
             _queryBox.Draw();
-
-            // Execute when ENTER was pressed
-            if (Input.IsKeyPressed(Keys.Enter))
-            {
-                _log.Info($"ENTER");
-
-                if (QueryExecutorManager.TryExecute(_queryContext))
-                {
-                    if (_queryContext.HideUI) Minimize();
-
-                    if (_queryContext.ResetText) _queryContext.Reset();
-                }
-            }
 
             // Update the query context if the input buffer was changed
             if (_queryBox.IsChanged)

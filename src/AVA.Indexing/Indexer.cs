@@ -11,6 +11,7 @@ using MUI.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Diag = System.Diagnostics;
 
 namespace AVA.Indexing
@@ -79,63 +80,66 @@ namespace AVA.Indexing
             _log.Info($"Closed index in {sw.Elapsed}");
         }
 
-        public void Rebuild()
+        public Task RebuildAsync()
         {
-            _log.Info("Rebuilding index...");
-
-            Close();
-
-            _directory.ListAll().ToList().ForEach(f => _directory.DeleteFile(f));
-
-            Open();
-
-            var sww = new Diag.Stopwatch();
-            sww.Start();
-
-            var folders = new[]
+            return Task.Run(() =>
             {
-                @"%ProgramData%\Microsoft\Windows\Start Menu\Programs",
-                @"%APPDATA%\Microsoft\Windows\Start Menu",
-                @"%NEXTCLOUD%"
-            }.Select(f => Environment.ExpandEnvironmentVariables(f)).ToList();
+                _log.Info("Rebuilding index...");
 
-            var files = folders.GetFilesRecursive();
+                Close();
 
-            foreach (var path in files)
-            {
-                var filename = System.IO.Path.GetFileName(path);
+                _directory.ListAll().ToList().ForEach(f => _directory.DeleteFile(f));
 
-                var fileName_l = System.IO.Path.GetFileName(path).ToLowerInvariant();
-                var fileNameNoExt_l = System.IO.Path.GetFileNameWithoutExtension(fileName_l).ToLowerInvariant();
-                var ext_l = System.IO.Path.GetExtension(fileName_l).ToLowerInvariant();
+                Open();
 
-                var doc = new Document();
+                var sww = new Diag.Stopwatch();
+                sww.Start();
 
-                doc.AddStringField("filename", filename, Field.Store.YES);
+                var folders = new[]
+                {
+                    @"%ProgramData%\Microsoft\Windows\Start Menu\Programs",
+                    @"%APPDATA%\Microsoft\Windows\Start Menu",
+                    @"%NEXTCLOUD%"
+                }.Select(f => Environment.ExpandEnvironmentVariables(f)).ToList();
 
-                doc.AddTextField("filename_l", fileName_l, Field.Store.YES);
-                doc.AddStringField("filename_l.keyword", fileName_l, Field.Store.YES);
+                var files = folders.GetFilesRecursive();
 
-                doc.AddTextField("filename_l_no-ext", fileNameNoExt_l, Field.Store.YES);
-                doc.AddStringField("filename_l_no-ext.keyword", fileNameNoExt_l, Field.Store.YES);
+                foreach (var path in files)
+                {
+                    var filename = System.IO.Path.GetFileName(path);
 
-                doc.AddTextField("path", path, Field.Store.YES);
-                doc.AddStringField("path.keyword", path, Field.Store.YES);
+                    var fileName_l = System.IO.Path.GetFileName(path).ToLowerInvariant();
+                    var fileNameNoExt_l = System.IO.Path.GetFileNameWithoutExtension(fileName_l).ToLowerInvariant();
+                    var ext_l = System.IO.Path.GetExtension(fileName_l).ToLowerInvariant();
 
-                doc.AddStringField("ext_l", ext_l, Field.Store.YES);
+                    var doc = new Document();
 
-                _indexWriter.AddDocument(doc);
-            }
+                    doc.AddStringField("filename", filename, Field.Store.YES);
 
-            _indexWriter.Commit();
-            _indexWriter.Flush(true, true);
+                    doc.AddTextField("filename_l", fileName_l, Field.Store.YES);
+                    doc.AddStringField("filename_l.keyword", fileName_l, Field.Store.YES);
 
-            Close();
-            Open();
+                    doc.AddTextField("filename_l_no-ext", fileNameNoExt_l, Field.Store.YES);
+                    doc.AddStringField("filename_l_no-ext.keyword", fileNameNoExt_l, Field.Store.YES);
 
-            sww.Stop();
+                    doc.AddTextField("path", path, Field.Store.YES);
+                    doc.AddStringField("path.keyword", path, Field.Store.YES);
 
-            _log.Info($"Indexed {files.Count} documents in {sww.Elapsed}");
+                    doc.AddStringField("ext_l", ext_l, Field.Store.YES);
+
+                    _indexWriter.AddDocument(doc);
+                }
+
+                _indexWriter.Commit();
+                _indexWriter.Flush(true, true);
+
+                Close();
+                Open();
+
+                sww.Stop();
+
+                _log.Info($"Indexed {files.Count} documents in {sww.Elapsed}");
+            });
         }
 
         public void SearchRepl()

@@ -1,5 +1,6 @@
 ﻿using MUI.Logging;
 using System;
+using System.Numerics;
 using System.Threading.Tasks;
 
 namespace MUI.Graphics
@@ -7,7 +8,6 @@ namespace MUI.Graphics
     public class LazyImage : Image
     {
         private Image _image;
-
         private Task _asc;
 
         private ILog _log;
@@ -32,6 +32,9 @@ namespace MUI.Graphics
             });
         }
 
-        public override IntPtr GetTexture() => _image.GetTexture();
+        public override void Draw(Vector2 size, Vector4 tintColor, Vector4 borderColor)
+        {
+            _image.Draw(size, tintColor, borderColor);
+        }
     }
 }

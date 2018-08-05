@@ -3,6 +3,7 @@ using MUI;
 using MUI.Graphics;
 using System;
 using System.Numerics;
+using System.Threading.Tasks;
 
 namespace AVA.Core.QueryExecutors.ListQuery
 {
@@ -17,6 +18,8 @@ namespace AVA.Core.QueryExecutors.ListQuery
         public Image Icon { get; set; }
 
         public Action<QueryContext> OnExecute { get; set; }
+
+        public Func<QueryContext, Task> OnExecuteAsync { get; set; }
 
         private static readonly int Height = 50;
 
@@ -35,12 +38,7 @@ namespace AVA.Core.QueryExecutors.ListQuery
 
                 // Icon
                 {
-                    var texture = Icon?.GetTexture();
-                    if (texture != null)
-                    {
-                        var size = Height - 2;
-                        ImGui.Image(texture.Value, new Vector2(size, size), Vector2.Zero, Vector2.One, Vector4.One, new Vector4(1, 1, 1, .6f));
-                    }
+                    Icon?.Draw(new Vector2(Height - 2, Height - 2), Vector4.One, new Vector4(1, 1, 1, .6f));
                 }
 
                 ImGui.NextColumn();
@@ -65,9 +63,19 @@ namespace AVA.Core.QueryExecutors.ListQuery
             if (isSelected) ImGui.SetScrollHere();
         }
 
-        public void Execute(QueryContext query)
+        public Task ExecuteAsync(QueryContext query)
         {
-            OnExecute?.Invoke(query);
+            if (OnExecute != null)
+            {
+                OnExecute?.Invoke(query);
+            }
+
+            if (OnExecuteAsync != null)
+            {
+                return OnExecuteAsync?.Invoke(query) ?? Task.CompletedTask;
+            }
+
+            return Task.CompletedTask;
         }
     }
 }

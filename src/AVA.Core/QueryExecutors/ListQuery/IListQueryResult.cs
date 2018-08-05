@@ -1,4 +1,4 @@
-﻿using MUI;
+﻿using System.Threading.Tasks;
 
 namespace AVA.Core.QueryExecutors.ListQuery
 {
@@ -6,6 +6,6 @@ namespace AVA.Core.QueryExecutors.ListQuery
     {
         void Draw(bool isSelected);
 
-        void Execute(QueryContext query);
+        Task ExecuteAsync(QueryContext query);
     }
 }

@@ -6,6 +6,7 @@ using MUI.Logging;
 using SDL2;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace MUI
 {
@@ -101,6 +102,8 @@ namespace MUI
             base.UnloadContent();
         }
 
+        private Task _updateTask;
+
         protected override void Update(GameTime gameTime)
         {
             if (IsActive && !_wasActive) FocusGained(this, EventArgs.Empty);
@@ -114,6 +117,12 @@ namespace MUI
             }
 
             _wasActive = IsActive;
+
+            if (_updateTask?.IsCompleted ?? false)
+                _updateTask = null;
+
+            if (_updateTask == null)
+                _updateTask = _ui.Update();
 
             base.Update(gameTime);
         }

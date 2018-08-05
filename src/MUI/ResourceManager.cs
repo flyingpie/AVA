@@ -12,6 +12,8 @@ namespace MUI
     {
         public Image DefaultImage { get; private set; }
 
+        public Image LoadingImage { get; private set; }
+
         private ConcurrentDictionary<string, Image> _loadedImages;
         private TextureLoader _textureLoader;
 
@@ -30,7 +32,10 @@ namespace MUI
         public void Init()
         {
             // TODO: Move this
-            DefaultImage = LoadImage(@"Resources\Images\crashlog-doom.png");
+            DefaultImage = LoadImage(@"Resources\Images\default-image.png");
+            LoadingImage = new AnimatedImage(LoadImage("Resources/Images/loading-image.png"), 9, 5, 40, Direction.TopToBottom, 5);
+
+            var x = 2;
         }
 
         public Font LoadFont(string path, int pixelSize)

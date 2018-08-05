@@ -2,11 +2,12 @@
 using MUI.DI;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AVA.Core.QueryExecutors.ListQuery
 {
     [Service]
-    public abstract class ListQueryExecutor : IQueryExecutor
+    public abstract class ListQueryExecutor : IAsyncQueryExecutor
     {
         public abstract string Description { get; }
 
@@ -66,11 +67,11 @@ namespace AVA.Core.QueryExecutors.ListQuery
             return QueryResults.Any();
         }
 
-        public virtual bool TryExecute(QueryContext query)
+        public virtual async Task<bool> TryExecuteAsync(QueryContext query)
         {
             if (IsSelectable && QueryResults.Count > SelectedItemIndex)
             {
-                QueryResults[SelectedItemIndex].Execute(query);
+                await QueryResults[SelectedItemIndex].ExecuteAsync(query);
 
                 return true;
             }

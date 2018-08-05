@@ -1,7 +1,9 @@
 ﻿using MUI.DI;
 using MUI.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AVA.Core.QueryExecutors
 {
@@ -10,20 +12,27 @@ namespace AVA.Core.QueryExecutors
     {
         [Dependency] public IQueryExecutor[] QueryExecutors { get; set; }
 
+        [Dependency] public IAsyncQueryExecutor[] AsyncQueryExecutors { get; set; }
+
         private ILog _log;
-        private IQueryExecutor _activeQueryExecutor;
+        private List<IAsyncQueryExecutor> _queryExecutors;
+        private IAsyncQueryExecutor _activeQueryExecutor;
 
         [RunAfterInject]
         private void Init()
         {
             _log = Log.Get(this);
 
-            QueryExecutors = QueryExecutors.OrderBy(qe => qe.Order).ToArray();
+            _queryExecutors = new List<IAsyncQueryExecutor>();
+            _queryExecutors.AddRange(QueryExecutors.Select(qe => new SynchronousQueryExecutor(qe)));
+            _queryExecutors.AddRange(AsyncQueryExecutors);
+
+            _queryExecutors = _queryExecutors.OrderBy(qe => qe.Order).ToList();
         }
 
         public bool TryHandle(QueryContext query)
         {
-            _activeQueryExecutor = QueryExecutors.FirstOrDefault(qe =>
+            _activeQueryExecutor = _queryExecutors.FirstOrDefault(qe =>
             {
                 try
                 {
@@ -42,18 +51,18 @@ namespace AVA.Core.QueryExecutors
             return _activeQueryExecutor != null;
         }
 
-        public bool TryExecute(QueryContext query)
+        public Task<bool> TryExecuteAsync(QueryContext query)
         {
             try
             {
-                return _activeQueryExecutor?.TryExecute(query) ?? false;
+                return _activeQueryExecutor?.TryExecuteAsync(query) ?? Task.FromResult(false);
             }
             catch (Exception ex)
             {
                 _log.Error($"Error while calling 'TryExecute' on query executor '{_activeQueryExecutor}': '{ex.Message}'");
             }
 
-            return false;
+            return Task.FromResult(false);
         }
 
         public void Draw()

@@ -1,4 +1,6 @@
-﻿namespace AVA.Core.QueryExecutors
+﻿using System.Threading.Tasks;
+
+namespace AVA.Core.QueryExecutors
 {
     public interface IQueryExecutorManager
     {
@@ -6,6 +8,6 @@
 
         bool TryHandle(QueryContext query);
 
-        bool TryExecute(QueryContext query);
+        Task<bool> TryExecuteAsync(QueryContext query);
     }
 }
