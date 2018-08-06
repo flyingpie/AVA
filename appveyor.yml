@@ -23,4 +23,6 @@ deploy:
     release: preview
     description: 'Preview release'
     prerelease: true
+    on:
+      branch: master
     auth_token: $(github_api_key)
