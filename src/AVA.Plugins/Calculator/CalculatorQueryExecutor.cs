@@ -11,14 +11,6 @@ namespace AVA.Plugins.Calculator
     [Service, Help(Name = "Calculator", Description = "1 + 1 = 11", ExampleUsage = "1 + 1")]
     public class CalculatorQueryExecutor : IQueryExecutor
     {
-        [Dependency] public UIContext UI { get; set; }
-
-        public string Name => "Calculator";
-
-        public string Description => "1 + 1 = 11";
-
-        public string ExampleUsage => "1 + 1";
-
         public int Order => 0;
 
         private string _expression;

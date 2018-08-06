@@ -22,7 +22,7 @@ namespace MUI.Graphics
             if (texture.ToInt32() == 0) throw new ArgumentOutOfRangeException(nameof(texture));
 
             Pointer = texture;
-
+            
             Width = width;
             Height = height;
 

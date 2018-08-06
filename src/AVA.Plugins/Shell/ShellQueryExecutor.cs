@@ -10,16 +10,9 @@ namespace AVA.Plugins.Shell
     [Service, Help(Name = "Shell", Description = "Execute shell commands", ExampleUsage = ">ipconfig")]
     public class ShellQueryExecutor : IQueryExecutor
     {
-        [Dependency] public UIContext UIContext { get; set; }
-
         public int Order => 0;
 
-        public bool TryHandle(QueryContext query)
-        {
-            if (query.IsEmpty) return false;
-
-            return query.Text.StartsWith(">");
-        }
+        public bool TryHandle(QueryContext query) => query.Text?.StartsWith(">") ?? false;
 
         public bool TryExecute(QueryContext query)
         {

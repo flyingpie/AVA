@@ -40,8 +40,6 @@ namespace MUI
             // TODO: Move this
             DefaultImage = LoadImage("Resources/Images/default-image.png");
             LoadingImage = new AnimatedImage(LoadImage("Resources/Images/loading-image.png"), 9, 5, 40, Direction.TopToBottom, 5);
-
-            var x = 2;
         }
 
         public Font LoadFont(string path, int pixelSize)

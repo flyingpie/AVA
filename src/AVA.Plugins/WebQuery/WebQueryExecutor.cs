@@ -19,8 +19,6 @@ namespace AVA.Plugins.WebQuery
     {
         [Dependency] public ResourceManager ResourceManager { get; set; }
 
-        [Dependency] public UIContext UI { get; set; }
-
         public static int IconWidth = 140;
 
         public override string[] CommandPrefixes => _commands.Select(c => c.Prefix).ToArray();

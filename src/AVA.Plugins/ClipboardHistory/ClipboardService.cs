@@ -37,9 +37,6 @@ namespace AVA.Plugins.ClipboardHistory
 
         public void Restore(ClipboardData data)
         {
-            //History.Remove(data);
-            //History.Insert(0, data);
-
             _log.Info("RESTORE");
             data.Restore();
             _log.Info("/RESTORE");

@@ -25,7 +25,7 @@ namespace AVA.Plugins.ControlPanel
         [RunAfterInject]
         public void Init()
         {
-            _items = ControlPanelShortcuts.Create(32);
+            _items = ControlPanelItemList.Create(32);
         }
 
         public override IEnumerable<IListQueryResult> GetQueryResults(string term)

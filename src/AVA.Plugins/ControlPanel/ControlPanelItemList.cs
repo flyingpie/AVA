@@ -8,7 +8,7 @@ using System.Text;
 
 namespace WindowsControlPanelItems
 {
-    public static class ControlPanelShortcuts
+    public static class ControlPanelItemList
     {
         private const uint GROUP_ICON = 14;
         private const uint LOAD_LIBRARY_AS_DATAFILE = 0x00000002;
