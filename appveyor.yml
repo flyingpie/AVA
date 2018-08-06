@@ -1,5 +1,26 @@
 version: 1.0.{build}
 image: Visual Studio 2017
+
+environment:
+  github_api_key:
+    secure: RjUbayQHQ/RGzeWZw6OKEgd/zouv2z5gdRbE1mlQsTy67IyGosF73A46sTUCOEl8
+
 build_script:
 - cmd: PowerShell -Version 2.0 .\build.ps1
 test: off
+
+artifacts:
+  - path: bin\AVA
+    name: AVA
+
+deploy:
+    # Master branch (preview)
+    # Portable
+  - provider: GitHub
+    tag: preview
+    artifact: /.AVA\.zip/
+    draft: false
+    release: preview
+    description: 'Preview release'
+    prerelease: true
+    auth_token: $(github_api_key)
