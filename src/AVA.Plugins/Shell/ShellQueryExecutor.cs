@@ -20,14 +20,6 @@ namespace AVA.Plugins.Shell
             if (term.Length <= 1) return false;
 
             var cmd = term.Substring(1);
-            var args = "";
-
-            var space = cmd.IndexOf(' ');
-            if (space > 0)
-            {
-                args = cmd.Substring(space).Trim();
-                cmd = cmd.Substring(0, space).Trim();
-            }
 
             var startInfo = new ProcessStartInfo()
             {
