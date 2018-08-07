@@ -31,8 +31,8 @@ namespace AVA.Plugins.Shell
 
             var startInfo = new ProcessStartInfo()
             {
-                FileName = cmd,
-                Arguments = args
+                FileName = "cmd.exe",
+                Arguments = $"/c \"{cmd}\" & pause"
             };
 
             if (Input.IsKeyDown(Keys.LeftControl))
