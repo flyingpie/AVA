@@ -33,6 +33,10 @@ Task("Default").Does(() =>
         ToolPath = vsTest
     });
 
+    // CLEANUP //
+    DeleteFiles($"{output}/AVA/*.pdb");
+    DeleteFiles($"{output}/AVA/*.winmd");
+    DeleteFiles($"{output}/AVA/*.xml");
 });
 
 RunTarget("Default");

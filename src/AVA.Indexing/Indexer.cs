@@ -8,7 +8,9 @@ using Lucene.Net.Store;
 using Lucene.Net.Util;
 using MUI.DI;
 using MUI.Logging;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,6 +22,8 @@ namespace AVA.Indexing
     public class Indexer
     {
         public static readonly LuceneVersion LuceneVersion = LuceneVersion.LUCENE_48;
+
+        [Dependency] public IIndexerSource[] IndexerSources { get; set; }
 
         private Directory _directory;
         private Analyzer _analyzer;
@@ -92,40 +96,30 @@ namespace AVA.Indexing
 
                 Open();
 
-                var sww = new Diag.Stopwatch();
-                sww.Start();
+                var sw = new Diag.Stopwatch();
+                sw.Start();
 
-                var folders = new[]
+                var count = 0;
+                foreach (var item in IndexerSources.SelectMany(s => s.GetItems()))
                 {
-                    @"%ProgramData%\Microsoft\Windows\Start Menu\Programs",
-                    @"%APPDATA%\Microsoft\Windows\Start Menu",
-                    @"%NEXTCLOUD%"
-                }.Select(f => Environment.ExpandEnvironmentVariables(f)).ToList();
-
-                var files = folders.GetFilesRecursive();
-
-                foreach (var path in files)
-                {
-                    var filename = System.IO.Path.GetFileName(path);
-
-                    var fileName_l = System.IO.Path.GetFileName(path).ToLowerInvariant();
-                    var fileNameNoExt_l = System.IO.Path.GetFileNameWithoutExtension(fileName_l).ToLowerInvariant();
-                    var ext_l = System.IO.Path.GetExtension(fileName_l).ToLowerInvariant();
+                    count++;
 
                     var doc = new Document();
 
-                    doc.AddStringField("filename", filename, Field.Store.YES);
+                    var name = item.Name.ToLowerInvariant();
+                    var ext = item.Extension?.ToLowerInvariant();
 
-                    doc.AddTextField("filename_l", fileName_l, Field.Store.YES);
-                    doc.AddStringField("filename_l.keyword", fileName_l, Field.Store.YES);
+                    var type = item.GetType().AssemblyQualifiedName;
+                    var obj = JsonConvert.SerializeObject(item);
 
-                    doc.AddTextField("filename_l_no-ext", fileNameNoExt_l, Field.Store.YES);
-                    doc.AddStringField("filename_l_no-ext.keyword", fileNameNoExt_l, Field.Store.YES);
+                    doc.AddTextField("name", name, Field.Store.YES);
+                    doc.AddStringField("name.keyword", name, Field.Store.YES);
 
-                    doc.AddTextField("path", path, Field.Store.YES);
-                    doc.AddStringField("path.keyword", path, Field.Store.YES);
+                    if (!string.IsNullOrWhiteSpace(ext))
+                        doc.AddStringField("ext", ext, Field.Store.YES);
 
-                    doc.AddStringField("ext_l", ext_l, Field.Store.YES);
+                    doc.AddStringField("obj_type", type, Field.Store.YES);
+                    doc.AddStringField("obj", obj, Field.Store.YES);
 
                     _indexWriter.AddDocument(doc);
                 }
@@ -136,141 +130,62 @@ namespace AVA.Indexing
                 Close();
                 Open();
 
-                sww.Stop();
+                sw.Stop();
 
-                _log.Info($"Indexed {files.Count} documents in {sww.Elapsed}");
+                _log.Info($"Indexed {count} documents in {sw.Elapsed}");
             });
         }
 
-        public void SearchRepl()
-        {
-            // Pry query
-            Query("conem");
-
-            var term = "blaz";
-
-            do
-            {
-                Console.Write("> ");
-                term = Console.ReadLine();
-                Console.Clear();
-                _log.Info($"Term: '{term}'");
-
-                var sw = new Diag.Stopwatch();
-                sw.Start();
-
-                var docs = Query(term);
-
-                sw.Stop();
-
-                foreach (var doc in docs)
-                {
-                    _log.Info($"{doc.ScoreDoc.Score} {doc.Document.Fields.First(f => f.Name == "path").GetStringValue()}");
-                }
-
-                _log.Info(sw.Elapsed.ToString());
-            }
-            while (!string.IsNullOrWhiteSpace(term));
-
-            Console.ReadLine();
-        }
-
-        public List<QS> Query(string term)
+        public List<IndexedItem> Query(string term)
         {
             // TODO: Can we use an analyzer for this?
             term = term.ToLowerInvariant();
 
-            // TESTS
-            // "code" -> Visual Studio Code.lnk (1 - 3)
-            // "conem" => ConEmu.exe (1)
-            // "remote" -> "Remote Desktop Connection", "mRemoteNG" (1, 2)
-            // "tail" -> "TailBlazer" (1)
+            var query = new BooleanQuery();
 
-            // Explain
-            /////////
-
-            var bq = new BooleanQuery();
-            // Exact match
-            //bq.Add(new BooleanClause(new TermQuery(new Term("filename.keyword", term)) { Boost = 8 }, Occur.SHOULD));
-            //bq.Add(new BooleanClause(new TermQuery(new Term("filename", term)) { Boost = 1 }, Occur.SHOULD));
-
-            //bq.Add(new BooleanClause(new TermQuery(new Term("filename_no-ext.keyword", term)) { Boost = 8 }, Occur.SHOULD));
-            //bq.Add(new BooleanClause(new TermQuery(new Term("filename_no-ext", term)) { Boost = 1 }, Occur.SHOULD));
-
+            // Name
             {
-                var b1 = new BooleanQuery();
+                var nameMatch = new BooleanQuery();
 
                 // Starts with
-                b1.Add(new BooleanClause(new PrefixQuery(new Term("filename_l.keyword", term)) { Boost = 6 }, Occur.SHOULD));
+                nameMatch.Add(new BooleanClause(new PrefixQuery(new Term("name.keyword", term)) { Boost = 6 }, Occur.SHOULD));
 
                 // Contains
-                b1.Add(new BooleanClause(new WildcardQuery(new Term("filename_l", $"*{term}*")) { Boost = 4 }, Occur.SHOULD));
+                nameMatch.Add(new BooleanClause(new WildcardQuery(new Term("name", $"*{term}*")) { Boost = 4 }, Occur.SHOULD));
 
-                bq.Add(new BooleanClause(b1, Occur.MUST));
+                query.Add(new BooleanClause(nameMatch, Occur.MUST));
             }
 
+            // Type (extension)
             {
                 // Prefer .exe
-                bq.Add(new BooleanClause(new TermQuery(new Term("ext_l", ".exe")) { Boost = 16 }, Occur.SHOULD));
+                query.Add(new BooleanClause(new TermQuery(new Term("ext", ".exe")) { Boost = 16 }, Occur.SHOULD));
 
                 // And don't mind .lnk
-                bq.Add(new BooleanClause(new TermQuery(new Term("ext_l", ".lnk")) { Boost = 10 }, Occur.SHOULD));
+                query.Add(new BooleanClause(new TermQuery(new Term("ext", ".lnk")) { Boost = 10 }, Occur.SHOULD));
             }
 
-            var hits = _indexSearcher.Search(bq, 15);
+            var dict = new ConcurrentDictionary<string, Type>();
+
+            var hits = _indexSearcher.Search(query, 15);
             var docs = hits.ScoreDocs
-                .Select(sd => new QS { ScoreDoc = sd, Document = _indexSearcher.Doc(sd.Doc) })
-                //.Where(sd => sd.ScoreDoc.Score >= 0.003f)
+                .Select(sd =>
+                {
+                    var d = _indexSearcher.Doc(sd.Doc);
+
+                    var type = d.Get("obj_type");
+                    var obj = d.Get("obj");
+
+                    var tt = dict.GetOrAdd(type, t => Type.GetType(t));
+
+                    var ii = JsonConvert.DeserializeObject(obj, tt);
+
+                    return ii as IndexedItem;
+                })
+                .Where(ii => ii != null)
                 .ToList();
 
-            //System.IO.Directory.CreateDirectory("explain");
-            //System.IO.Directory.GetFiles("explain").ToList().ForEach(f => System.IO.File.Delete(f));
-
-            //for(int i = 0; i < docs.Count; i++)
-            //{
-            //    var doc = docs[i];
-
-            //    var d0 = _indexSearcher.Explain(bq, doc.ScoreDoc.Doc);
-
-            //    var html = $"{doc.ScoreDoc.Score}: {doc.Document.Fields.First().GetStringValue()}{Environment.NewLine}{d0.ToHtml()}";
-
-            //    System.IO.File.WriteAllText($@"explain\{i.ToString("D4")}.html", html);
-            //}
-
             return docs;
-        }
-    }
-
-    public class QS
-    {
-        public Document Document { get; set; }
-
-        public ScoreDoc ScoreDoc { get; set; }
-    }
-
-    public static class Extensions
-    {
-        public static List<string> GetFilesRecursive(this IEnumerable<string> folders, List<string> files = null)
-        {
-            files = files ?? new List<string>();
-
-            foreach (var folder in folders)
-            {
-                try
-                {
-                    foreach (var app in System.IO.Directory.GetFiles(folder, "*", System.IO.SearchOption.TopDirectoryOnly))
-                    {
-                        files.Add(app);
-                    }
-
-                    var dd = System.IO.Directory.GetDirectories(folder);
-
-                    GetFilesRecursive(dd, files);
-                }
-                catch { }
-            }
-
-            return files;
         }
     }
 }

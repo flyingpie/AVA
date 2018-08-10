@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace System
@@ -29,6 +31,29 @@ namespace System
         public static bool ContainsCaseInsensitive(this string source, string term)
         {
             return source.ToLowerInvariant().Contains(term.ToLowerInvariant());
+        }
+
+        public static List<string> GetFilesRecursive(this IEnumerable<string> folders, List<string> files = null)
+        {
+            files = files ?? new List<string>();
+
+            foreach (var folder in folders)
+            {
+                try
+                {
+                    foreach (var app in Directory.GetFiles(folder, "*", SearchOption.TopDirectoryOnly))
+                    {
+                        files.Add(app);
+                    }
+
+                    var dd = Directory.GetDirectories(folder);
+
+                    GetFilesRecursive(dd, files);
+                }
+                catch { }
+            }
+
+            return files;
         }
     }
 }

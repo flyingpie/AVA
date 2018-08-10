@@ -47,9 +47,12 @@ namespace AVA.Core.QueryExecutors.ListQuery
                 {
                     ImGui.Text(Name);
 
-                    ImGui.PushFont(Fonts.Regular16);
-                    ImGui.Text(Description, new Vector4(1f, 1f, 1f, 0.5f));
-                    ImGui.PopFont();
+                    if (!string.IsNullOrWhiteSpace(Description))
+                    {
+                        ImGui.PushFont(Fonts.Regular16);
+                        ImGui.Text(Description, new Vector4(1f, 1f, 1f, 0.5f));
+                        ImGui.PopFont();
+                    }
                 }
 
                 ImGui.Columns(1, "_", false);
