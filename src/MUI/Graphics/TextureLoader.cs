@@ -16,14 +16,19 @@ namespace MUI.Graphics
             _imGuiRenderer = imGuiRenderer ?? throw new ArgumentNullException(nameof(imGuiRenderer));
         }
 
+        public Image Load(Stream stream)
+        {
+            var tex2d = Texture2D.FromStream(_graphicsDevice, stream);
+            var pointer = _imGuiRenderer.BindTexture(tex2d);
+
+            return new Image(pointer, tex2d.Width, tex2d.Height);
+        }
+
         public Image Load(byte[] bytes)
         {
             using (var stream = new MemoryStream(bytes))
             {
-                var tex2d = Texture2D.FromStream(_graphicsDevice, stream);
-                var pointer = _imGuiRenderer.BindTexture(tex2d);
-
-                return new Image(pointer, tex2d.Width, tex2d.Height);
+                return Load(stream);
             }
         }
     }

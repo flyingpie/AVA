@@ -55,5 +55,19 @@ namespace System
 
             return files;
         }
+
+        public static byte[] ToByteArray(this Drawing.Image image) => image.ToByteArray(Drawing.Imaging.ImageFormat.Bmp);
+
+        public static byte[] ToByteArray(this Drawing.Image image, Drawing.Imaging.ImageFormat format)
+        {
+            using (var stream = new MemoryStream())
+            {
+                image.Save(stream, format);
+
+                stream.Position = 0;
+
+                return stream.ToArray();
+            }
+        }
     }
 }

@@ -38,8 +38,8 @@ namespace MUI
         public void Init()
         {
             // TODO: Move this
-            DefaultImage = LoadImage("Resources/Images/default-image.png");
-            LoadingImage = new AnimatedImage(LoadImage("Resources/Images/loading-image.png"), 9, 5, 40, Direction.TopToBottom, 5);
+            DefaultImage = _textureLoader.Load(File.ReadAllBytes("Resources/Images/default-image.png"));
+            LoadingImage = new AnimatedImage(_textureLoader.Load(File.ReadAllBytes("Resources/Images/loading-image.png")), 9, 5, 40, Direction.TopToBottom, 5);
         }
 
         public Font LoadFont(string path, int pixelSize)
@@ -49,6 +49,16 @@ namespace MUI
             _imGuiRenderer.RebuildFontAtlas();
 
             return font;
+        }
+
+        public Image LoadGlyph(string glyph, System.Drawing.FontFamily fontFamily, int fontSizeEm)
+        {
+            return LoadImage($"glyph_{fontFamily.Name}_{fontSizeEm}_{glyph}", loader =>
+            {
+                var img = GlyphRenderer.RenderGlyph(glyph, fontFamily, fontSizeEm, System.Drawing.Color.White);
+
+                return loader.Load(img.ToByteArray());
+            });
         }
 
         public Image LoadImageFromUrl(string url)

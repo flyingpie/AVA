@@ -25,4 +25,31 @@
       <Folder Include="ImGuiEx\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Deps\FontAwesome\FA.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>FA.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Deps\FontAwesome\FA.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>FA.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Deps\FontAwesome\fa-brands-400.ttf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Deps\FontAwesome\fa-regular-400.ttf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="Deps\FontAwesome\fa-solid-900.ttf">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

@@ -110,8 +110,6 @@ namespace MUI
 
         protected override void Update(GameTime gameTime)
         {
-            Input.InputSnapshot.Update();
-
             if (IsActive && !_wasActive) FocusGained(this, EventArgs.Empty);
             if (!IsActive && _wasActive) FocusLost(this, EventArgs.Empty);
 
@@ -139,6 +137,7 @@ namespace MUI
 
             SpriteBatch.Begin();
 
+            Input.InputSnapshot.Update();
             _imGuiRenderer.BeforeLayout(gameTime);
 
             _ui.Draw();
