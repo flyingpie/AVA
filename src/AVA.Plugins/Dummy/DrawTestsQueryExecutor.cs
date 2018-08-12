@@ -11,8 +11,6 @@ namespace AVA.Plugins.Dummy
     [Service]
     public class DrawTestsQueryExecutor : CommandQueryExecutor
     {
-        [Dependency] public ResourceManager ResourceManager { get; set; }
-
         public override string[] CommandPrefixes => new[] { "drawt" };
 
         private Image _imgTall;
@@ -23,10 +21,10 @@ namespace AVA.Plugins.Dummy
         [RunAfterInject]
         public void Init()
         {
-            _imgTall = ResourceManager.LoadImage("Resources/Images/debug-tall.png");
-            _imgWide = ResourceManager.LoadImage("Resources/Images/debug-wide.png");
-            _imgSquareSmall = ResourceManager.LoadFontAwesomeIcon(FontAwesomeCS.FAIcon.GithubSquareBrands, 20);
-            _imgSquareLarge = ResourceManager.LoadFontAwesomeIcon(FontAwesomeCS.FAIcon.GithubSquareBrands, 200);
+            _imgTall = ResourceManager.Instance.LoadImage("Resources/Images/debug-tall.png");
+            _imgWide = ResourceManager.Instance.LoadImage("Resources/Images/debug-wide.png");
+            _imgSquareSmall = ResourceManager.Instance.LoadFontAwesomeIcon(FontAwesomeCS.FAIcon.GithubSquareBrands, 20);
+            _imgSquareLarge = ResourceManager.Instance.LoadFontAwesomeIcon(FontAwesomeCS.FAIcon.GithubSquareBrands, 200);
         }
 
         public override void Draw()
@@ -81,22 +79,22 @@ namespace AVA.Plugins.Dummy
 
             {
                 ImGui.Text("Center");
-                ResourceManager.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), ScaleMode.Center);
+                ResourceManager.Instance.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), ScaleMode.Center);
 
                 ImGui.NextColumn();
 
                 ImGui.Text("Fill");
-                ResourceManager.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), ScaleMode.Fill);
+                ResourceManager.Instance.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), ScaleMode.Fill);
 
                 ImGui.NextColumn();
 
                 ImGui.Text("Fit");
-                ResourceManager.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), ScaleMode.Fit);
+                ResourceManager.Instance.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), ScaleMode.Fit);
 
                 ImGui.NextColumn();
 
                 ImGui.Text("Stretch");
-                ResourceManager.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), ScaleMode.Stretch);
+                ResourceManager.Instance.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), ScaleMode.Stretch);
             }
         }
     }

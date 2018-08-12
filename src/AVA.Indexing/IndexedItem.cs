@@ -1,5 +1,4 @@
-﻿using MUI;
-using MUI.Graphics;
+﻿using MUI.Graphics;
 
 namespace AVA.Indexing
 {
@@ -11,7 +10,7 @@ namespace AVA.Indexing
 
         public string Extension { get; set; }
 
-        public virtual Image GetIcon(ResourceManager resourceManager) => null;
+        public virtual Image GetIcon() => null;
 
         public virtual bool Execute() => false;
     }

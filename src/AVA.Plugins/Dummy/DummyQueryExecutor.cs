@@ -1,6 +1,5 @@
 ﻿using AVA.Core.QueryExecutors.ListQuery;
 using MUI;
-using MUI.DI;
 using MUI.Logging;
 using MUI.Win32.Extensions;
 using System.Collections.Generic;
@@ -10,15 +9,12 @@ namespace AVA.Plugins.Dummy
 {
     public class DummyQueryExecutor : ListQueryExecutor
     {
-        [Dependency] public ResourceManager ResourceManager { get; set; }
-
         public override string Prefix => "dummy ";
 
         private ListQueryResult[] _dummyResults;
         private ILog _log = Log.Get<DummyQueryExecutor>();
 
-        [RunAfterInject]
-        private void Initialize()
+        public DummyQueryExecutor()
         {
             _dummyResults = new[]
             {
@@ -26,28 +22,28 @@ namespace AVA.Plugins.Dummy
                 {
                     Name = "Notepad++",
                     Description = @"D:\Syncthing\Apps\Notepad++\notepad++.exe",
-                    Icon = ResourceManager.DefaultImage,
+                    Icon = ResourceManager.Instance.DefaultImage,
                     OnExecute = t => _log.Info("npp")
                 },
                 new ListQueryResult()
                 {
                     Name = "TailBlazer",
                     Description = @"D:\Syncthing\Apps\Dev\TailBlazer\TailBlazer.exe",
-                    Icon = ResourceManager.DefaultImage,
+                    Icon = ResourceManager.Instance.DefaultImage,
                     OnExecute = t => _log.Info("tb")
                 },
                 new ListQueryResult()
                 {
                     Name = "Powershell",
                     Description = @"C:\Users\Marco van den Oever\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Windows PowerShell\Windows PowerShell.lnk",
-                    Icon = ResourceManager.DefaultImage,
+                    Icon = ResourceManager.Instance.DefaultImage,
                     OnExecute = t => _log.Info("ps")
                 },
                 new ListQueryResult()
                 {
                     Name = "KeePass",
                     Description = @"D:\Syncthing\Apps\KeePass\KeePass.exe",
-                    Icon = ResourceManager.DefaultImage,
+                    Icon = ResourceManager.Instance.DefaultImage,
                     OnExecute = t => _log.Info("kp")
                 }
             };
@@ -61,7 +57,7 @@ namespace AVA.Plugins.Dummy
             {
                 Name = d.Name,
                 Description = d.Description,
-                Icon = ResourceManager.LoadImageFromIcon(d.Description),
+                Icon = ResourceManager.Instance.LoadImageFromIcon(d.Description),
                 OnExecute = d.OnExecute
             });
     }

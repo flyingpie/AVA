@@ -66,5 +66,9 @@ namespace MUI.Graphics
         {
             ImGui.Image(Pointer, targetImageSize, Vector2.Zero, Vector2.One, tintColor, Vector4.Zero);
         }
+
+        public int CalcWidthIfHeightIs(int height) => (int)(Width * (float)Height / height);
+
+        public int CalcHeightIfWidthIs(int width) => (int)(Height * (float)Width / width);
     }
 }

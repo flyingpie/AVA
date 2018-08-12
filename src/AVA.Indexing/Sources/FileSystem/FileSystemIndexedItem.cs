@@ -37,6 +37,6 @@ namespace AVA.Indexing.Sources.FileSystem
             return false;
         }
 
-        public override Image GetIcon(ResourceManager resourceManager) => resourceManager.LoadImageFromIcon(Path);
+        public override Image GetIcon() => ResourceManager.Instance.LoadImageFromIcon(Path);
     }
 }

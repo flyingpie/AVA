@@ -5,6 +5,7 @@ using FontAwesomeCS;
 using MUI;
 using MUI.DI;
 using MUI.Glyphs;
+using MUI.ImGuiControls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +17,11 @@ namespace AVA.Plugins.Help
     [Service]
     public class HelpQueryExecutor : ListQueryExecutor
     {
-        [Dependency] public ResourceManager ResourceManager { get; set; }
-
         public override int Order => 999;
 
         private List<HelpAttribute> _helpAttrs;
 
-        [RunAfterInject]
-        private void Init()
+        public HelpQueryExecutor()
         {
             _helpAttrs = AppDomain.CurrentDomain
                 .GetAssemblies()
@@ -44,9 +42,11 @@ namespace AVA.Plugins.Help
             .OrderBy(qe => qe.Name)
             .Select(qe => (IListQueryResult)new ListQueryResult()
             {
-                Icon = qe.Icon != FAIcon.None ? ResourceManager.LoadFontAwesomeIcon(qe.Icon, ListQueryResult.IconSize / 3) : null,
-                IconScaleMode = MUI.Graphics.ScaleMode.Center,
-                IconTint = new Vector4(1, 1, 1, .4f),
+                Icon = new ImageBox(qe.Icon != FAIcon.None ? ResourceManager.Instance.LoadFontAwesomeIcon(qe.Icon, ListQueryResult.IconSize / 3) : null)
+                {
+                    ScaleMode = MUI.Graphics.ScaleMode.Center,
+                    Tint = new Vector4(1, 1, 1, .4f),
+                },
                 Name = $"{qe.Name} (eg. '{qe.ExampleUsage}')",
                 Description = qe.Description,
                 OnExecute = t =>

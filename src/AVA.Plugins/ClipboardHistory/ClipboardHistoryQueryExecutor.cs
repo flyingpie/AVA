@@ -13,9 +13,7 @@ namespace AVA.Plugins.ClipboardHistory
     public class ClipboardHistoryQueryExecutor : ListQueryExecutor
     {
         [Dependency] public ClipboardService ClipboardService { get; set; }
-
-        [Dependency] public ResourceManager ResourceManager { get; set; }
-
+        
         public override string Prefix => "cc ";
 
         public override IEnumerable<IListQueryResult> GetQueryResults(string term) =>
@@ -37,7 +35,7 @@ namespace AVA.Plugins.ClipboardHistory
 
                 if (h.ImageThumbnail != null)
                 {
-                    res.Icon = ResourceManager.LoadImage($"cb_{h.Timestamp.ToString("s")}", h.ImageThumbnail);
+                    res.Icon = ResourceManager.Instance.LoadImage($"cb_{h.Timestamp.ToString("s")}", h.ImageThumbnail);
                 }
 
                 return (IListQueryResult)res;

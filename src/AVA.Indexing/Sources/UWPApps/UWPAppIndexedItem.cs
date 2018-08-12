@@ -28,9 +28,6 @@ namespace AVA.Indexing.Sources.UWPApps
             return false;
         }
 
-        public override Image GetIcon(ResourceManager resourceManager)
-        {
-            return resourceManager.LoadImage(LogoPath);
-        }
+        public override Image GetIcon() => ResourceManager.Instance.LoadImage(LogoPath);
     }
 }

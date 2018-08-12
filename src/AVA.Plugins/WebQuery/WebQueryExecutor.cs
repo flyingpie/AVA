@@ -5,7 +5,7 @@ using FontAwesomeCS;
 using ImGuiNET;
 using MUI;
 using MUI.DI;
-using MUI.Graphics;
+using MUI.ImGuiControls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,9 +18,7 @@ namespace AVA.Plugins.WebQuery
     [Help(Name = "Web queries", Description = "Search sites and open urls", ExampleUsage = "ddg <Duck Duck Go Search Term>", Icon = FAIcon.RedditBrands)]
     public class WebQueryExecutor : CommandQueryExecutor
     {
-        [Dependency] public ResourceManager ResourceManager { get; set; }
-
-        public static int IconWidth = 140;
+        public static int IconSize = 140;
 
         public override string[] CommandPrefixes => _commands.Select(c => c.Prefix).ToArray();
 
@@ -37,29 +35,29 @@ namespace AVA.Plugins.WebQuery
                 new Command()
                 {
                     Prefix = "ddg ",
-                    Icon = () => ResourceManager.LoadImage("WebQuery/Resources/Images/DuckDuckGo.png"),
-                    Execute = term => Process.Start($"https://duckduckgo.com/?q={term}").Dispose(),
+                    Icon = "WebQuery/Resources/Images/DuckDuckGo.png",
+                    Pattern = "https://duckduckgo.com/?q={term}",
                     Description = "Duck Duck Go"
                 },
                 new Command()
                 {
                     Prefix = "gh ",
-                    Icon = () => ResourceManager.LoadImage("WebQuery/Resources/Images/GitHub.png"),
-                    Execute = term => Process.Start($"https://github.com/search?q={term}").Dispose(),
+                    Icon = "WebQuery/Resources/Images/GitHub.png",
+                    Pattern = "https://github.com/search?q={term}",
                     Description = "GitHub"
                 },
                 new Command()
                 {
                     Prefix = "nuget ",
-                    Icon = () => ResourceManager.LoadImage("WebQuery/Resources/Images/NuGet.png"),
-                    Execute = term => Process.Start($"https://www.nuget.org/packages?q={term}").Dispose(),
+                    Icon = "WebQuery/Resources/Images/NuGet.png",
+                    Pattern = "https://www.nuget.org/packages?q={term}",
                     Description = "NuGet"
                 },
                 new Command()
                 {
                     Prefix = "wiki ",
-                    Icon = () => ResourceManager.LoadImage("WebQuery/Resources/Images/Wikipedia.png"),
-                    Execute = term => Process.Start($"https://en.wikipedia.org/w/index.php?search={term}").Dispose(),
+                    Icon = "WebQuery/Resources/Images/Wikipedia.png",
+                    Pattern = "https://en.wikipedia.org/w/index.php?search={term}",
                     Description = "Wikipedia"
                 }
             };
@@ -67,38 +65,17 @@ namespace AVA.Plugins.WebQuery
 
         public override bool TryHandle(QueryContext query)
         {
-            var terml = query.Text.ToLowerInvariant();
-
-            _command = _commands.FirstOrDefault(c => terml.StartsWith(c.Prefix));
-
-            if (_command != null)
-            {
-                _term = query.Text.Substring(_command.Prefix.Length);
-            }
+            _command = _commands.FirstOrDefault(c => query.HasPrefix(c.Prefix));
+            _term = query.Arg;
 
             return _command != null;
         }
 
-        public override bool TryExecute(QueryContext query)
-        {
-            var term = query.Text;
-            var terml = term.ToLowerInvariant();
-
-            foreach (var command in _commands)
-            {
-                if (terml.StartsWith(command.Prefix))
-                {
-                    _term = term.Substring(command.Prefix.Length);
-                    _term = WebUtility.UrlEncode(_term);
-
-                    command.Execute(_term);
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        public override bool TryExecute(QueryContext query) =>
+            _commands
+            .FirstOrDefault(c => query.HasPrefix(c.Prefix))
+            ?.Execute(query.Arg)
+            ?? false;
 
         public override void Draw()
         {
@@ -107,34 +84,35 @@ namespace AVA.Plugins.WebQuery
             ImGui.Text(_term);
             ImGui.PopFont();
 
-            if (_command?.GetIcon() != null)
+            if (_command.Icon != null)
             {
-                ImGui.SetCursorScreenPos(new Vector2(ImGui.GetContentRegionAvailableWidth() / 2f - IconWidth / 2, ImGui.GetCursorScreenPos().Y));
+                _command.Icon.Size = new Vector2(ImGui.GetContentRegionAvailableWidth(), IconSize);
+                _command.Icon.Tint = new Vector4(Vector3.Zero, .25f);
 
-                _command.GetIcon().Draw(new Vector2(IconWidth, IconWidth * _command.GetIcon().Ratio), new Vector4(.5f), Vector4.Zero, Vector4.Zero);
+                _command.Icon.Draw();
             }
         }
 
         private class Command
         {
-            private Image _icon;
+            public ImageBox Icon { get; set; }
 
             public string Prefix { get; set; }
 
-            public Func<Image> Icon { get; set; }
-
             public string Description { get; set; }
 
-            public Action<string> Execute { get; set; }
+            public string Pattern { get; set; }
 
-            public Image GetIcon()
+            public Func<string, bool> Execute { get; set; }
+
+            public Command()
             {
-                if (_icon == null)
+                Execute = term =>
                 {
-                    _icon = Icon?.Invoke();
-                }
+                    Process.Start(Pattern.Replace("{term}", WebUtility.UrlEncode(term))).Dispose();
 
-                return _icon;
+                    return true;
+                };
             }
         }
     }

@@ -2,7 +2,6 @@
 using AVA.Core.QueryExecutors.ListQuery;
 using FontAwesomeCS;
 using MUI;
-using MUI.DI;
 using MUI.Win32;
 using MUI.Win32.Extensions;
 using System.Collections.Generic;
@@ -15,16 +14,13 @@ namespace AVA.Plugins.ControlPanel
     [Help(Name = "Control panel", Description = "Search through and opens control panel items", ExampleUsage = "cp network", Icon = FAIcon.CogsSolid)]
     public class ControlPanelQueryExecutor : ListQueryExecutor
     {
-        [Dependency] public ResourceManager ResourceManager { get; set; }
-
         public override int Order => 0;
 
         public override string Prefix => "cp ";
 
         private List<ControlPanelItem> _items;
 
-        [RunAfterInject]
-        public void Init()
+        public ControlPanelQueryExecutor()
         {
             _items = ControlPanelItemList.Create(32);
         }
@@ -40,7 +36,7 @@ namespace AVA.Plugins.ControlPanel
                 {
                     Name = i.LocalizedString,
                     Description = i.ExecutablePath.FileName + " " + i.ExecutablePath.Arguments,
-                    Icon = ResourceManager.LoadImageFromIcon(i.ExecutablePath.FileName + " " + i.ExecutablePath.Arguments, i.Icon),
+                    Icon = ResourceManager.Instance.LoadImageFromIcon(i.ExecutablePath.FileName + " " + i.ExecutablePath.Arguments, i.Icon),
                     OnExecute = t =>
                     {
                         var proc = Process.Start(i.ExecutablePath);

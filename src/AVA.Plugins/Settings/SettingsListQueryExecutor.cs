@@ -1,10 +1,10 @@
 ﻿using AVA.Core.QueryExecutors;
 using AVA.Core.QueryExecutors.ListQuery;
 using AVA.Indexing;
+using FontAwesomeCS;
 using MUI;
 using MUI.DI;
 using System.Collections.Generic;
-using FontAwesomeCS;
 
 namespace AVA.Plugins.Settings
 {
@@ -12,8 +12,6 @@ namespace AVA.Plugins.Settings
     public class SettingsListQueryExecutor : ListQueryExecutor
     {
         [Dependency] public Indexer Indexer { get; set; }
-
-        [Dependency] public ResourceManager ResourceManager { get; set; }
 
         public override string Prefix => "ava";
 
@@ -31,17 +29,17 @@ namespace AVA.Plugins.Settings
             {
                 Name = "Rebuild index",
                 Description = "",
-                Icon = ResourceManager.DefaultImage
+                Icon = ResourceManager.Instance.DefaultImage
             };
 
             res.OnExecuteAsync = async query =>
             {
                 res.Description = "Rebuilding index...";
-                res.Icon = ResourceManager.LoadingImage;
+                res.Icon = ResourceManager.Instance.LoadingImage;
 
                 await Indexer.RebuildAsync();
 
-                res.Icon = ResourceManager.DefaultImage;
+                res.Icon = ResourceManager.Instance.DefaultImage;
                 res.Description = "";
 
                 query.HideUI = false;

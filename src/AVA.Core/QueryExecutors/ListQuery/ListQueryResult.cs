@@ -1,6 +1,6 @@
 ﻿using ImGuiNET;
 using MUI;
-using MUI.Graphics;
+using MUI.ImGuiControls;
 using System;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -17,15 +17,7 @@ namespace AVA.Core.QueryExecutors.ListQuery
 
         public string Description { get; set; }
 
-        public Image Icon { get; set; }
-
-        public Vector4 IconBackgroundColor { get; set; } = Vector4.Zero;
-
-        public Vector4 IconBorder { get; set; } = Vector4.Zero;
-
-        public ScaleMode IconScaleMode { get; set; } = ScaleMode.Fit;
-
-        public Vector4 IconTint { get; set; } = Vector4.One;
+        public ImageBox Icon { get; set; }
 
         public Action<QueryContext> OnExecute { get; set; }
 
@@ -45,11 +37,10 @@ namespace AVA.Core.QueryExecutors.ListQuery
                 ImGui.SetColumnWidth(0, IconSize + 10);
 
                 // Icon
+                if (Icon != null)
                 {
-                    var size = IconSize;
-                    if (IconBorder != Vector4.Zero) size -= 2;
-
-                    Icon?.Draw(new Vector2(size, size), IconTint, IconBorder, IconBackgroundColor, IconScaleMode);
+                    Icon.Size = new Vector2(IconSize, IconSize);
+                    Icon.Draw();
                 }
 
                 ImGui.NextColumn();
@@ -81,12 +72,13 @@ namespace AVA.Core.QueryExecutors.ListQuery
         {
             if (OnExecute != null)
             {
-                OnExecute?.Invoke(query);
+                OnExecute.Invoke(query);
+                return Task.CompletedTask;
             }
 
             if (OnExecuteAsync != null)
             {
-                return OnExecuteAsync?.Invoke(query) ?? Task.CompletedTask;
+                return OnExecuteAsync.Invoke(query);
             }
 
             return Task.CompletedTask;

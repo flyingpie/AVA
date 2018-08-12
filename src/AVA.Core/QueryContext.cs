@@ -13,6 +13,20 @@
 
         public bool ResetText { get; set; } = true;
 
+        public string Arg
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_text)) return string.Empty;
+
+                var space = _text.IndexOf(' ');
+
+                if (space < 0) return string.Empty;
+
+                return _text.Substring(space + 1);
+            }
+        }
+
         public string Text
         {
             get => _text;

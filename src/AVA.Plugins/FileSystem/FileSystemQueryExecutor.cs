@@ -2,7 +2,6 @@
 using AVA.Core.QueryExecutors.ListQuery;
 using AVA.Indexing;
 using FontAwesomeCS;
-using MUI;
 using MUI.DI;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +13,6 @@ namespace AVA.Plugins.FileSystem
     {
         [Dependency] public Indexer Indexer { get; set; }
 
-        [Dependency] public ResourceManager ResourceManager { get; set; }
-
         public override IEnumerable<IListQueryResult> GetQueryResults(string term) =>
             Indexer
             .Query(term)
@@ -23,7 +20,7 @@ namespace AVA.Plugins.FileSystem
             {
                 Name = r.Name,
                 Description = r.Description,
-                Icon = r.GetIcon(ResourceManager),
+                Icon = r.GetIcon(),
                 OnExecute = t => r.Execute()
             })
             .Take(4);
