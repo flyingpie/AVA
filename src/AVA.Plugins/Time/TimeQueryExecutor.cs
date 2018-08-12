@@ -1,5 +1,6 @@
 ﻿using AVA.Core.QueryExecutors;
 using AVA.Core.QueryExecutors.ListQuery;
+using FontAwesomeCS;
 using MUI.DI;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Linq;
 
 namespace AVA.Plugins.Time
 {
-    [Help(Name = "Time", Description = "Lists times around the world", ExampleUsage = "time")]
+    [Help(Name = "Time", Description = "Lists times around the world", ExampleUsage = "time", Icon = FAIcon.ClockRegular)]
     public class TimeQueryExecutor : ListQueryExecutor
     {
         public override int Order => 0;

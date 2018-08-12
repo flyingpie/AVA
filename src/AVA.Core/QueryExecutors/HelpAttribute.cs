@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FontAwesomeCS;
+using System;
 
 namespace AVA.Core.QueryExecutors
 {
@@ -9,5 +10,7 @@ namespace AVA.Core.QueryExecutors
         public string Description { get; set; }
 
         public string ExampleUsage { get; set; }
+
+        public FAIcon Icon { get; set; } = FAIcon.None;
     }
 }

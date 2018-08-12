@@ -1,5 +1,6 @@
 ﻿using AVA.Core.QueryExecutors;
 using AVA.Core.QueryExecutors.ListQuery;
+using FontAwesomeCS;
 using MUI;
 using MUI.DI;
 using MUI.Win32;
@@ -11,7 +12,7 @@ using WindowsControlPanelItems;
 
 namespace AVA.Plugins.ControlPanel
 {
-    [Help(Name = "Control panel", Description = "Search through and opens control panel items", ExampleUsage = "cp network")]
+    [Help(Name = "Control panel", Description = "Search through and opens control panel items", ExampleUsage = "cp network", Icon = FAIcon.CogsSolid)]
     public class ControlPanelQueryExecutor : ListQueryExecutor
     {
         [Dependency] public ResourceManager ResourceManager { get; set; }

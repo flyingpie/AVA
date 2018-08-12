@@ -1,11 +1,14 @@
 ﻿using AVA.Core;
 using AVA.Core.QueryExecutors;
 using AVA.Core.QueryExecutors.ListQuery;
+using FontAwesomeCS;
 using MUI;
 using MUI.DI;
+using MUI.Glyphs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 
 namespace AVA.Plugins.Help
@@ -36,21 +39,22 @@ namespace AVA.Plugins.Help
 
         public override bool TryHandle(QueryContext query) => query.IsEmpty || query.Text.ContainsCaseInsensitive("help");
 
-        public override IEnumerable<IListQueryResult> GetQueryResults(string term)
-        {
-            return _helpAttrs
-                .OrderBy(qe => qe.Name)
-                .Select(qe => (IListQueryResult)new ListQueryResult()
+        public override IEnumerable<IListQueryResult> GetQueryResults(string term) =>
+            _helpAttrs
+            .OrderBy(qe => qe.Name)
+            .Select(qe => (IListQueryResult)new ListQueryResult()
+            {
+                Icon = qe.Icon != FAIcon.None ? ResourceManager.LoadFontAwesomeIcon(qe.Icon, ListQueryResult.IconSize) : null,
+                IconBorder = Vector4.Zero,
+                IconTint = new Vector4(1, 1, 1, .4f),
+                Name = $"{qe.Name} (eg. '{qe.ExampleUsage}')",
+                Description = qe.Description,
+                OnExecute = t =>
                 {
-                    Name = $"{qe.Name} (eg. '{qe.ExampleUsage}')",
-                    Description = qe.Description,
-                    OnExecute = t =>
-                    {
-                        t.Text = qe.ExampleUsage;
-                        t.HideUI = false;
-                        t.ResetText = false;
-                    }
-                });
-        }
+                    t.Text = qe.ExampleUsage;
+                    t.HideUI = false;
+                    t.ResetText = false;
+                }
+            });
     }
 }

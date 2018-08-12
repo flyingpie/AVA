@@ -9,6 +9,8 @@ namespace AVA.Core.QueryExecutors.ListQuery
 {
     public class ListQueryResult : IListQueryResult
     {
+        public static readonly int IconSize = 50;
+
         public string Id { get; set; } = Guid.NewGuid().ToString();
 
         public string Name { get; set; }
@@ -17,11 +19,15 @@ namespace AVA.Core.QueryExecutors.ListQuery
 
         public Image Icon { get; set; }
 
+        public Vector4 IconBorder { get; set; } = new Vector4(1, 1, 1, .6f);
+
+        public ScaleMode IconScaleMode { get; set; } = ScaleMode.Fit;
+
+        public Vector4 IconTint { get; set; } = Vector4.One;
+
         public Action<QueryContext> OnExecute { get; set; }
 
         public Func<QueryContext, Task> OnExecuteAsync { get; set; }
-
-        private static readonly int Height = 50;
 
         public virtual void Draw(bool isSelected)
         {
@@ -30,15 +36,18 @@ namespace AVA.Core.QueryExecutors.ListQuery
             // Selection
             if (isSelected) ImGui.PushStyleColor(ColorTarget.ChildBg, new Vector4(1, 1, 1, .1f));
 
-            ImGui.BeginChild($"query-result-{Id}", new Vector2(ImGui.GetWindowContentRegionWidth(), Height), false, WindowFlags.Default);
+            ImGui.BeginChild($"query-result-{Id}", new Vector2(ImGui.GetWindowContentRegionWidth(), IconSize), false, WindowFlags.Default);
             {
                 ImGui.Columns(2, " ", false);
 
-                ImGui.SetColumnWidth(0, Height + 10);
+                ImGui.SetColumnWidth(0, IconSize + 10);
 
                 // Icon
                 {
-                    Icon?.Draw(new Vector2(Height - 2, Height - 2), Vector4.One, new Vector4(1, 1, 1, .6f));
+                    var size = IconSize;
+                    if (IconBorder != Vector4.Zero) size -= 2;
+
+                    Icon?.Draw(new Vector2(size, size), IconTint, IconBorder);
                 }
 
                 ImGui.NextColumn();

@@ -34,57 +34,53 @@
             <HintPath>..\..\deps\ImGui.NET.dll</HintPath>
         </Reference>
     </ItemGroup>
-    
+
     <ItemGroup>
         <None Update="Resources\**\*">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
-    
+
     <ItemGroup>
-      <Folder Include="Deps\x64\" />
-    </ItemGroup>
-    
-    <ItemGroup>
-      <None Include="..\..\deps\cimgui\win-x64\cimgui.dll" Link="Deps\x64\cimgui.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Include="..\..\deps\fnalibs\x64\libjpeg-9.dll" Link="Deps\x64\libjpeg-9.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Include="..\..\deps\fnalibs\x64\libogg-0.dll" Link="Deps\x64\libogg-0.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Include="..\..\deps\fnalibs\x64\libpng16-16.dll" Link="Deps\x64\libpng16-16.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Include="..\..\deps\fnalibs\x64\libtheoradec-1.dll" Link="Deps\x64\libtheoradec-1.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Include="..\..\deps\fnalibs\x64\libtheorafile.dll" Link="Deps\x64\libtheorafile.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Include="..\..\deps\fnalibs\x64\libvorbis-0.dll" Link="Deps\x64\libvorbis-0.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Include="..\..\deps\fnalibs\x64\libvorbisfile.dll" Link="Deps\x64\libvorbisfile.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Include="..\..\deps\fnalibs\x64\MojoShader.dll" Link="Deps\x64\MojoShader.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Include="..\..\deps\fnalibs\x64\SDL2.dll" Link="Deps\x64\SDL2.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Include="..\..\deps\fnalibs\x64\SDL2_image.dll" Link="Deps\x64\SDL2_image.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Include="..\..\deps\fnalibs\x64\soft_oal.dll" Link="Deps\x64\soft_oal.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Include="..\..\deps\fnalibs\x64\zlib1.dll" Link="Deps\x64\zlib1.dll">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+        <None Include="..\..\deps\cimgui\win-x64\cimgui.dll" Link="Deps\x64\cimgui.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="..\..\deps\fnalibs\x64\libjpeg-9.dll" Link="Deps\x64\libjpeg-9.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="..\..\deps\fnalibs\x64\libogg-0.dll" Link="Deps\x64\libogg-0.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="..\..\deps\fnalibs\x64\libpng16-16.dll" Link="Deps\x64\libpng16-16.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="..\..\deps\fnalibs\x64\libtheoradec-1.dll" Link="Deps\x64\libtheoradec-1.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="..\..\deps\fnalibs\x64\libtheorafile.dll" Link="Deps\x64\libtheorafile.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="..\..\deps\fnalibs\x64\libvorbis-0.dll" Link="Deps\x64\libvorbis-0.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="..\..\deps\fnalibs\x64\libvorbisfile.dll" Link="Deps\x64\libvorbisfile.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="..\..\deps\fnalibs\x64\MojoShader.dll" Link="Deps\x64\MojoShader.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="..\..\deps\fnalibs\x64\SDL2.dll" Link="Deps\x64\SDL2.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="..\..\deps\fnalibs\x64\SDL2_image.dll" Link="Deps\x64\SDL2_image.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="..\..\deps\fnalibs\x64\soft_oal.dll" Link="Deps\x64\soft_oal.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Include="..\..\deps\fnalibs\x64\zlib1.dll" Link="Deps\x64\zlib1.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>

@@ -42,10 +42,11 @@ namespace MUI.Graphics
             _maxDelta = 1f / fps;
         }
 
-        public override void Draw(Vector2 size, Vector4 tintColor, Vector4 borderColor)
+        public override void Draw(Vector2 size, Vector4 tintColor, Vector4 borderColor, ScaleMode scaleMode = ScaleMode.Fit)
         {
             UpdateActiveTile();
 
+            // TODO: Add scale mode
             ImGui.Image(_spriteSheet.Pointer, size, _uv0, _uv1, tintColor, borderColor);
         }
 

@@ -1,6 +1,7 @@
 ﻿using AVA.Core;
 using AVA.Core.QueryExecutors;
 using AVA.Core.QueryExecutors.CommandQuery;
+using FontAwesomeCS;
 using ImGuiNET;
 using MUI;
 using MUI.DI;
@@ -14,7 +15,7 @@ using System.Numerics;
 
 namespace AVA.Plugins.WebQuery
 {
-    [Help(Name = "Web queries", Description = "Search sites and open urls", ExampleUsage = "ddg <Duck Duck Go Search Term>")]
+    [Help(Name = "Web queries", Description = "Search sites and open urls", ExampleUsage = "ddg <Duck Duck Go Search Term>", Icon = FAIcon.RedditBrands)]
     public class WebQueryExecutor : CommandQueryExecutor
     {
         [Dependency] public ResourceManager ResourceManager { get; set; }

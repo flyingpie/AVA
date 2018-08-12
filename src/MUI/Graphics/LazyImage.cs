@@ -47,9 +47,9 @@ namespace MUI.Graphics
             }
         }
 
-        public override void Draw(Vector2 size, Vector4 tintColor, Vector4 borderColor)
+        public override void Draw(Vector2 size, Vector4 tintColor, Vector4 borderColor, ScaleMode scaleMode = ScaleMode.Fit)
         {
-            _image.Draw(size, tintColor, borderColor);
+            _image.Draw(size, tintColor, borderColor, scaleMode);
         }
     }
 }

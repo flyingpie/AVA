@@ -4,10 +4,11 @@ using AVA.Indexing;
 using MUI;
 using MUI.DI;
 using System.Collections.Generic;
+using FontAwesomeCS;
 
 namespace AVA.Plugins.Settings
 {
-    [Help(Name = "Settings", Description = "Shows the settings set", ExampleUsage = "ava")]
+    [Help(Name = "Settings", Description = "Shows the settings set", ExampleUsage = "ava", Icon = FAIcon.VenusSolid)]
     public class SettingsListQueryExecutor : ListQueryExecutor
     {
         [Dependency] public Indexer Indexer { get; set; }

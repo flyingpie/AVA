@@ -1,5 +1,6 @@
 ﻿using AVA.Core;
 using AVA.Core.QueryExecutors;
+using FontAwesomeCS;
 using ImGuiNET;
 using MUI;
 using MUI.DI;
@@ -7,7 +8,7 @@ using System.Diagnostics;
 
 namespace AVA.Plugins.Shell
 {
-    [Service, Help(Name = "Shell", Description = "Execute shell commands", ExampleUsage = ">ipconfig")]
+    [Service, Help(Name = "Shell", Description = "Execute shell commands", ExampleUsage = ">ipconfig", Icon = FAIcon.CodeSolid)]
     public class ShellQueryExecutor : IQueryExecutor
     {
         public int Order => 0;

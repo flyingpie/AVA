@@ -1,5 +1,6 @@
 ﻿using AVA.Core;
 using AVA.Core.QueryExecutors;
+using FontAwesomeCS;
 using ImGuiNET;
 using MUI.DI;
 using System.Diagnostics;
@@ -8,7 +9,7 @@ using System.Text.RegularExpressions;
 namespace AVA.Plugins.Uri
 {
     // TODO: Rename Service to something like Export or Injectable or Dependable
-    [Service, Help(Name = "Uri", Description = "Opens uri-like queries", ExampleUsage = "reddit.com")]
+    [Service, Help(Name = "Uri", Description = "Opens uri-like queries", ExampleUsage = "reddit.com", Icon = FAIcon.GlobeAmericasSolid)]
     public class UriQueryExecutor : IQueryExecutor
     {
         public int Order => 0;

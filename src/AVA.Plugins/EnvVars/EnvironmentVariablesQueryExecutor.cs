@@ -5,10 +5,11 @@ using MUI.DI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FontAwesomeCS;
 
 namespace AVA.Plugins.EnvVars
 {
-    [Help(Name = "Environment variables", Description = "List and filters through environment variables", ExampleUsage = "env path")]
+    [Help(Name = "Environment variables", Description = "List and filters through environment variables", ExampleUsage = "env path", Icon = FAIcon.AlignJustifySolid)]
     public class EnvironmentVariablesQueryExecutor : ListQueryExecutor
     {
         [Dependency]

@@ -1,5 +1,6 @@
 ﻿using AVA.Core;
 using AVA.Core.QueryExecutors;
+using FontAwesomeCS;
 using ImGuiNET;
 using MUI;
 using MUI.DI;
@@ -8,7 +9,7 @@ using System.Windows.Forms;
 
 namespace AVA.Plugins.Calculator
 {
-    [Service, Help(Name = "Calculator", Description = "1 + 1 = 11", ExampleUsage = "1 + 1")]
+    [Service, Help(Name = "Calculator", Description = "1 + 1 = 11", ExampleUsage = "1 + 1", Icon = FAIcon.CalculatorSolid)]
     public class CalculatorQueryExecutor : IQueryExecutor
     {
         public int Order => 0;

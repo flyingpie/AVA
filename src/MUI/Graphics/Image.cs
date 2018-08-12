@@ -22,7 +22,7 @@ namespace MUI.Graphics
             if (texture.ToInt32() == 0) throw new ArgumentOutOfRangeException(nameof(texture));
 
             Pointer = texture;
-            
+
             Width = width;
             Height = height;
 
@@ -33,9 +33,11 @@ namespace MUI.Graphics
         {
         }
 
-        public virtual void Draw(Vector2 size, Vector4 tintColor, Vector4 borderColor)
+        public virtual void Draw(Vector2 size, Vector4 tintColor, Vector4 borderColor, ScaleMode scaleMode = ScaleMode.Fit)
         {
-            ImGui.Image(Pointer, size, Vector2.Zero, Vector2.One, tintColor, borderColor);
+            ImageMath.CalculateScaledImageUV(new Vector2(Width, Height), size, scaleMode, out var uv0, out var uv1);
+
+            ImGui.Image(Pointer, size, uv0, uv1, tintColor, borderColor);
         }
     }
 }
