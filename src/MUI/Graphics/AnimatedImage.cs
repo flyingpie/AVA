@@ -50,11 +50,11 @@ namespace MUI.Graphics
             _maxDelta = 1f / fps;
         }
 
-        public override void Draw(Vector2 size, Vector4 tintColor, Vector4 borderColor, Vector4 backgroundColor, ScaleMode scaleMode = ScaleMode.Fit)
+        public override void Draw(Vector2 size, Vector4 tintColor, Vector4 borderColor, Vector4 backgroundColor, Margin padding, ScaleMode scaleMode = ScaleMode.Fit)
         {
             UpdateActiveTile();
 
-            base.Draw(size, tintColor, borderColor, backgroundColor, scaleMode);
+            base.Draw(size, tintColor, borderColor, backgroundColor, padding, scaleMode);
         }
 
         protected override void DrawImage(Vector4 tintColor, Vector2 targetImageSize)

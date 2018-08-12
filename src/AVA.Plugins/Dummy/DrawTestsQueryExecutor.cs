@@ -4,6 +4,7 @@ using MUI;
 using MUI.DI;
 using MUI.Glyphs;
 using MUI.Graphics;
+using System;
 using System.Numerics;
 
 namespace AVA.Plugins.Dummy
@@ -29,72 +30,123 @@ namespace AVA.Plugins.Dummy
 
         public override void Draw()
         {
-            ImGui.Text("Scale modes");
+            ImGui.Text("Scale modes - wide image");
+            ImGui.Columns(4, Guid.NewGuid().ToString(), false);
 
             {
-                ImGui.Columns(4, "scale-modes-v", false);
-
                 ImGui.Text("Center");
-                _imgSquareSmall.Draw(new Vector2(ImGui.GetContentRegionAvailableWidth(), 120), Vector4.One, Vector4.One, Vector4.Zero, ScaleMode.Center);
+                _imgTall.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, Vector4.Zero, Margin.Zero, ScaleMode.Center);
 
                 ImGui.NextColumn();
 
                 ImGui.Text("Fill");
-                _imgTall.Draw(new Vector2(ImGui.GetContentRegionAvailableWidth(), 120), Vector4.One, Vector4.One, Vector4.Zero, ScaleMode.Fill);
+                _imgTall.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, Vector4.Zero, Margin.Zero, ScaleMode.Fill);
 
                 ImGui.NextColumn();
 
                 ImGui.Text("Fit");
-                _imgTall.Draw(new Vector2(ImGui.GetContentRegionAvailableWidth(), 120), Vector4.One, Vector4.One, Vector4.Zero, ScaleMode.Fit);
+                _imgTall.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, Vector4.Zero, Margin.Zero, ScaleMode.Fit);
 
                 ImGui.NextColumn();
 
                 ImGui.Text("Stretch");
-                _imgTall.Draw(new Vector2(ImGui.GetContentRegionAvailableWidth(), 120), Vector4.One, Vector4.One, Vector4.Zero, ScaleMode.Stretch);
+                _imgTall.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, Vector4.Zero, Margin.Zero, ScaleMode.Stretch);
             }
 
-            ImGui.NextColumn();
+            ImGui.Columns(1, "_", false);
+            ImGui.Text("Scale modes - tall image");
+            ImGui.Columns(4, Guid.NewGuid().ToString(), false);
 
             {
                 ImGui.Text("Center");
-                _imgSquareLarge.Draw(new Vector2(ImGui.GetContentRegionAvailableWidth(), 120), Vector4.One, Vector4.One, Vector4.Zero, ScaleMode.Center);
+                _imgWide.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, Vector4.Zero, Margin.Zero, ScaleMode.Center);
 
                 ImGui.NextColumn();
 
                 ImGui.Text("Fill");
-                _imgWide.Draw(new Vector2(ImGui.GetContentRegionAvailableWidth(), 120), Vector4.One, Vector4.One, Vector4.Zero, ScaleMode.Fill);
+                _imgWide.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, Vector4.Zero, Margin.Zero, ScaleMode.Fill);
 
                 ImGui.NextColumn();
 
                 ImGui.Text("Fit");
-                _imgWide.Draw(new Vector2(ImGui.GetContentRegionAvailableWidth(), 120), Vector4.One, Vector4.One, Vector4.Zero, ScaleMode.Fit);
+                _imgWide.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, Vector4.Zero, Margin.Zero, ScaleMode.Fit);
 
                 ImGui.NextColumn();
 
                 ImGui.Text("Stretch");
-                _imgWide.Draw(new Vector2(ImGui.GetContentRegionAvailableWidth(), 120), Vector4.One, Vector4.One, Vector4.Zero, ScaleMode.Stretch);
+                _imgWide.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, Vector4.Zero, Margin.Zero, ScaleMode.Stretch);
             }
 
-            ImGui.NextColumn();
+            ImGui.Columns(1, "_", false);
+            ImGui.Text("Scale modes - square image");
+            ImGui.Columns(4, Guid.NewGuid().ToString(), false);
 
             {
                 ImGui.Text("Center");
-                ResourceManager.Instance.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), ScaleMode.Center);
+                _imgSquareLarge.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, Vector4.Zero, Margin.Zero, ScaleMode.Center);
 
                 ImGui.NextColumn();
 
                 ImGui.Text("Fill");
-                ResourceManager.Instance.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), ScaleMode.Fill);
+                _imgSquareLarge.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, Vector4.Zero, Margin.Zero, ScaleMode.Fill);
 
                 ImGui.NextColumn();
 
                 ImGui.Text("Fit");
-                ResourceManager.Instance.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), ScaleMode.Fit);
+                _imgSquareLarge.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, Vector4.Zero, Margin.Zero, ScaleMode.Fit);
 
                 ImGui.NextColumn();
 
                 ImGui.Text("Stretch");
-                ResourceManager.Instance.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), ScaleMode.Stretch);
+                _imgSquareLarge.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, Vector4.Zero, Margin.Zero, ScaleMode.Stretch);
+            }
+
+            ImGui.Columns(1, "_", false);
+            ImGui.Text("Scale modes - animated image");
+            ImGui.Columns(4, Guid.NewGuid().ToString(), false);
+
+            {
+                ImGui.Text("Center");
+                ResourceManager.Instance.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), Margin.Zero, ScaleMode.Center);
+
+                ImGui.NextColumn();
+
+                ImGui.Text("Fill");
+                ResourceManager.Instance.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), Margin.Zero, ScaleMode.Fill);
+
+                ImGui.NextColumn();
+
+                ImGui.Text("Fit");
+                ResourceManager.Instance.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), Margin.Zero, ScaleMode.Fit);
+
+                ImGui.NextColumn();
+
+                ImGui.Text("Stretch");
+                ResourceManager.Instance.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), Margin.Zero, ScaleMode.Stretch);
+            }
+
+            ImGui.Columns(1, "_", false);
+            ImGui.Text("Padding");
+            ImGui.Columns(4, Guid.NewGuid().ToString(), false);
+
+            {
+                ImGui.Text("Center");
+                ResourceManager.Instance.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), new Margin(25), ScaleMode.Center);
+
+                ImGui.NextColumn();
+
+                ImGui.Text("Fill");
+                ResourceManager.Instance.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), new Margin(25), ScaleMode.Fill);
+
+                ImGui.NextColumn();
+
+                ImGui.Text("Fit");
+                ResourceManager.Instance.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), new Margin(25), ScaleMode.Fit);
+
+                ImGui.NextColumn();
+
+                ImGui.Text("Stretch");
+                ResourceManager.Instance.LoadingImage.Draw(new Vector2(120, 120), Vector4.One, Vector4.One, new Vector4(0, 0, 0, 1), new Margin(25), ScaleMode.Stretch);
             }
         }
     }

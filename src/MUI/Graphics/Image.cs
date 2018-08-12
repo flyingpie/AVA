@@ -33,8 +33,11 @@ namespace MUI.Graphics
         {
         }
 
-        public virtual void Draw(Vector2 size, Vector4 tintColor, Vector4 borderColor, Vector4 backgroundColor, ScaleMode scaleMode = ScaleMode.Fit)
+        public virtual void Draw(Vector2 size, Vector4 tintColor, Vector4 borderColor, Vector4 backgroundColor, Margin padding, ScaleMode scaleMode = ScaleMode.Fit)
         {
+            var drawAreaOffset = new Vector2(padding.Left, padding.Right);
+            var drawAreaSize = new Vector2(size.X - padding.Left - padding.Right, size.Y - padding.Top - padding.Bottom);
+
             // Save current cursor position
             var cursorPosBefore = ImGui.GetCursorScreenPos();
 
@@ -44,10 +47,10 @@ namespace MUI.Graphics
             // Reset cursor position
             ImGui.SetCursorScreenPos(cursorPosBefore);
 
-            ImageMath.CalculateScaledImageBounds(new Vector2(Width, Height), size, scaleMode, out var cursorScreenPos, out var targetImageSize);
+            ImageMath.CalculateScaledImageBounds(new Vector2(Width, Height), drawAreaSize, scaleMode, out var cursorScreenPos, out var targetImageSize);
 
-            ImGui.SetCursorScreenPos(cursorPosBefore + cursorScreenPos);
-            ImGui.PushClipRect(cursorPosBefore, cursorPosBefore + size, true);
+            ImGui.SetCursorScreenPos(cursorPosBefore + cursorScreenPos + drawAreaOffset);
+            ImGui.PushClipRect(cursorPosBefore + drawAreaOffset, cursorPosBefore + drawAreaOffset + drawAreaSize, true);
 
             // Draw image
             DrawImage(tintColor, targetImageSize);
@@ -60,6 +63,12 @@ namespace MUI.Graphics
 
             // Draw border
             ImGui.Image(ResourceManager.Instance.WhiteImage.Pointer, new Vector2(size.X - 2, size.Y - 2), Vector2.Zero, Vector2.One, new Vector4(0f), borderColor);
+        }
+
+        protected virtual void DrawBackground(Vector2 drawAreaSize, Vector4 backgroundColor)
+        {
+            // Draw background color
+            ImGui.Image(ResourceManager.Instance.WhiteImage.Pointer, drawAreaSize, Vector2.Zero, Vector2.One, backgroundColor, Vector4.Zero);
         }
 
         protected virtual void DrawImage(Vector4 tintColor, Vector2 targetImageSize)

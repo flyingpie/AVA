@@ -13,6 +13,8 @@ namespace MUI.ImGuiControls
 
         public Vector4 Border { get; set; } = Vector4.Zero;
 
+        public Margin Padding { get; set; } = Margin.Zero;
+
         public ScaleMode ScaleMode { get; set; } = ScaleMode.Fit;
 
         public Vector2 Size { get; set; } = new Vector2(100, 100);
@@ -26,7 +28,7 @@ namespace MUI.ImGuiControls
 
         public void Draw()
         {
-            Image?.Draw(Size, Tint, Border, BackgroundColor, ScaleMode);
+            Image?.Draw(Size, Tint, Border, BackgroundColor, Padding, ScaleMode);
         }
 
         public static implicit operator ImageBox(Image image) => new ImageBox(image);

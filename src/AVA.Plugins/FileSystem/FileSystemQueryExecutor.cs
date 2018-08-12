@@ -2,7 +2,9 @@
 using AVA.Core.QueryExecutors.ListQuery;
 using AVA.Indexing;
 using FontAwesomeCS;
+using MUI;
 using MUI.DI;
+using MUI.ImGuiControls;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,7 +22,10 @@ namespace AVA.Plugins.FileSystem
             {
                 Name = r.Name,
                 Description = r.Description,
-                Icon = r.GetIcon(),
+                Icon = new ImageBox(r.GetIcon())
+                {
+                    Padding = new Margin(5)
+                },
                 OnExecute = t => r.Execute()
             })
             .Take(4);
