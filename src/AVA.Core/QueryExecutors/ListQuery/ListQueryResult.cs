@@ -19,7 +19,9 @@ namespace AVA.Core.QueryExecutors.ListQuery
 
         public Image Icon { get; set; }
 
-        public Vector4 IconBorder { get; set; } = new Vector4(1, 1, 1, .6f);
+        public Vector4 IconBackgroundColor { get; set; } = Vector4.Zero;
+
+        public Vector4 IconBorder { get; set; } = Vector4.Zero;
 
         public ScaleMode IconScaleMode { get; set; } = ScaleMode.Fit;
 
@@ -47,7 +49,7 @@ namespace AVA.Core.QueryExecutors.ListQuery
                     var size = IconSize;
                     if (IconBorder != Vector4.Zero) size -= 2;
 
-                    Icon?.Draw(new Vector2(size, size), IconTint, IconBorder);
+                    Icon?.Draw(new Vector2(size, size), IconTint, IconBorder, IconBackgroundColor, IconScaleMode);
                 }
 
                 ImGui.NextColumn();

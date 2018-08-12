@@ -1,14 +1,11 @@
-﻿using ImGuiNET;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-using XnaInp = Microsoft.Xna.Framework.Input;
-
-namespace MUI.ImGuiEx
+namespace ImGuiNET.FNA
 {
     /// <summary>
     /// ImGui renderer for use with FNA
@@ -206,13 +203,13 @@ namespace MUI.ImGuiEx
 
             for (int i = 0; i < _keys.Count; i++)
             {
-                io.KeysDown[_keys[i]] = keyboard.IsKeyDown((XnaInp.Keys)_keys[i]);
+                io.KeysDown[_keys[i]] = keyboard.IsKeyDown((Keys)_keys[i]);
             }
 
-            io.ShiftPressed = keyboard.IsKeyDown(XnaInp.Keys.LeftShift) || keyboard.IsKeyDown(XnaInp.Keys.RightShift);
-            io.CtrlPressed = keyboard.IsKeyDown(XnaInp.Keys.LeftControl) || keyboard.IsKeyDown(XnaInp.Keys.RightControl);
-            io.AltPressed = keyboard.IsKeyDown(XnaInp.Keys.LeftAlt) || keyboard.IsKeyDown(XnaInp.Keys.RightAlt);
-            io.SuperPressed = keyboard.IsKeyDown(XnaInp.Keys.LeftWindows) || keyboard.IsKeyDown(XnaInp.Keys.RightWindows);
+            io.ShiftPressed = keyboard.IsKeyDown(Keys.LeftShift) || keyboard.IsKeyDown(Keys.RightShift);
+            io.CtrlPressed = keyboard.IsKeyDown(Keys.LeftControl) || keyboard.IsKeyDown(Keys.RightControl);
+            io.AltPressed = keyboard.IsKeyDown(Keys.LeftAlt) || keyboard.IsKeyDown(Keys.RightAlt);
+            io.SuperPressed = keyboard.IsKeyDown(Keys.LeftWindows) || keyboard.IsKeyDown(Keys.RightWindows);
 
             io.DisplaySize = new System.Numerics.Vector2(_graphicsDevice.PresentationParameters.BackBufferWidth, _graphicsDevice.PresentationParameters.BackBufferHeight);
             io.DisplayFramebufferScale = new System.Numerics.Vector2(1f, 1f);

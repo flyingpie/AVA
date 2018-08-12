@@ -111,7 +111,7 @@ namespace AVA.Plugins.WebQuery
             {
                 ImGui.SetCursorScreenPos(new Vector2(ImGui.GetContentRegionAvailableWidth() / 2f - IconWidth / 2, ImGui.GetCursorScreenPos().Y));
 
-                _command.GetIcon().Draw(new Vector2(IconWidth, IconWidth * _command.GetIcon().Ratio), new Vector4(.5f), Vector4.Zero);
+                _command.GetIcon().Draw(new Vector2(IconWidth, IconWidth * _command.GetIcon().Ratio), new Vector4(.5f), Vector4.Zero, Vector4.Zero);
             }
         }
 

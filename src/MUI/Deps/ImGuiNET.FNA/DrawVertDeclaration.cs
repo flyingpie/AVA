@@ -1,7 +1,6 @@
-﻿using ImGuiNET;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace MUI.ImGuiEx
+namespace ImGuiNET.FNA
 {
     public static class DrawVertDeclaration
     {

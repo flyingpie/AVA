@@ -22,10 +22,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="ImGuiEx\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Update="Deps\FontAwesome\FA.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>

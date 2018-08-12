@@ -6,6 +6,12 @@ namespace MUI.Graphics
 {
     public class AnimatedImage : Image
     {
+        public override int Width => (int)(_spriteSheet.Width * _tileWidthUv);
+
+        public override int Height => (int)(_spriteSheet.Height * _tileHeightUv);
+
+        public override float Ratio => Height / Width;
+
         private Image _spriteSheet;
 
         private int _horizontalTileCount;
@@ -25,6 +31,8 @@ namespace MUI.Graphics
         private Vector2 _uv0;
         private Vector2 _uv1;
 
+        private int _lastFrameNumber;
+
         public AnimatedImage(Image spriteSheet, int horizontalTileCount, int verticalTileCount, int imageCount, Direction direction, int fps)
         {
             _spriteSheet = spriteSheet ?? throw new ArgumentNullException(nameof(spriteSheet));
@@ -42,16 +50,24 @@ namespace MUI.Graphics
             _maxDelta = 1f / fps;
         }
 
-        public override void Draw(Vector2 size, Vector4 tintColor, Vector4 borderColor, ScaleMode scaleMode = ScaleMode.Fit)
+        public override void Draw(Vector2 size, Vector4 tintColor, Vector4 borderColor, Vector4 backgroundColor, ScaleMode scaleMode = ScaleMode.Fit)
         {
             UpdateActiveTile();
 
-            // TODO: Add scale mode
-            ImGui.Image(_spriteSheet.Pointer, size, _uv0, _uv1, tintColor, borderColor);
+            base.Draw(size, tintColor, borderColor, backgroundColor, scaleMode);
+        }
+
+        protected override void DrawImage(Vector4 tintColor, Vector2 targetImageSize)
+        {
+            ImGui.Image(_spriteSheet.Pointer, targetImageSize, _uv0, _uv1, tintColor, Vector4.Zero);
         }
 
         private void UpdateActiveTile()
         {
+            if (UIContext.Instance.FrameNumber == _lastFrameNumber) return;
+
+            _lastFrameNumber = UIContext.Instance.FrameNumber;
+
             _time += ImGui.GetIO().DeltaTime;
 
             if (_time >= _maxDelta)

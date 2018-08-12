@@ -1,7 +1,7 @@
 ﻿using ImGuiNET;
+using ImGuiNET.FNA;
 using Microsoft.Xna.Framework.Graphics;
 using MUI.Graphics;
-using MUI.ImGuiEx;
 using MUI.Logging;
 using System;
 using System.Collections.Concurrent;
@@ -12,9 +12,13 @@ namespace MUI
 {
     public class ResourceManager
     {
+        public static ResourceManager Instance { get; private set; }
+
         public Image DefaultImage { get; private set; }
 
         public Image LoadingImage { get; private set; }
+
+        public Image WhiteImage { get; private set; }
 
         private ConcurrentDictionary<string, Image> _loadedImages;
         private TextureLoader _textureLoader;
@@ -33,6 +37,8 @@ namespace MUI
 
             _graphicsDevice = graphicsDevice;
             _imGuiRenderer = imGuiRenderer;
+
+            Instance = this;
         }
 
         public void Init()
@@ -40,6 +46,10 @@ namespace MUI
             // TODO: Move this
             DefaultImage = _textureLoader.Load(File.ReadAllBytes("Resources/Images/default-image.png"));
             LoadingImage = new AnimatedImage(_textureLoader.Load(File.ReadAllBytes("Resources/Images/loading-image.png")), 9, 5, 40, Direction.TopToBottom, 5);
+
+            var transp = new System.Drawing.Bitmap(1, 1);
+            System.Drawing.Graphics.FromImage(transp).Clear(System.Drawing.Color.White);
+            WhiteImage = _textureLoader.Load(transp.ToByteArray());
         }
 
         public Font LoadFont(string path, int pixelSize)

@@ -44,8 +44,8 @@ namespace AVA.Plugins.Help
             .OrderBy(qe => qe.Name)
             .Select(qe => (IListQueryResult)new ListQueryResult()
             {
-                Icon = qe.Icon != FAIcon.None ? ResourceManager.LoadFontAwesomeIcon(qe.Icon, ListQueryResult.IconSize) : null,
-                IconBorder = Vector4.Zero,
+                Icon = qe.Icon != FAIcon.None ? ResourceManager.LoadFontAwesomeIcon(qe.Icon, ListQueryResult.IconSize / 3) : null,
+                IconScaleMode = MUI.Graphics.ScaleMode.Center,
                 IconTint = new Vector4(1, 1, 1, .4f),
                 Name = $"{qe.Name} (eg. '{qe.ExampleUsage}')",
                 Description = qe.Description,

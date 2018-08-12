@@ -1,7 +1,6 @@
 ﻿using AVA.Core.QueryExecutors.ListQuery;
 using MUI;
 using MUI.DI;
-using MUI.Graphics;
 using MUI.Logging;
 using MUI.Win32.Extensions;
 using System.Collections.Generic;
@@ -15,44 +14,40 @@ namespace AVA.Plugins.Dummy
 
         public override string Prefix => "dummy ";
 
-        private Image _dummyImage;
-
         private ListQueryResult[] _dummyResults;
         private ILog _log = Log.Get<DummyQueryExecutor>();
 
         [RunAfterInject]
         private void Initialize()
         {
-            _dummyImage = ResourceManager.LoadImage(@"Resources\Images\crashlog-doom.png");
-
             _dummyResults = new[]
             {
                 new ListQueryResult()
                 {
                     Name = "Notepad++",
                     Description = @"D:\Syncthing\Apps\Notepad++\notepad++.exe",
-                    Icon = _dummyImage,
+                    Icon = ResourceManager.DefaultImage,
                     OnExecute = t => _log.Info("npp")
                 },
                 new ListQueryResult()
                 {
                     Name = "TailBlazer",
                     Description = @"D:\Syncthing\Apps\Dev\TailBlazer\TailBlazer.exe",
-                    Icon = _dummyImage,
+                    Icon = ResourceManager.DefaultImage,
                     OnExecute = t => _log.Info("tb")
                 },
                 new ListQueryResult()
                 {
                     Name = "Powershell",
                     Description = @"C:\Users\Marco van den Oever\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Windows PowerShell\Windows PowerShell.lnk",
-                    Icon = _dummyImage,
+                    Icon = ResourceManager.DefaultImage,
                     OnExecute = t => _log.Info("ps")
                 },
                 new ListQueryResult()
                 {
                     Name = "KeePass",
                     Description = @"D:\Syncthing\Apps\KeePass\KeePass.exe",
-                    Icon = _dummyImage,
+                    Icon = ResourceManager.DefaultImage,
                     OnExecute = t => _log.Info("kp")
                 }
             };

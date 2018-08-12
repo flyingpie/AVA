@@ -1,7 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ImGuiNET.FNA;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MUI.Extensions;
-using MUI.ImGuiEx;
 using MUI.Logging;
 using SDL2;
 using System;
@@ -12,6 +12,8 @@ namespace MUI
 {
     public class UIContext : Game
     {
+        public static UIContext Instance { get; private set; }
+
         public ResourceManager ResourceManager { get; set; }
 
         public SpriteBatch SpriteBatch { get; private set; }
@@ -24,6 +26,8 @@ namespace MUI
         private ImGuiRenderer _imGuiRenderer;
 
         private bool _isVisible = true;
+
+        public int FrameNumber { get; private set; }
 
         public bool IsVisible
         {
@@ -48,6 +52,8 @@ namespace MUI
 
         public UIContext(int width, int height)
         {
+            Instance = this;
+
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = width;
             _graphics.PreferredBackBufferHeight = height;
@@ -110,6 +116,8 @@ namespace MUI
 
         protected override void Update(GameTime gameTime)
         {
+            FrameNumber++;
+
             if (IsActive && !_wasActive) FocusGained(this, EventArgs.Empty);
             if (!IsActive && _wasActive) FocusLost(this, EventArgs.Empty);
 
