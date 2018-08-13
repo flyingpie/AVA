@@ -23,6 +23,13 @@ namespace MUI.Glyphs
             return resourceManager.LoadGlyph(faIcon.Unicode, GetFAFontFamily(faIcon.Style), fontSizeEm);
         }
 
+        public static Image LoadFontAwesomeIconRotating(this ResourceManager resourceManager, FAIcon icon, int fontSizeEm)
+        {
+            var faIcon = icon.GetFAIconAttribute();
+
+            return resourceManager.LoadGlyphSpritesheet(faIcon.Unicode, GetFAFontFamily(faIcon.Style), fontSizeEm);
+        }
+
         private static System.Drawing.FontFamily GetFAFontFamily(FAStyle style)
         {
             switch (style)

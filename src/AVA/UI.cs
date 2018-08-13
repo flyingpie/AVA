@@ -41,8 +41,8 @@ namespace AVA
 
             // TODO: Move to settings
             // Toggle on Alt-Space
-            HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.Space, KeyModifiers.Alt);
-            //HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.Z, KeyModifiers.Alt);
+            //HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.Space, KeyModifiers.Alt);
+            HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.Z, KeyModifiers.Alt);
             HotKeyManager.HotKeyPressed += (s, a) => Toggle();
 
             // Minimize on focus lost

@@ -1,6 +1,7 @@
 ﻿using ImGuiNET;
 using ImGuiNET.FNA;
 using Microsoft.Xna.Framework.Graphics;
+using MUI.Glyphs;
 using MUI.Graphics;
 using MUI.Logging;
 using System;
@@ -45,7 +46,8 @@ namespace MUI
         {
             // TODO: Move this
             DefaultImage = _textureLoader.Load(File.ReadAllBytes("Resources/Images/default-image.png"));
-            LoadingImage = new AnimatedImage(_textureLoader.Load(File.ReadAllBytes("Resources/Images/loading-image.png")), 9, 5, 40, Direction.TopToBottom, 5);
+            //LoadingImage = new AnimatedImage(_textureLoader.Load(File.ReadAllBytes("Resources/Images/loading-image.png")), 9, 5, 40, Direction.TopToBottom, 5);
+            LoadingImage = this.LoadFontAwesomeIconRotating(FontAwesomeCS.FAIcon.CogSolid, 32);
 
             var transp = new System.Drawing.Bitmap(1, 1);
             System.Drawing.Graphics.FromImage(transp).Clear(System.Drawing.Color.White);
@@ -68,6 +70,16 @@ namespace MUI
                 var img = GlyphRenderer.RenderGlyph(glyph, fontFamily, fontSizeEm, System.Drawing.Color.White);
 
                 return loader.Load(img.ToByteArray());
+            });
+        }
+
+        public Image LoadGlyphSpritesheet(string glyph, System.Drawing.FontFamily fontFamily, int fontSizeEm)
+        {
+            return LoadImage($"glyph_spritesheet_{fontFamily.Name}_{fontSizeEm}_{glyph}", loader =>
+            {
+                var img = GlyphRenderer.RenderGlyphSpritesheet(glyph, fontFamily, fontSizeEm, System.Drawing.Color.White);
+
+                return new AnimatedImage(loader.Load(img.ToByteArray()), 20, 20, 400, Direction.LeftToRight, 20);
             });
         }
 
