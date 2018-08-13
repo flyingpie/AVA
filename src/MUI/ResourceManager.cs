@@ -47,7 +47,7 @@ namespace MUI
             // TODO: Move this
             DefaultImage = _textureLoader.Load(File.ReadAllBytes("Resources/Images/default-image.png"));
             //LoadingImage = new AnimatedImage(_textureLoader.Load(File.ReadAllBytes("Resources/Images/loading-image.png")), 9, 5, 40, Direction.TopToBottom, 5);
-            LoadingImage = this.LoadFontAwesomeIconRotating(FontAwesomeCS.FAIcon.CogSolid, 32);
+            LoadingImage = this.LoadFontAwesomeIconRotating(FontAwesomeCS.FAIcon.CircleNotchSolid, 32);
 
             var transp = new System.Drawing.Bitmap(1, 1);
             System.Drawing.Graphics.FromImage(transp).Clear(System.Drawing.Color.White);

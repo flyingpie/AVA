@@ -1,5 +1,7 @@
-﻿using System.Drawing;
+﻿using FontAwesomeCS;
+using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -12,43 +14,58 @@ namespace MUI.Graphics
     {
         public static SysDraw.Image RenderGlyph(string glyph, FontFamily fontFamily, int fontSizeEm, Color color, int rotation = 0, int padding = 0)
         {
-            // Create font
-            var font = new Font(fontFamily, fontSizeEm);
 
-            // Measure glyph size
-            var measurer = SysDraw.Graphics.FromImage(new Bitmap(1, 1));
-            var size = measurer.MeasureString(glyph, font);
-            size.Width += padding * 2;
-            size.Height += padding * 2;
+            var b = new Bitmap(100, 100);
+            var graph = SysDraw.Graphics.FromImage(b);
+            graph.Clear(Color.Magenta);
 
-            // Create image
-            var image = new Bitmap((int)size.Width, (int)size.Height);
+            var font = new Font(fontFamily, 64);
 
-            // Draw glyph
-            using (var graphics = SysDraw.Graphics.FromImage(image))
-            {
-                graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
-                graphics.PixelOffsetMode = PixelOffsetMode.Half;
-                graphics.CompositingQuality = CompositingQuality.HighQuality;
-                graphics.TextContrast = 1;
+            DrawCenteredText(graph, fontFamily, 64, new Rectangle(0, 0, 100, 100), glyph, rotation);
 
-                // Rotate
-                var moveX = size.Width / 2f;
-                var moveY = size.Height / 2f;
+            //b.Save(@"C:\Temp\tile.png", SysDraw.Imaging.ImageFormat.Png);
 
-                graphics.TranslateTransform(moveX, moveY);
-                graphics.RotateTransform(rotation);
-                graphics.TranslateTransform(-moveX, -moveY);
+            return b;
 
-                // Draw
-                graphics.DrawString(glyph, font, new SolidBrush(color), padding, padding);
-            }
+            //// Create font
+            //var font = new Font(fontFamily, fontSizeEm);
 
-            return image;
+            //// Measure glyph size
+            //var measurer = SysDraw.Graphics.FromImage(new Bitmap(1, 1));
+            //var size = measurer.MeasureString(glyph, font);
+            //size.Width += padding * 2;
+            //size.Height += padding * 2;
+
+            //// Create image
+            //var image = new Bitmap((int)size.Width, (int)size.Height);
+
+            //// Draw glyph
+            //using (var graphics = SysDraw.Graphics.FromImage(image))
+            //{
+            //    graphics.Clear(Color.Black);
+            //    graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
+            //    graphics.PixelOffsetMode = PixelOffsetMode.Half;
+            //    graphics.CompositingQuality = CompositingQuality.HighQuality;
+            //    graphics.TextContrast = 1;
+
+            //    // Rotate
+            //    var moveX = size.Width / 2f;
+            //    var moveY = size.Height / 2f;
+
+            //    graphics.TranslateTransform(moveX, moveY);
+            //    graphics.RotateTransform(rotation);
+            //    graphics.TranslateTransform(-moveX, -moveY);
+
+            //    // Draw
+            //    graphics.DrawString(glyph, font, new SolidBrush(color), padding, padding);
+            //}
+
+            //return image;
         }
 
         public static SysDraw.Image RenderGlyphSpritesheet(string glyph, FontFamily fontFamily, int fontSizeEm, Color color)
         {
+
             var horizontalTileCount = 20f;
             var verticalTileCount = 20f;
             var padding = 10;
@@ -69,13 +86,47 @@ namespace MUI.Graphics
 
                 var tile = RenderGlyph(glyph, fontFamily, fontSizeEm, color, (int)rotation, padding);
 
+
                 var tileX = x * tileSize.Width;
                 var tileY = y * tileSize.Height;
 
                 gr.DrawImage(tile, tileX, tileY);
             }
 
+            //bmp.Save(@"C:\Temp\sheet.png", ImageFormat.Png);
+
             return bmp;
+        }
+
+        public static void DrawCenteredText(SysDraw.Graphics canvas, FontFamily fontFamily, float fontSizeEm, Rectangle bounds, string text, int rotation = 0)
+        {
+            // Create font
+            var font = new Font(fontFamily, fontSizeEm);
+
+            var path = new GraphicsPath();
+            path.AddString(text, font.FontFamily, (int)font.Style, fontSizeEm, new Point(0, 0), StringFormat.GenericTypographic);
+
+            // Determine physical size of the character when rendered
+            var area = Rectangle.Round(path.GetBounds());
+
+            // Slide it to be centered in the specified bounds
+            var offset = new Point(bounds.Left + (bounds.Width / 2 - area.Width / 2) - area.Left, bounds.Top + (bounds.Height / 2 - area.Height / 2) - area.Top);
+            var translate = new Matrix();
+            translate.Translate(offset.X, offset.Y);
+            path.Transform(translate);
+
+            // Now render it however desired
+            canvas.SmoothingMode = SmoothingMode.AntiAlias;
+
+            // Rotate
+            var moveX = bounds.Width / 2f;
+            var moveY = bounds.Height / 2f;
+
+            canvas.TranslateTransform(moveX, moveY);
+            canvas.RotateTransform(rotation);
+            canvas.TranslateTransform(-moveX, -moveY);
+
+            canvas.FillPath(SystemBrushes.ControlText, path);
         }
 
         public static FontFamily LoadFontFamily(string path) => LoadFontFamily(File.ReadAllBytes(path));
