@@ -47,9 +47,8 @@ namespace WindowsControlPanelItems
         private static RegistryKey nameSpace = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ControlPanel\\NameSpace");
         private static RegistryKey clsid = Registry.ClassesRoot.OpenSubKey("CLSID");
 
-        public static List<ControlPanelItem> Create(uint iconSize)
+        public static List<ControlPanelItem> Create()
         {
-            int size = (int)iconSize;
             RegistryKey currentKey;
             ProcessStartInfo executablePath;
             List<WindowsControlPanelItems.ControlPanelItem> controlPanelItems = new List<WindowsControlPanelItems.ControlPanelItem>();
@@ -72,9 +71,7 @@ namespace WindowsControlPanelItems
                         {
                             infoTip = getInfoTip(currentKey);
 
-                            myIcon = getIcon(currentKey, size);
-
-                            controlPanelItems.Add(new ControlPanelItem(localizedString, infoTip, executablePath, myIcon));
+                            controlPanelItems.Add(new ControlPanelItem(localizedString, infoTip, executablePath.ToPSI(), key));
                         }
                     }
                 }
@@ -215,8 +212,10 @@ namespace WindowsControlPanelItems
             return infoTip;
         }
 
-        private static Icon getIcon(RegistryKey currentKey, int iconSize)
+        public static Icon getIcon(string key, int iconSize)
         {
+            var currentKey = clsid.OpenSubKey(key);
+
             IntPtr iconPtr = IntPtr.Zero;
             List<string> iconString;
             IntPtr dataFilePointer;
