@@ -1,4 +1,4 @@
-﻿using ImGuiNET.FNA;
+﻿using ImGuiNET.XNA;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;

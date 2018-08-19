@@ -1,5 +1,5 @@
 ﻿using ImGuiNET;
-using ImGuiNET.FNA;
+using ImGuiNET.XNA;
 using Microsoft.Xna.Framework.Graphics;
 using MUI.Graphics;
 using MUI.Logging;

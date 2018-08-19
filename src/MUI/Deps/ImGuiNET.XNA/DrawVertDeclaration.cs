@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace ImGuiNET.FNA
+namespace ImGuiNET.XNA
 {
     public static class DrawVertDeclaration
     {

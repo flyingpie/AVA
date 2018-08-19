@@ -1,4 +1,4 @@
-﻿using ImGuiNET.FNA;
+﻿using ImGuiNET.XNA;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MUI.Extensions;
@@ -61,7 +61,7 @@ namespace MUI
 
             SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _imGuiRenderer = new ImGuiRenderer(GraphicsDevice);
+            _imGuiRenderer = new ImGuiRenderer(this);
 
             ResourceManager = new ResourceManager(GraphicsDevice, _imGuiRenderer);
             Fonts.Load(ResourceManager);
