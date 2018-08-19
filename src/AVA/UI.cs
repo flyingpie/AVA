@@ -113,6 +113,13 @@ namespace AVA
 
             _queryBox.Draw();
 
+            if (_queryContext.Focus)
+            {
+                _queryBox.Focus();
+
+                _queryContext.Focus = false;
+            }
+
             // Update the query context if the input buffer was changed
             if (_queryBox.IsChanged)
             {

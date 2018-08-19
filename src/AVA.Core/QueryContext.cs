@@ -13,6 +13,8 @@
 
         public bool ResetText { get; set; } = true;
 
+        public bool Focus { get; set; } = true;
+
         public string Arg
         {
             get

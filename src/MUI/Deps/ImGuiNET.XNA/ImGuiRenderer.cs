@@ -142,7 +142,7 @@ namespace ImGuiNET.XNA
         {
             var io = ImGui.GetIO();
 
-            _keys.Add(io.KeyMap[GuiKey.Tab] = (int)Keys.Tab);
+            //_keys.Add(io.KeyMap[GuiKey.Tab] = (int)Keys.Tab);
             _keys.Add(io.KeyMap[GuiKey.LeftArrow] = (int)Keys.Left);
             _keys.Add(io.KeyMap[GuiKey.RightArrow] = (int)Keys.Right);
             _keys.Add(io.KeyMap[GuiKey.UpArrow] = (int)Keys.Up);
@@ -336,6 +336,7 @@ namespace ImGuiNET.XNA
                     {
                         pass.Apply();
 
+#pragma warning disable CS0618 // // FNA does not expose an alternative method.
                         _graphicsDevice.DrawIndexedPrimitives(
                             primitiveType: PrimitiveType.TriangleList,
                             baseVertex: vtxOffset,
@@ -344,6 +345,7 @@ namespace ImGuiNET.XNA
                             startIndex: idxOffset,
                             primitiveCount: (int)drawCmd->ElemCount / 3
                         );
+#pragma warning restore CS0618
                     }
 
                     idxOffset += (int)drawCmd->ElemCount;

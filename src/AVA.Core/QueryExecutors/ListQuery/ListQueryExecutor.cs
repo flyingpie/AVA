@@ -73,13 +73,13 @@ namespace AVA.Core.QueryExecutors.ListQuery
             return false;
         }
 
-        public void Draw()
+        public virtual void Draw()
         {
             // Previous
-            if (Input.IsKeyPressed(Keys.Up) || (Input.IsKeyPressed(Keys.K) && Input.IsKeyDown(Keys.LeftControl)) || (Input.IsKeyPressed(Keys.Tab) && Input.IsKeyDown(Keys.LeftShift))) PreviousItem();
+            if (Input.IsKeyPressed(Keys.Up) || (Input.IsKeyPressed(Keys.K) && Input.IsKeyDown(Keys.LeftControl))) PreviousItem();
 
             // Next
-            if (Input.IsKeyPressed(Keys.Down) || (Input.IsKeyPressed(Keys.J) && Input.IsKeyDown(Keys.LeftControl)) || (Input.IsKeyPressed(Keys.Tab) && !Input.IsKeyDown(Keys.LeftShift))) NextItem();
+            if (Input.IsKeyPressed(Keys.Down) || (Input.IsKeyPressed(Keys.J) && Input.IsKeyDown(Keys.LeftControl))) NextItem();
 
             for (int i = 0; i < QueryResults.Count; i++)
             {
