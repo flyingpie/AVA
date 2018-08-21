@@ -32,7 +32,8 @@ namespace AVA
             // TODO: Remove (pries cache)
             container.Resolve<Indexing.Indexer>().Query("conemu");
 
-            uiContext.Run(container.Resolve<UI>());
+            uiContext.PushUI(container.Resolve<UI>());
+            uiContext.Run();
         }
 
         private static void SetupNativeDependencies()

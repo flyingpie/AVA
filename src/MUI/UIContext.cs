@@ -5,6 +5,7 @@ using MUI.Extensions;
 using MUI.Logging;
 using SDL2;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,6 +30,8 @@ namespace MUI
 
         public int FrameNumber { get; private set; }
 
+        private Stack<UIBase> _uis;
+
         public bool IsVisible
         {
             get => _isVisible;
@@ -48,11 +51,11 @@ namespace MUI
 
         private bool _wasActive;
 
-        private UIBase _ui;
-
         public UIContext(int width, int height)
         {
             Instance = this;
+
+            _uis = new Stack<UIBase>();
 
             _graphics = new GraphicsDeviceManager(this);
             _graphics.PreferredBackBufferWidth = width;
@@ -72,7 +75,7 @@ namespace MUI
 
         private ILog _sdlLog = Log.Get(typeof(SDL));
 
-        public void CenterWindowToDisplayWithMouse(IntPtr windowHandle)
+        public void CenterWindowToDisplayWithMouse()
         {
             Sdl2Extensions.CenterWindowToDisplayWithMouse(Window.Handle);
         }
@@ -84,16 +87,29 @@ namespace MUI
 
         public void Resize(int width, int height)
         {
+            if (_graphics.PreferredBackBufferHeight == width && _graphics.PreferredBackBufferHeight == height) return;
+
             _graphics.PreferredBackBufferWidth = width;
             _graphics.PreferredBackBufferHeight = height;
             _graphics.ApplyChanges();
+
+            CenterWindowToDisplayWithMouse();
         }
 
-        public void Run(UIBase ui)
+        public void PushUI(UIBase ui)
         {
-            _ui = ui;
+            Resize(ui.Width, ui.Height);
 
-            Run();
+            _uis.Push(ui);
+        }
+
+        public UIBase PopUI()
+        {
+            var ui = _uis.Pop();
+
+            Resize(_uis.Peek().Width, _uis.Peek().Height);
+
+            return ui;
         }
 
         protected override void Initialize()
@@ -107,14 +123,14 @@ namespace MUI
 
         protected override void LoadContent()
         {
-            _ui.Load();
+            _uis.Peek().Load();
 
             base.LoadContent();
         }
 
         protected override void UnloadContent()
         {
-            _ui.Unload();
+            _uis.Peek().Unload();
 
             base.UnloadContent();
         }
@@ -141,7 +157,7 @@ namespace MUI
                 _updateTask = null;
 
             if (_updateTask == null)
-                _updateTask = _ui.Update();
+                _updateTask = _uis.Peek().Update();
 
             base.Update(gameTime);
         }
@@ -155,7 +171,7 @@ namespace MUI
             Input.InputSnapshot.Update();
             _imGuiRenderer.BeforeLayout(gameTime);
 
-            _ui.Draw();
+            _uis.Peek().Draw();
 
             SpriteBatch.End();
 

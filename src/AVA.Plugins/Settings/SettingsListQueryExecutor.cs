@@ -1,4 +1,5 @@
-﻿using AVA.Core.QueryExecutors;
+﻿using AVA.Core;
+using AVA.Core.QueryExecutors;
 using AVA.Core.QueryExecutors.ListQuery;
 using AVA.Indexing;
 using FontAwesomeCS;
@@ -19,7 +20,18 @@ namespace AVA.Plugins.Settings
         {
             return new[]
             {
-                CreateRebuildIndexSetting()
+                CreateRebuildIndexSetting(),
+                new ListQueryResult()
+                {
+                    Name = "Open settings",
+                    Icon = FAIcon.CogSolid,
+                    OnExecute = qc =>
+                    {
+                        qc.HideUI = false;
+
+                        UIContext.Instance.PushUI(new SettingsUI());
+                    }
+                }
             };
         }
 

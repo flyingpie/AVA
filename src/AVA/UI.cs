@@ -31,6 +31,9 @@ namespace AVA
             _log = Log.Get(this);
             _queryContext = new QueryContext();
             _queryBox = new TextBox();
+
+            Width = 600;
+            Height = 300;
         }
 
         public override void Load()
@@ -164,7 +167,7 @@ namespace AVA
         {
             _log.Info("Maximize");
 
-            Context.CenterWindowToDisplayWithMouse(Context.Window.Handle);
+            Context.CenterWindowToDisplayWithMouse();
 
             Context.IsVisible = true;
 

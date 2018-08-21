@@ -4,6 +4,10 @@ namespace MUI
 {
     public abstract class UIBase
     {
+        public int Width { get; set; }
+
+        public int Height { get; set; }
+
         public virtual void Load()
         {
         }
