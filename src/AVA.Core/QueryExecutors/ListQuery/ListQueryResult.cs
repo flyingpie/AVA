@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 
 namespace AVA.Core.QueryExecutors.ListQuery
 {
+    public enum ListMode
+    {
+        Large,
+        Small
+    }
+
     public class ListQueryResult : IListQueryResult
     {
         public static readonly int IconSize = 50;
@@ -19,6 +25,8 @@ namespace AVA.Core.QueryExecutors.ListQuery
 
         public ImageBox Icon { get; set; }
 
+        public ListMode Mode { get; set; } = ListMode.Large;
+
         public Action<QueryContext> OnExecute { get; set; }
 
         public Func<QueryContext, Task> OnExecuteAsync { get; set; }
@@ -26,6 +34,8 @@ namespace AVA.Core.QueryExecutors.ListQuery
         public virtual void Draw(bool isSelected)
         {
             ImGui.PushFont(Fonts.Regular24);
+
+            var IconSize = Mode == ListMode.Large ? 50 : 25;
 
             // Selection
             if (isSelected) ImGui.PushStyleColor(ColorTarget.ChildBg, new Vector4(1, 1, 1, .1f));
@@ -49,7 +59,7 @@ namespace AVA.Core.QueryExecutors.ListQuery
                 {
                     ImGui.Text(Name);
 
-                    if (!string.IsNullOrWhiteSpace(Description))
+                    if (Mode == ListMode.Large && !string.IsNullOrWhiteSpace(Description))
                     {
                         ImGui.PushFont(Fonts.Regular16);
                         ImGui.Text(Description, new Vector4(1f, 1f, 1f, 0.5f));

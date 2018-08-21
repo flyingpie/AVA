@@ -16,7 +16,10 @@ namespace AVA.Plugins.Cd
     {
         private static readonly Regex IsDriveLetterRegex = new Regex(@"^[A-Za-z]:\\");
 
+        // Settings
         private static readonly string DefaultDrive = "C:";
+
+        private static bool IncludeHiddenFiles = false;
 
         private QueryContext _qc; // TODO: Make nicer
         private Stack<string> _last = new Stack<string>();
@@ -37,29 +40,53 @@ namespace AVA.Plugins.Cd
 
                 var pattern = uri.Segments.Last();
                 if (pattern.EndsWith("/")) pattern = string.Empty;
-                pattern = $"{pattern}*";
 
-                var currentRoot = new DirectoryInfo(string.Join("", segments));
+                var items = FindFileSystemItems(string.Join("", segments), pattern);
 
-                if (currentRoot.Exists)
+                _selected = items.FirstOrDefault();
+
+                return items.Select(item => new ListQueryResult()
                 {
-                    var files = currentRoot.GetFiles(pattern, SearchOption.TopDirectoryOnly).Take(10).Cast<FileSystemInfo>();
-                    var dirs = currentRoot.GetDirectories(pattern, SearchOption.TopDirectoryOnly).Take(10).Cast<FileSystemInfo>();
-                    var items = dirs.Concat(files);
-
-                    _selected = items.FirstOrDefault();
-
-                    return items.Select(item => new ListQueryResult()
-                    {
-                        Icon = ResourceManager.Instance.LoadImageFromIcon(item.FullName),
-                        Name = item.Name,
-                        Description = item.FullName,
-                        OnExecute = t => Process.Start(item.FullName).Dispose()
-                    });
-                }
+                    Icon = ResourceManager.Instance.LoadImageFromIcon(item.FullName),
+                    Name = item.Name,
+                    Description = item.FullName,
+                    OnExecute = t => Process.Start(item.FullName).Dispose(),
+                    Mode = ListMode.Small
+                });
             }
 
             return Enumerable.Empty<IListQueryResult>();
+        }
+
+        private static IEnumerable<FileSystemInfo> FindFileSystemItems(string path, string pattern)
+        {
+            var wildCarded = $"*{pattern}*";
+            var dirInfo = new DirectoryInfo(path);
+
+            if (dirInfo.Exists)
+            {
+                var files = dirInfo
+                    .GetFiles(wildCarded, SearchOption.TopDirectoryOnly)
+                    .Where(f => IncludeHiddenFiles || !f.Attributes.HasFlag(FileAttributes.Hidden))
+                    .OrderBy(f => !f.Name.ToLowerInvariant().StartsWith(pattern.ToLowerInvariant()))
+                    .ThenBy(f => f.Name)
+                    .Take(25)
+                    .Cast<FileSystemInfo>()
+                ;
+
+                var dirs = dirInfo
+                    .GetDirectories(wildCarded, SearchOption.TopDirectoryOnly)
+                    .Where(f => IncludeHiddenFiles || !f.Attributes.HasFlag(FileAttributes.Hidden))
+                    .OrderBy(f => !f.Name.ToLowerInvariant().StartsWith(pattern.ToLowerInvariant()))
+                    .ThenBy(f => f.Name)
+                    .Take(25)
+                    .Cast<FileSystemInfo>()
+                ;
+
+                return dirs.Concat(files);
+            }
+
+            return Enumerable.Empty<FileSystemInfo>();
         }
 
         public override void Draw()
@@ -74,7 +101,7 @@ namespace AVA.Plugins.Cd
                 {
                     _last.Push(_qc.Text);
 
-                    _qc.Text = _selected.FullName + "\\";
+                    _qc.Text = _selected.FullName + (_selected.Attributes == FileAttributes.Directory ? "\\" : "");
                 }
 
                 _qc.Focus = true;

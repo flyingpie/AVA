@@ -82,6 +82,13 @@ namespace MUI
             SDL.SDL_RaiseWindow(Window.Handle);
         }
 
+        public void Resize(int width, int height)
+        {
+            _graphics.PreferredBackBufferWidth = width;
+            _graphics.PreferredBackBufferHeight = height;
+            _graphics.ApplyChanges();
+        }
+
         public void Run(UIBase ui)
         {
             _ui = ui;

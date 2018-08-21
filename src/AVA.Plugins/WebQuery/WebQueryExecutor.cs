@@ -34,28 +34,49 @@ namespace AVA.Plugins.WebQuery
             {
                 new Command()
                 {
-                    Prefix = "ddg ",
+                    Prefix = "ddg",
                     Icon = "WebQuery/Resources/Images/DuckDuckGo.png",
                     Pattern = "https://duckduckgo.com/?q={term}",
                     Description = "Duck Duck Go"
                 },
                 new Command()
                 {
-                    Prefix = "gh ",
+                    Prefix = "gh",
                     Icon = "WebQuery/Resources/Images/GitHub.png",
                     Pattern = "https://github.com/search?q={term}",
                     Description = "GitHub"
                 },
                 new Command()
                 {
-                    Prefix = "nuget ",
+                    Prefix = "imdb",
+                    Icon = FAIcon.ImdbBrands,
+                    Pattern = "https://www.imdb.com/find?ref_=nv_sr_fn&q={term}&s=all",
+                    Description = "IMDb"
+                },
+                new Command()
+                {
+                    Prefix = "nuget",
                     Icon = "WebQuery/Resources/Images/NuGet.png",
                     Pattern = "https://www.nuget.org/packages?q={term}",
                     Description = "NuGet"
                 },
                 new Command()
                 {
-                    Prefix = "wiki ",
+                    Prefix = "reddit",
+                    Icon = FAIcon.RedditBrands,
+                    Pattern = "https://www.reddit.com/search?q={term}",
+                    Description = "Reddit"
+                },
+                new Command()
+                {
+                    Prefix = "twitter",
+                    Icon = FAIcon.TwitterBrands,
+                    Pattern = "https://twitter.com/search?f=users&vertical=news&q={term}&src=typd",
+                    Description = "Twitter"
+                },
+                new Command()
+                {
+                    Prefix = "wiki",
                     Icon = "WebQuery/Resources/Images/Wikipedia.png",
                     Pattern = "https://en.wikipedia.org/w/index.php?search={term}",
                     Description = "Wikipedia"
@@ -65,7 +86,7 @@ namespace AVA.Plugins.WebQuery
 
         public override bool TryHandle(QueryContext query)
         {
-            _command = _commands.FirstOrDefault(c => query.HasPrefix(c.Prefix));
+            _command = _commands.FirstOrDefault(c => query.HasPrefix($"{c.Prefix} "));
             _term = query.Arg;
 
             return _command != null;
