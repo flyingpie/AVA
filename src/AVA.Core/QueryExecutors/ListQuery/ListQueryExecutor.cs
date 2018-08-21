@@ -44,6 +44,11 @@ namespace AVA.Core.QueryExecutors.ListQuery
 
         #region Query executor
 
+        [RunAfterInject]
+        public virtual void Initialize()
+        {
+        }
+
         public virtual bool TryHandle(QueryContext query)
         {
             SelectedItemIndex = 0;

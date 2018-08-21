@@ -1,4 +1,5 @@
 ﻿using AVA.Plugins.Dummy;
+using AVA.Plugins.FirefoxBookmarks.Models;
 using MUI;
 using MUI.DI;
 using System;
@@ -18,6 +19,7 @@ namespace AVA
             // TODO: Make nicer
             typeof(DummyQueryExecutor).GetType();
             typeof(Indexing.Indexer).GetType();
+            typeof(MozPlace).GetType();
 
             var uiContext = new UIContext(600, 300);
 

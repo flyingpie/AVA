@@ -17,6 +17,7 @@
     <ItemGroup>
         <ProjectReference Include="..\AVA.Core\AVA.Core.csproj" />
         <ProjectReference Include="..\AVA.Indexing\AVA.Indexing.csproj" />
+        <ProjectReference Include="..\AVA.Plugins.FirefoxBookmarks\AVA.Plugins.FirefoxBookmarks.csproj" />
         <ProjectReference Include="..\AVA.Plugins\AVA.Plugins.csproj" />
         <ProjectReference Include="..\MUI\MUI.csproj" />
         <ProjectReference Include="..\MUI.Win32\MUI.Win32.csproj" />
