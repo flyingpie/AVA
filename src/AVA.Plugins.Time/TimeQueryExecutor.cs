@@ -1,11 +1,14 @@
-﻿using AVA.Core.QueryExecutors.ListQuery;
+﻿using AVA.Core.QueryExecutors;
+using AVA.Core.QueryExecutors.ListQuery;
 using AVA.Plugins.Time.Models;
+using FontAwesomeCS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AVA.Plugins.Time
 {
+    [Help(Name = "Time", Description = "Lists times around the world", ExampleUsage = "time tokyo", Icon = FAIcon.ClockRegular)]
     public class TimeQueryExecutor : ListQueryExecutor
     {
         public static string DefaultTerm = "amsterdam";
@@ -34,7 +37,8 @@ namespace AVA.Plugins.Time
 
             return _cities
                 .Where(c => c.CityNameLower.Contains(term))
-                .OrderBy(c => !c.CityNameLower.StartsWith(term))
+                .OrderByDescending(c => c.CityNameLower == term)
+                .ThenByDescending(c => c.CityNameLower.StartsWith(term))
                 .ThenByDescending(c => c.Population)
                 .Take(25)
                 .GroupBy(c => c.CityNameLower).Select(c => c.First())
@@ -55,6 +59,7 @@ namespace AVA.Plugins.Time
                         Description = $"UTC+{netTimeZone.BaseUtcOffset.ToString("hh':'mm")} - {desc}"
                     };
                 })
+                .Take(4)
                 .ToList()
             ;
         }
