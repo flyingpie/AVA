@@ -73,10 +73,10 @@ namespace MUI
 
         public Image LoadImageFromUrl(string url)
         {
-            return LoadImage(url, loader => new LazyImage(DefaultImage, () =>
+            return LoadImage(url, loader => new LazyImage(DefaultImage, async () =>
             {
-                var response = new HttpClient().GetAsync(url).Result;
-                var data = response.Content.ReadAsByteArrayAsync().Result;
+                var response = await new HttpClient().GetAsync(url);
+                var data = await response.Content.ReadAsByteArrayAsync();
 
                 return loader.Load(data);
             }));

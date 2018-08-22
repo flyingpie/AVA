@@ -8,14 +8,18 @@ namespace MUI.Graphics
     public class LazyImage : Image
     {
         private Image _image;
-        private Func<Image> _loader;
+        private Func<Task<Image>> _loader;
 
         private Task _asc;
         private bool _isLoaded;
 
         private ILog _log;
 
-        public LazyImage(Image defaultImage, Func<Image> loader)
+        public LazyImage(Image defaultImage, Func<Image> loader) : this(defaultImage, () => Task.FromResult(loader()))
+        {
+        }
+
+        public LazyImage(Image defaultImage, Func<Task<Image>> loader)
         {
             _image = defaultImage;
             _loader = loader;
@@ -27,11 +31,11 @@ namespace MUI.Graphics
         {
             if (_asc == null && !_isLoaded)
             {
-                _asc = Task.Run(() =>
+                _asc = Task.Run(async () =>
                 {
                     try
                     {
-                        _image = _loader();
+                        _image = await _loader();
 
                         _isLoaded = true;
 

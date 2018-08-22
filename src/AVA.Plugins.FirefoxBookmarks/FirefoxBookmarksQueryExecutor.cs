@@ -61,7 +61,7 @@ namespace AVA.Plugins.FirefoxBookmarks
             return Directory
                 .GetFiles(appData, "places.sqlite", SearchOption.AllDirectories)
                 .Select(f => new FileInfo(f))
-                .OrderByDescending(f => f.LastAccessTime)
+                .OrderByDescending(f => f.LastWriteTime)
                 .FirstOrDefault();
         }
     }
