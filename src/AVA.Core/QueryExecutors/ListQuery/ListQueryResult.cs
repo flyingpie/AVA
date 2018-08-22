@@ -15,8 +15,6 @@ namespace AVA.Core.QueryExecutors.ListQuery
 
     public class ListQueryResult : IListQueryResult
     {
-        public static readonly int IconSize = 50;
-
         public string Id { get; set; } = Guid.NewGuid().ToString();
 
         public string Name { get; set; }
@@ -35,21 +33,21 @@ namespace AVA.Core.QueryExecutors.ListQuery
         {
             ImGui.PushFont(Fonts.Regular24);
 
-            var IconSize = Mode == ListMode.Large ? 50 : 25;
+            var iconSize = Mode == ListMode.Large ? 50 : 25;
 
             // Selection
             if (isSelected) ImGui.PushStyleColor(ColorTarget.ChildBg, new Vector4(1, 1, 1, .1f));
 
-            ImGui.BeginChild($"query-result-{Id}", new Vector2(ImGui.GetWindowContentRegionWidth(), IconSize), false, WindowFlags.Default);
+            ImGui.BeginChild($"query-result-{Id}", new Vector2(ImGui.GetWindowContentRegionWidth(), iconSize), false, WindowFlags.Default);
             {
                 ImGui.Columns(2, " ", false);
 
-                ImGui.SetColumnWidth(0, IconSize + 10);
+                ImGui.SetColumnWidth(0, iconSize + 10);
 
                 // Icon
                 if (Icon != null)
                 {
-                    Icon.Size = new Vector2(IconSize, IconSize);
+                    Icon.Size = new Vector2(iconSize, iconSize);
                     Icon.Draw();
                 }
 

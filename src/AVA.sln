@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA.Plugins", "AVA.Plugins\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA.Core", "AVA.Core\AVA.Core.csproj", "{63A0589F-15B2-44BC-92BC-DDF4A8A8FD0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVA.Plugins.FirefoxBookmarks", "AVA.Plugins.FirefoxBookmarks\AVA.Plugins.FirefoxBookmarks.csproj", "{AC68D0C2-E88A-4E6E-B80F-32296E25D9B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA.Plugins.FirefoxBookmarks", "AVA.Plugins.FirefoxBookmarks\AVA.Plugins.FirefoxBookmarks.csproj", "{AC68D0C2-E88A-4E6E-B80F-32296E25D9B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVA.Plugins.Time", "AVA.Plugins.Time\AVA.Plugins.Time.csproj", "{576A1018-BCAF-45A6-85FC-E257E79B1F14}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{AC68D0C2-E88A-4E6E-B80F-32296E25D9B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC68D0C2-E88A-4E6E-B80F-32296E25D9B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC68D0C2-E88A-4E6E-B80F-32296E25D9B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{576A1018-BCAF-45A6-85FC-E257E79B1F14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{576A1018-BCAF-45A6-85FC-E257E79B1F14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{576A1018-BCAF-45A6-85FC-E257E79B1F14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{576A1018-BCAF-45A6-85FC-E257E79B1F14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

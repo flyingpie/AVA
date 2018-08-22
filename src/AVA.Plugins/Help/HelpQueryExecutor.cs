@@ -42,7 +42,7 @@ namespace AVA.Plugins.Help
             .OrderBy(qe => qe.Name)
             .Select(qe => (IListQueryResult)new ListQueryResult()
             {
-                Icon = new ImageBox(qe.Icon != FAIcon.None ? ResourceManager.Instance.LoadFontAwesomeIcon(qe.Icon, ListQueryResult.IconSize / 3) : null)
+                Icon = new ImageBox(qe.Icon != FAIcon.None ? ResourceManager.Instance.LoadFontAwesomeIcon(qe.Icon, 50 / 3) : null)
                 {
                     ScaleMode = MUI.Graphics.ScaleMode.Center,
                     Tint = new Vector4(1, 1, 1, .4f),
