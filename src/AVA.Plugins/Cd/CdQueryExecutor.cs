@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 
 namespace AVA.Plugins.Cd
@@ -19,7 +20,7 @@ namespace AVA.Plugins.Cd
         // Settings
         private static readonly string DefaultDrive = "C:";
 
-        private static bool IncludeHiddenFiles = false;
+        private static bool IncludeHiddenFiles = true;
 
         private QueryContext _qc; // TODO: Make nicer
         private Stack<string> _last = new Stack<string>();
@@ -36,7 +37,11 @@ namespace AVA.Plugins.Cd
 
             if (IsDriveLetterRegex.IsMatch(term) && System.Uri.TryCreate(term, UriKind.RelativeOrAbsolute, out var uri) && uri.Segments.Length >= 2)
             {
-                var segments = uri.Segments.ToList().Skip(1).Where(s => s.EndsWith("/")).ToList();
+                var segments = uri.Segments
+                    .Skip(1)
+                    .Where(s => s.EndsWith("/"))
+                    .Select(s => WebUtility.UrlDecode(s))
+                    .ToList();
 
                 var pattern = uri.Segments.Last();
                 if (pattern.EndsWith("/")) pattern = string.Empty;
