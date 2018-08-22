@@ -39,7 +39,7 @@ namespace AVA.Indexing
 
         public Indexer()
         {
-            _directory = FSDirectory.Open($@"index\{Environment.MachineName.ToLowerInvariant()}");
+            _directory = FSDirectory.Open($@"index\{Environment.MachineName.ToLowerInvariant()}".FromAppRoot());
             Open();
         }
 

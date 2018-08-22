@@ -33,6 +33,16 @@ namespace System
             return source.ToLowerInvariant().Contains(term.ToLowerInvariant());
         }
 
+
+        public static string FromAppRoot(this string path)
+        {
+            var loc = typeof(MUI.UIContext).Assembly.Location;
+
+            loc = Path.GetDirectoryName(Path.GetDirectoryName(loc));
+
+            return Path.Combine(loc, path);
+        }
+
         public static List<string> GetFilesRecursive(this IEnumerable<string> folders, List<string> files = null)
         {
             files = files ?? new List<string>();

@@ -8,7 +8,7 @@ namespace MUI.Logging
 {
     public class FileLogger : ILog
     {
-        private static readonly string Dir = $"logs/{Environment.MachineName.ToLowerInvariant()}";
+        private static readonly string Dir = $"logs/{Environment.MachineName.ToLowerInvariant()}".FromAppRoot();
 
         private static ConcurrentQueue<string> _queue;
 

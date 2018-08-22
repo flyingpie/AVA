@@ -57,7 +57,8 @@ namespace AVA.Core.QueryExecutors.ListQuery
 
                 // Name and subtext
                 {
-                    ImGui.Text(Name);
+                    if (Name != null)
+                        ImGui.Text(Name);
 
                     if (Mode == ListMode.Large && !string.IsNullOrWhiteSpace(Description))
                     {

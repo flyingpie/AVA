@@ -56,12 +56,11 @@ namespace AVA
         private static string GetDependenciesDirectory()
         {
             var root = "Deps/";
-            var is64 = Environment.Is64BitOperatingSystem;
 
             switch (Environment.OSVersion.Platform)
             {
                 case PlatformID.Win32NT:
-                    return is64 ? root + "x64" : root + "x86";
+                    return Path.Combine(root, "win64");
             }
 
             throw new NotSupportedException($"Apparently, platform is not supported: '{Environment.OSVersion}'");
