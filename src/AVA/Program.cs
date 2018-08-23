@@ -1,4 +1,5 @@
-﻿using AVA.Plugins.Dummy;
+﻿using AVA.Core.Settings;
+using AVA.Plugins.Dummy;
 using MUI;
 using MUI.DI;
 using System;
@@ -29,6 +30,8 @@ namespace AVA
                 .Register<UI, UI>()
             ;
 
+            SettingsRoot.Instance.Initialize(container);
+
             RegisterServices(container);
 
             // TODO: Remove (pries cache)
@@ -36,6 +39,8 @@ namespace AVA
 
             uiContext.PushUI(container.Resolve<UI>());
             uiContext.Run();
+
+            SettingsRoot.Instance.Save();
         }
 
         private static void SetupNativeDependencies()

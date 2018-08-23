@@ -3,10 +3,12 @@
     <PropertyGroup>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <TargetFramework>net462</TargetFramework>
+        <LangVersion>7.1</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="morelinq" Version="3.0.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     </ItemGroup>
 
     <ItemGroup>

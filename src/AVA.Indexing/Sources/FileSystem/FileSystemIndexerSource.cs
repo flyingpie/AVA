@@ -9,27 +9,20 @@ namespace AVA.Indexing.Sources.FileSystem
     [Service]
     public class FileSystemIndexerSource : IIndexerSource
     {
-        public IEnumerable<IndexedItem> GetItems()
-        {
-            // TODO: Load from settings
-            var folders = new[]
+        [Dependency] public FileSystemIndexerSourceSettings Settings { get; set; }
+
+        public IEnumerable<IndexedItem> GetItems() => Settings.Paths
+            .Select(f => Environment.ExpandEnvironmentVariables(f))
+            .GetFilesRecursive()
+            .Select(path => new FileSystemIndexedItem()
             {
-                @"%ProgramData%\Microsoft\Windows\Start Menu\Programs",
-                @"%APPDATA%\Microsoft\Windows\Start Menu",
-                @"%NEXTCLOUD%"
-            }.Select(f => Environment.ExpandEnvironmentVariables(f)).ToList();
+                Name = Path.GetFileNameWithoutExtension(path),
+                Description = path,
+                Extension = Path.GetExtension(path),
 
-            return folders
-                .GetFilesRecursive()
-                .Select(path => new FileSystemIndexedItem()
-                {
-                    Name = Path.GetFileNameWithoutExtension(path),
-                    Description = path,
-                    Extension = Path.GetExtension(path),
-
-                    Path = path,
-                })
-                .ToList();
-        }
+                Path = path,
+            })
+            .ToList()
+        ;
     }
 }

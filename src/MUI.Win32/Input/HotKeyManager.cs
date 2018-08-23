@@ -9,7 +9,7 @@ namespace MUI.Win32.Input
     {
         public static event EventHandler<HotKeyEventArgs> HotKeyPressed;
 
-        public static int RegisterHotKey(System.Windows.Forms.Keys key, KeyModifiers modifiers)
+        public static int RegisterHotKey(Keys key, KeyModifiers modifiers)
         {
             _windowReadyEvent.WaitOne();
             int id = Interlocked.Increment(ref _id);
@@ -111,15 +111,5 @@ namespace MUI.Win32.Input
             Key = (System.Windows.Forms.Keys)((param & 0xffff0000) >> 16);
             Modifiers = (KeyModifiers)(param & 0x0000ffff);
         }
-    }
-
-    [Flags]
-    public enum KeyModifiers
-    {
-        Alt = 1,
-        Control = 2,
-        Shift = 4,
-        Windows = 8,
-        NoRepeat = 0x4000
     }
 }

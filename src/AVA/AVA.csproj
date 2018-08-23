@@ -8,6 +8,7 @@
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <ApplicationIcon />
         <StartupObject />
+        <LangVersion>7.1</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

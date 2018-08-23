@@ -1,5 +1,6 @@
 ﻿using AVA.Core;
 using AVA.Core.QueryExecutors;
+using AVA.Core.Settings;
 using AVA.Plugins.SysMon;
 using ImGuiNET;
 using MUI;
@@ -14,21 +15,23 @@ namespace AVA
 {
     public class UI : UIBase
     {
-        [Dependency] public UIContext Context { get; set; }
+        [Dependency] public AVASettings Settings { get; set; }
 
         [Dependency] private IQueryExecutorManager QueryExecutorManager { get; set; }
 
         [Dependency] private SysMonService SysMon { get; set; }
 
+        private UIContext _uic;
         private QueryContext _queryContext;
+        private ILog _log;
 
         private TextBox _queryBox;
-
-        private ILog _log;
 
         public UI()
         {
             _log = Log.Get(this);
+
+            _uic = UIContext.Instance;
             _queryContext = new QueryContext();
             _queryBox = new TextBox();
 
@@ -38,19 +41,17 @@ namespace AVA
 
         public override void Load()
         {
-            Context.Opacity = .9f;
+            _uic.Opacity = .9f;
 
             Maximize();
 
-            // TODO: Move to settings
             // Toggle on Alt-Space
-            HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.Space, KeyModifiers.Alt);
-            //HotKeyManager.RegisterHotKey(System.Windows.Forms.Keys.Z, KeyModifiers.Alt);
+            HotKeyManager.RegisterHotKey(Settings.ToggleUIKey, Settings.ToggleUIKeyModifiers);
             HotKeyManager.HotKeyPressed += (s, a) => Toggle();
 
             // Minimize on focus lost
-            Context.FocusGained += (s, a) => _log.Info("Gained focus");
-            Context.FocusLost += (s, a) => { _log.Info("Lost focus"); Minimize(); };
+            _uic.FocusGained += (s, a) => _log.Info("Gained focus");
+            _uic.FocusLost += (s, a) => { _log.Info("Lost focus"); Minimize(); };
         }
 
         public override void Draw()
@@ -60,7 +61,7 @@ namespace AVA
             ImGui.PushStyleVar(StyleVar.WindowRounding, 0);
 
             ImGui.SetNextWindowPos(Vector2.Zero, Condition.Always);
-            ImGui.SetNextWindowSize(new Vector2(Context.Window.ClientBounds.Width, Context.Window.ClientBounds.Height), Condition.Always);
+            ImGui.SetNextWindowSize(new Vector2(_uic.Window.ClientBounds.Width, _uic.Window.ClientBounds.Height), Condition.Always);
 
             ImGui.BeginWindow(string.Empty, WindowFlags.NoMove | WindowFlags.NoResize | WindowFlags.NoTitleBar);
             {
@@ -159,7 +160,7 @@ namespace AVA
 
         private void Toggle()
         {
-            if (Context.IsVisible) Minimize();
+            if (_uic.IsVisible) Minimize();
             else Maximize();
         }
 
@@ -167,11 +168,11 @@ namespace AVA
         {
             _log.Info("Maximize");
 
-            Context.CenterWindowToDisplayWithMouse();
+            _uic.CenterWindowToDisplayWithMouse();
 
-            Context.IsVisible = true;
+            _uic.IsVisible = true;
 
-            Context.Focus();
+            _uic.Focus();
             _queryBox.Focus();
         }
 
@@ -183,7 +184,7 @@ namespace AVA
 
                 _queryContext.Reset();
 
-                Context.IsVisible = false;
+                _uic.IsVisible = false;
             });
         }
     }

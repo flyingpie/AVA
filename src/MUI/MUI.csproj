@@ -4,6 +4,7 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <TargetFramework>net462</TargetFramework>
+        <LangVersion>7.1</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
