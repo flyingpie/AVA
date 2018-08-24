@@ -1,8 +1,6 @@
 ﻿using MUI.DI;
 using MUI.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
+using Nett;
 using System;
 using System.IO;
 using System.Linq;
@@ -13,21 +11,18 @@ namespace AVA.Core.Settings
     {
         public static SettingsRoot Instance { get; } = new SettingsRoot();
 
-        public JObject Settings { get; private set; }
+        private string[] _paths = new[]
+        {
+            "settings.toml".FromAppRoot(),
+            Path.Combine("".FromAppRoot(), nameof(AVA), "settings.toml")
+        };
 
-        private string _path = "settings.json".FromAppRoot();
-        private JsonSerializerSettings _serializeSettings;
+        private string _path;
+        private TomlTable _settings;
         private ILog _log;
 
         private SettingsRoot()
         {
-            _serializeSettings = new JsonSerializerSettings()
-            {
-                Formatting = Formatting.Indented
-            };
-
-            _serializeSettings.Converters.Add(new StringEnumConverter());
-
             _log = Log.Get(this);
 
             Load();
@@ -47,18 +42,26 @@ namespace AVA.Core.Settings
 
         public void Load()
         {
-            Settings = new JObject();
+            _path = _paths.First();
+            _settings = Toml.Create();
 
-            try
+            foreach (var path in _paths)
             {
-                if (File.Exists(_path))
+                try
                 {
-                    Settings = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(_path), _serializeSettings);
+                    if (File.Exists(path))
+                    {
+                        _path = path;
+
+                        _log.Error($"Loading settings from path '{_path}'...");
+
+                        _settings = Toml.ReadFile(_path);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                _log.Error($"Could not load settings: '{ex.Message}'");
+                catch (Exception ex)
+                {
+                    _log.Error($"Could not load settings: '{ex.Message}'");
+                }
             }
         }
 
@@ -66,7 +69,7 @@ namespace AVA.Core.Settings
         {
             try
             {
-                File.WriteAllText(_path, JsonConvert.SerializeObject(Settings, _serializeSettings));
+                Toml.WriteFile(_settings, _path);
             }
             catch (Exception ex)
             {
@@ -78,7 +81,10 @@ namespace AVA.Core.Settings
 
         public object Get(Type type, Func<object> defaultObject = null)
         {
-            var s = Settings[type.FullName]?.ToObject(type) ?? defaultObject?.Invoke();
+            var s = _settings.ContainsKey(type.FullName) ?
+                _settings.Get(type.FullName).Get(type)
+                : defaultObject?.Invoke()
+            ;
 
             Set(s, type);
 
@@ -87,7 +93,7 @@ namespace AVA.Core.Settings
 
         public void Set(object settings, Type type)
         {
-            Settings[type.FullName] = JObject.FromObject(settings);
+            _settings[type.FullName] = Toml.Create(settings);
         }
     }
 }
