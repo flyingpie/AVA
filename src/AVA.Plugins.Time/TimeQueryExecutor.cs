@@ -2,6 +2,7 @@
 using AVA.Core.QueryExecutors.ListQuery;
 using AVA.Plugins.Time.Models;
 using FontAwesomeCS;
+using MUI.DI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,7 @@ namespace AVA.Plugins.Time
     [Help(Name = "Time", Description = "Lists times around the world", ExampleUsage = "time tokyo", Icon = FAIcon.ClockRegular)]
     public class TimeQueryExecutor : ListQueryExecutor
     {
-        public static string DefaultTerm = "amsterdam";
-        public static int MinPopulation = 500_000;
+        [Dependency] public TimeSettings Settings { get; set; }
 
         public override string Prefix => "time";
 
@@ -23,7 +23,7 @@ namespace AVA.Plugins.Time
         {
             _dotNetTimeZones = TimeZoneInfo.GetSystemTimeZones();
 
-            var gnCities = GNCity.LoadGNCities("AVA/Data/GeoNames/cities15000.txt".FromAppRoot(), MinPopulation).ToList();
+            var gnCities = GNCity.LoadGNCities("AVA/Data/GeoNames/cities15000.txt".FromAppRoot(), Settings.MinPopulation).ToList();
             var cldrWindowsZones = CLDRWindowsZone.Load("AVA/Data/CLDR/windowsZones.json".FromAppRoot()).ToList();
 
             _cities = CityNameTimeZone.Load(gnCities, cldrWindowsZones, _dotNetTimeZones).ToList();
@@ -33,15 +33,9 @@ namespace AVA.Plugins.Time
         {
             term = term.Substring(Prefix.Length).Trim().ToLowerInvariant();
 
-            if (string.IsNullOrWhiteSpace(term)) term = DefaultTerm;
+            var filter = string.IsNullOrWhiteSpace(term) ? _cities.Default(Settings.DefaultCities) : _cities.Search(term);
 
-            return _cities
-                .Where(c => c.CityNameLower.Contains(term))
-                .OrderByDescending(c => c.CityNameLower == term)
-                .ThenByDescending(c => c.CityNameLower.StartsWith(term))
-                .ThenByDescending(c => c.Population)
-                .Take(25)
-                .GroupBy(c => c.CityNameLower).Select(c => c.First())
+            return filter
                 .Select(c =>
                 {
                     var netTimeZone = _dotNetTimeZones.FirstOrDefault(t => t.Id == c.TimeZoneId);
@@ -50,18 +44,37 @@ namespace AVA.Plugins.Time
                     var time = utcNow.Add(utcOfffset);
                     var isDst = netTimeZone.IsDaylightSavingTime(time);
 
+                    var mod = netTimeZone.BaseUtcOffset >= TimeSpan.Zero ? "+" : "-";
+                    var offsetStr = $"UTC{mod}{utcOfffset.ToString("hh':'mm")}";
                     var desc = isDst ? $"{netTimeZone.DaylightName} (DST)" : netTimeZone.StandardName;
 
                     return new TimeQueryResult()
                     {
                         Time = time,
-                        Name = $"{c.CityName}",
-                        Description = $"UTC+{netTimeZone.BaseUtcOffset.ToString("hh':'mm")} - {desc}"
+                        Name = c.CityName,
+                        Description = $"{offsetStr} {desc}"
                     };
                 })
-                .Take(4)
                 .ToList()
             ;
         }
+    }
+
+    public static class Extensions
+    {
+        public static IEnumerable<CityNameTimeZone> Default(this IEnumerable<CityNameTimeZone> source, string[] defaultCitites) => source
+            .Where(c => defaultCitites.Any(dc => c.CityNameLower.Equals(dc)))
+            .GroupBy(c => c.CityNameLower).Select(c => c.First())
+        ;
+
+        public static IEnumerable<CityNameTimeZone> Search(this IEnumerable<CityNameTimeZone> source, string term) => source
+            .Where(c => c.CityNameLower.Contains(term))
+            .OrderByDescending(c => c.CityNameLower == term)
+            .ThenByDescending(c => c.CityNameLower.StartsWith(term))
+            .ThenByDescending(c => c.Population)
+            .Take(25)
+            .GroupBy(c => c.CityNameLower).Select(c => c.First())
+            .Take(4)
+        ;
     }
 }
