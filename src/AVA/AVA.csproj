@@ -86,10 +86,4 @@
         </None>
     </ItemGroup>
 
-    <ItemGroup>
-      <None Update="settings.toml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-
 </Project>
