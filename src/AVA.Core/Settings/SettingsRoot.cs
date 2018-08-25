@@ -15,7 +15,14 @@ namespace AVA.Core.Settings
 
         public JObject Settings { get; private set; }
 
-        private string _path = "settings.json".FromAppRoot();
+        private string[] _paths = new[]
+        {
+            "settings.json".FromAppRoot(),
+            Path.Combine("".FromAppRoot(), nameof(AVA), "settings.json")
+        };
+
+        private string _path;
+
         private JsonSerializerSettings _serializeSettings;
         private ILog _log;
 
@@ -28,6 +35,7 @@ namespace AVA.Core.Settings
 
             _serializeSettings.Converters.Add(new StringEnumConverter());
 
+            _path = _paths.First();
             _log = Log.Get(this);
 
             Load();
@@ -49,16 +57,23 @@ namespace AVA.Core.Settings
         {
             Settings = new JObject();
 
-            try
+            foreach (var path in _paths)
             {
-                if (File.Exists(_path))
+                try
                 {
-                    Settings = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(_path), _serializeSettings);
+                    if (File.Exists(path))
+                    {
+                        _path = path;
+
+                        _log.Info($"Loading settings from path '{_path}'...");
+
+                        Settings = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(_path), _serializeSettings);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                _log.Error($"Could not load settings: '{ex.Message}'");
+                catch (Exception ex)
+                {
+                    _log.Error($"Could not load settings: '{ex.Message}'");
+                }
             }
         }
 
