@@ -180,9 +180,19 @@ namespace AVA.Indexing
 
                     var ii = JsonConvert.DeserializeObject(obj, tt);
 
-                    return ii as IndexedItem;
+                    var item = ii as IndexedItem;
+
+                    if (item != null)
+                    {
+                        item.Id = sd.Doc;
+                        item.Score = sd.Score;
+                    }
+
+                    return item;
                 })
                 .Where(ii => ii != null)
+                .OrderByDescending(ii => ii.Score)
+                .ThenBy(ii => ii.Name)
                 .ToList();
 
             return docs;
