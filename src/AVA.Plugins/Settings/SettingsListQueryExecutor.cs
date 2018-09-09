@@ -14,6 +14,8 @@ namespace AVA.Plugins.Settings
     {
         [Dependency] public Indexer Indexer { get; set; }
 
+        public override int Order => 0;
+
         public override string Prefix => "ava";
 
         public override IEnumerable<IListQueryResult> GetQueryResults(string term)
