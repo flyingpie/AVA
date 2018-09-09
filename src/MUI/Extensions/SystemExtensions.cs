@@ -43,6 +43,15 @@ namespace System
             return Path.Combine(loc, path);
         }
 
+        public static string FromAppBin(this string path)
+        {
+            var loc = typeof(MUI.UIContext).Assembly.Location;
+
+            loc = Path.GetDirectoryName(loc);
+
+            return Path.Combine(loc, path);
+        }
+
         public static List<string> GetFilesRecursive(this IEnumerable<string> folders, List<string> files = null)
         {
             files = files ?? new List<string>();

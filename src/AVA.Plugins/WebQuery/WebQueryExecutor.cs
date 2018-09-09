@@ -35,21 +35,21 @@ namespace AVA.Plugins.WebQuery
                 new Command()
                 {
                     Prefix = "ddg",
-                    Icon = "WebQuery/Resources/Images/DuckDuckGo.png",
+                    Icon = "Resources/Images/DuckDuckGo.png".FromAppBin(),
                     Pattern = "https://duckduckgo.com/?q={term}",
                     Description = "Duck Duck Go"
                 },
                 new Command()
                 {
                     Prefix = "ghu",
-                    Icon = "WebQuery/Resources/Images/GitHub.png",
+                    Icon = "Resources/Images/GitHub.png".FromAppBin(),
                     Pattern = "https://github.com/search?q={term}&type=Users",
                     Description = "GitHub (users)"
                 },
                 new Command()
                 {
                     Prefix = "gh",
-                    Icon = "WebQuery/Resources/Images/GitHub.png",
+                    Icon = "Resources/Images/GitHub.png".FromAppBin(),
                     Pattern = "https://github.com/search?q={term}&type=Repositories",
                     Description = "GitHub (repositories)"
                 },
@@ -63,7 +63,7 @@ namespace AVA.Plugins.WebQuery
                 new Command()
                 {
                     Prefix = "nuget",
-                    Icon = "WebQuery/Resources/Images/NuGet.png",
+                    Icon = "Resources/Images/NuGet.png".FromAppBin(),
                     Pattern = "https://www.nuget.org/packages?q={term}",
                     Description = "NuGet"
                 },
@@ -84,7 +84,7 @@ namespace AVA.Plugins.WebQuery
                 new Command()
                 {
                     Prefix = "wiki",
-                    Icon = "WebQuery/Resources/Images/Wikipedia.png",
+                    Icon = "Resources/Images/Wikipedia.png".FromAppBin(),
                     Pattern = "https://en.wikipedia.org/w/index.php?search={term}",
                     Description = "Wikipedia"
                 }

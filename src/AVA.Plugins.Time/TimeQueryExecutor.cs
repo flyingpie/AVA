@@ -23,8 +23,8 @@ namespace AVA.Plugins.Time
         {
             _dotNetTimeZones = TimeZoneInfo.GetSystemTimeZones();
 
-            var gnCities = GNCity.LoadGNCities("AVA/Data/GeoNames/cities15000.txt".FromAppRoot(), Settings.MinPopulation).ToList();
-            var cldrWindowsZones = CLDRWindowsZone.Load("AVA/Data/CLDR/windowsZones.json".FromAppRoot()).ToList();
+            var gnCities = GNCity.LoadGNCities("Resources/GeoNames/cities15000.txt".FromAppBin(), Settings.MinPopulation).ToList();
+            var cldrWindowsZones = CLDRWindowsZone.Load("Resources/CLDR/windowsZones.json".FromAppBin()).ToList();
 
             _cities = CityNameTimeZone.Load(gnCities, cldrWindowsZones, _dotNetTimeZones).ToList();
         }

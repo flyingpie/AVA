@@ -1,5 +1,4 @@
 ﻿using AVA.Core.Settings;
-using AVA.Plugins.Dummy;
 using MUI;
 using MUI.DI;
 using System;
@@ -16,11 +15,7 @@ namespace AVA
         {
             SetupNativeDependencies();
 
-            // TODO: Make nicer
-            typeof(DummyQueryExecutor).GetType();
             typeof(Indexing.Indexer).GetType();
-            typeof(Plugins.FirefoxBookmarks.FirefoxBookmarksQueryExecutor).GetType();
-            typeof(Plugins.Time.TimeQueryExecutor).GetType();
 
             var uiContext = new UIContext(600, 300);
 
@@ -29,6 +24,8 @@ namespace AVA
                 .Register(uiContext)
                 .Register<UI, UI>()
             ;
+
+            container.LoadPlugins("".FromAppBin());
 
             SettingsRoot.Instance.Initialize(container);
 
@@ -71,13 +68,13 @@ namespace AVA
             throw new NotSupportedException($"Apparently, platform is not supported: '{Environment.OSVersion}'");
         }
 
-        private static void RegisterServices(IContainer container) => Assembly
-            .GetEntryAssembly()
-            .GetReferencedAssemblies()
-            .Select(ass => Assembly.Load(ass))
+        private static void RegisterServices(IContainer container) =>
+            AppDomain.CurrentDomain
+            .GetAssemblies()
             .SelectMany(ass => ass.DefinedTypes)
             .Where(t => !t.IsAbstract)
             .Where(t => t.GetCustomAttribute<ServiceAttribute>(true) != null)
+            .OrderBy(t => t.FullName)
             .ToList()
             .ForEach(s => container.Register(s.AsType(), s.GetCustomAttribute<ServiceAttribute>(true).Lifetime));
     }
