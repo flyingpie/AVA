@@ -41,10 +41,17 @@ namespace AVA.Plugins.WebQuery
                 },
                 new Command()
                 {
+                    Prefix = "ghu",
+                    Icon = "WebQuery/Resources/Images/GitHub.png",
+                    Pattern = "https://github.com/search?q={term}&type=Users",
+                    Description = "GitHub (users)"
+                },
+                new Command()
+                {
                     Prefix = "gh",
                     Icon = "WebQuery/Resources/Images/GitHub.png",
-                    Pattern = "https://github.com/search?q={term}",
-                    Description = "GitHub"
+                    Pattern = "https://github.com/search?q={term}&type=Repositories",
+                    Description = "GitHub (repositories)"
                 },
                 new Command()
                 {
