@@ -37,16 +37,4 @@
       </EmbeddedResource>
     </ItemGroup>
 
-    <ItemGroup>
-      <None Update="Deps\FontAwesome\fa-brands-400.ttf">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Deps\FontAwesome\fa-regular-400.ttf">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Deps\FontAwesome\fa-solid-900.ttf">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-
 </Project>

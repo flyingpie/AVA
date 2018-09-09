@@ -23,8 +23,7 @@ namespace AVA.Plugins.Time.Models
 
         public static IEnumerable<GNCity> LoadGNCities(string path, int minPopulation)
         {
-            using (var stream = File.OpenRead(path))
-            using (var reader = new StreamReader(stream))
+            using (var reader = new StringReader(Resources.Resources.cities15000))
             {
                 while (true)
                 {

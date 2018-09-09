@@ -3,7 +3,6 @@
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <LangVersion>7.1</LangVersion>
-    <OutputPath>../../bin/AVA</OutputPath>
     <TargetFramework>net462</TargetFramework>
   </PropertyGroup>
 

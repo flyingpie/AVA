@@ -26,7 +26,8 @@ namespace AVA.Plugins.Time.Models
 
         public static List<CLDRWindowsZone> Load(string path)
         {
-            var json = File.ReadAllText(path);
+            //var json = File.ReadAllText(path);
+            var json = Resources.Resources.windowsZones;
             var tz = JsonConvert.DeserializeObject<JObject>(json);
 
             var tzs = tz["supplemental"]["windowsZones"]["mapTimezones"];
