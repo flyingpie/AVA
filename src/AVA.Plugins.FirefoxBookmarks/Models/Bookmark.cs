@@ -1,4 +1,7 @@
-﻿namespace AVA.Plugins.FirefoxBookmarks.Models
+﻿using System;
+using System.Linq;
+
+namespace AVA.Plugins.FirefoxBookmarks.Models
 {
     public class Bookmark
     {
@@ -12,7 +15,12 @@
 
         public string UrlLower { get; set; }
 
-        public bool Matches(string term) => (TitleLower?.Contains(term) ?? false) || (UrlLower?.Contains(term) ?? false);
+        public bool Matches(string term)
+        {
+            var terms = term.ToLowerInvariant().Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+
+            return terms.All(t => (TitleLower?.Contains(t) ?? false) || (UrlLower?.Contains(t) ?? false));
+        }
 
         public override string ToString() => $"{Title} ({Url})";
     }

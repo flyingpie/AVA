@@ -39,7 +39,7 @@ namespace AVA.Plugins.FirefoxBookmarks
 
         public override IEnumerable<IListQueryResult> GetQueryResults(string term)
         {
-            term = term.Substring(Prefix.Length).ToLowerInvariant();
+            term = term.Substring(Prefix.Length);
 
             return _bookmarks
                 .Where(bm => bm.Matches(term))
