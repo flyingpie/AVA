@@ -37,6 +37,7 @@ Task("Default").Does(() =>
     DeleteFiles($"{output}/AVA/*.pdb");
     DeleteFiles($"{output}/AVA/*.winmd");
     DeleteFiles($"{output}/AVA/*.xml");
+    DeleteFiles($"{output}/AVA/settings.json");
 });
 
 RunTarget("Default");
