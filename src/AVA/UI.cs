@@ -1,13 +1,14 @@
 ﻿using AVA.Core;
+using AVA.Core.Footers;
 using AVA.Core.QueryExecutors;
 using AVA.Core.Settings;
-using AVA.Plugins.SysMon;
 using ImGuiNET;
 using MUI;
 using MUI.DI;
 using MUI.ImGuiControls;
 using MUI.Logging;
 using MUI.Win32.Input;
+using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 
@@ -19,7 +20,7 @@ namespace AVA
 
         [Dependency] private IQueryExecutorManager QueryExecutorManager { get; set; }
 
-        [Dependency] private SysMonService SysMon { get; set; }
+        [Dependency] public IFooter[] Footers { get; set; }
 
         private UIContext _uic;
         private QueryContext _queryContext;
@@ -80,7 +81,7 @@ namespace AVA
                 ImGui.EndChild();
 
                 // Footer
-                DrawFooter();
+                Footers?.OrderBy(f => f.Priority).FirstOrDefault()?.Draw();
 
                 ImGui.PopFont();
             }
@@ -134,27 +135,6 @@ namespace AVA
 
             _queryBox.ResetChanged();
 
-            ImGui.PopFont();
-        }
-
-        private void DrawFooter()
-        {
-            ImGui.PushFont(Fonts.Regular16);
-            ImGui.BeginChild("footer", false, WindowFlags.Default);
-            {
-                // SysMon
-                ImGui.Text($"CPU {SysMon.CpuUsage.ToString("0.00")}");
-
-                ImGui.SameLine();
-                ImGui.Text($"Mem {SysMon.MemUsage.ToString("0.00")}");
-
-                foreach (var drive in SysMon.Drives)
-                {
-                    ImGui.SameLine();
-                    ImGui.Text($"{drive.Name} {drive.Usage.ToString("0.00")}");
-                }
-            }
-            ImGui.EndChild();
             ImGui.PopFont();
         }
 

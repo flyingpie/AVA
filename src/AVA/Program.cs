@@ -25,7 +25,7 @@ namespace AVA
                 .Register<UI, UI>()
             ;
 
-            container.LoadPlugins("".FromAppBin());
+            container.LoadPlugins("".FromAppRoot());
 
             SettingsRoot.Instance.Initialize(container);
 
