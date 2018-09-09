@@ -25,7 +25,7 @@ namespace MUI
                     .ToList();
 
                 var plugins = Directory
-                    .GetFiles(pluginsDir, "AVA.Plugin*.dll")
+                    .GetFiles(pluginsDir, "AVA.Plugin*.dll", SearchOption.AllDirectories)
                     .Where(dll => !loadedDlls.Any(loadedDll => Path.GetFileName(loadedDll).Equals(Path.GetFileName(dll), StringComparison.OrdinalIgnoreCase)))
                     .OrderBy(path => path)
                     .ToList()

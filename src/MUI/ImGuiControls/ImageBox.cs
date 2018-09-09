@@ -1,6 +1,7 @@
 ﻿using FontAwesomeCS;
 using MUI.Glyphs;
 using MUI.Graphics;
+using System;
 using System.Numerics;
 
 namespace MUI.ImGuiControls
@@ -30,6 +31,8 @@ namespace MUI.ImGuiControls
         {
             Image?.Draw(Size, Tint, Border, BackgroundColor, Padding, ScaleMode);
         }
+
+        public static implicit operator ImageBox(System.Drawing.Image image) => ResourceManager.Instance.LoadImage(Guid.NewGuid().ToString(), image.ToByteArray());
 
         public static implicit operator ImageBox(Image image) => new ImageBox(image);
 

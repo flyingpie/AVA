@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace AVA.Plugins.Time.Models
@@ -24,9 +23,8 @@ namespace AVA.Plugins.Time.Models
         [JsonProperty("_territory")]
         public string Territory { get; set; }
 
-        public static List<CLDRWindowsZone> Load(string path)
+        public static List<CLDRWindowsZone> Load()
         {
-            //var json = File.ReadAllText(path);
             var json = Resources.Resources.windowsZones;
             var tz = JsonConvert.DeserializeObject<JObject>(json);
 

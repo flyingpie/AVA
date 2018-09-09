@@ -21,7 +21,7 @@ namespace AVA.Plugins.Time.Models
 
         public string TimeZoneId { get; set; }
 
-        public static IEnumerable<GNCity> LoadGNCities(string path, int minPopulation)
+        public static IEnumerable<GNCity> LoadGNCities(int minPopulation)
         {
             using (var reader = new StringReader(Resources.Resources.cities15000))
             {
