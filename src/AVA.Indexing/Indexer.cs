@@ -10,7 +10,6 @@ using MUI.DI;
 using MUI.Logging;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,10 +36,23 @@ namespace AVA.Indexing
 
         private ILog _log = Log.Get<Indexer>();
 
+        private Dictionary<string, Type> _indexedItemTypes;
+
         public Indexer()
         {
             _directory = FSDirectory.Open($@"index\{Environment.MachineName.ToLowerInvariant()}".FromAppRoot());
             Open();
+        }
+
+        [RunAfterInject]
+        public void Init()
+        {
+            _indexedItemTypes = AppDomain.CurrentDomain
+                .GetAssemblies()
+                .SelectMany(a => a.GetTypes())
+                .Where(t => typeof(IndexedItem).IsAssignableFrom(t))
+                .ToDictionary(t => t.FullName, t => t)
+            ;
         }
 
         private void Open()
@@ -109,7 +121,7 @@ namespace AVA.Indexing
                     var name = item.Name.ToLowerInvariant();
                     var ext = item.Extension?.ToLowerInvariant();
 
-                    var type = item.GetType().AssemblyQualifiedName;
+                    var type = item.GetType().FullName;
                     var obj = JsonConvert.SerializeObject(item);
 
                     doc.AddTextField("name", name, Field.Store.YES);
@@ -165,8 +177,6 @@ namespace AVA.Indexing
                 query.Add(new BooleanClause(new TermQuery(new Term("ext", ".lnk")) { Boost = 10 }, Occur.SHOULD));
             }
 
-            var dict = new ConcurrentDictionary<string, Type>();
-
             var hits = _indexSearcher.Search(query, 15);
             var docs = hits.ScoreDocs
                 .Select(sd =>
@@ -176,17 +186,17 @@ namespace AVA.Indexing
                     var type = d.Get("obj_type");
                     var obj = d.Get("obj");
 
-                    var tt = dict.GetOrAdd(type, t => Type.GetType(t));
+                    if (!_indexedItemTypes.ContainsKey(type)) return null;
 
+                    var tt = _indexedItemTypes[type];
                     var ii = JsonConvert.DeserializeObject(obj, tt);
 
                     var item = ii as IndexedItem;
 
-                    if (item != null)
-                    {
-                        item.Id = sd.Doc;
-                        item.Score = sd.Score;
-                    }
+                    if (item == null) return null;
+
+                    item.Id = sd.Doc;
+                    item.Score = sd.Score;
 
                     return item;
                 })
