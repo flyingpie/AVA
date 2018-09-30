@@ -33,7 +33,6 @@ namespace System
             return source.ToLowerInvariant().Contains(term.ToLowerInvariant());
         }
 
-
         public static string FromAppRoot(this string path)
         {
             var loc = typeof(MUI.UIContext).Assembly.Location;
@@ -46,6 +45,15 @@ namespace System
         public static string FromAppBin(this string path)
         {
             var loc = typeof(MUI.UIContext).Assembly.Location;
+
+            loc = Path.GetDirectoryName(loc);
+
+            return Path.Combine(loc, path);
+        }
+
+        public static string FromPluginRoot(this string path, Type pluginType)
+        {
+            var loc = pluginType.Assembly.Location;
 
             loc = Path.GetDirectoryName(loc);
 

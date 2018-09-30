@@ -4,6 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA", "AVA\AVA.csproj", "{E11AA550-8A43-4A41-A4D3-1A19E41A5B04}"
+	ProjectSection(ProjectDependencies) = postProject
+		{576A1018-BCAF-45A6-85FC-E257E79B1F14} = {576A1018-BCAF-45A6-85FC-E257E79B1F14}
+		{2B09A575-F4D1-4C0D-B6E9-401BBFA23DC8} = {2B09A575-F4D1-4C0D-B6E9-401BBFA23DC8}
+		{6B31A47F-D9EB-470E-A257-3A1E06E81C8F} = {6B31A47F-D9EB-470E-A257-3A1E06E81C8F}
+		{7EB6AEB4-5CBD-4774-9FA9-19389B59C8D8} = {7EB6AEB4-5CBD-4774-9FA9-19389B59C8D8}
+		{AC68D0C2-E88A-4E6E-B80F-32296E25D9B6} = {AC68D0C2-E88A-4E6E-B80F-32296E25D9B6}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MUI.Win32", "MUI.Win32\MUI.Win32.csproj", "{54E88EB7-315D-4D99-97BD-8C012A0CA196}"
 EndProject
@@ -19,7 +26,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA.Core", "AVA.Core\AVA.Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA.Plugins.FirefoxBookmarks", "AVA.Plugins.FirefoxBookmarks\AVA.Plugins.FirefoxBookmarks.csproj", "{AC68D0C2-E88A-4E6E-B80F-32296E25D9B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVA.Plugins.Time", "AVA.Plugins.Time\AVA.Plugins.Time.csproj", "{576A1018-BCAF-45A6-85FC-E257E79B1F14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA.Plugins.Time", "AVA.Plugins.Time\AVA.Plugins.Time.csproj", "{576A1018-BCAF-45A6-85FC-E257E79B1F14}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA.Plugins.UnitConverter", "AVA.Plugins.UnitConverter\AVA.Plugins.UnitConverter.csproj", "{6B31A47F-D9EB-470E-A257-3A1E06E81C8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +72,10 @@ Global
 		{576A1018-BCAF-45A6-85FC-E257E79B1F14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{576A1018-BCAF-45A6-85FC-E257E79B1F14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{576A1018-BCAF-45A6-85FC-E257E79B1F14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B31A47F-D9EB-470E-A257-3A1E06E81C8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B31A47F-D9EB-470E-A257-3A1E06E81C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B31A47F-D9EB-470E-A257-3A1E06E81C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B31A47F-D9EB-470E-A257-3A1E06E81C8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
