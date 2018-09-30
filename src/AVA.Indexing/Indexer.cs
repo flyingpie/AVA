@@ -36,23 +36,12 @@ namespace AVA.Indexing
 
         private ILog _log = Log.Get<Indexer>();
 
-        private Dictionary<string, Type> _indexedItemTypes;
+        private Dictionary<string, Type> _typeCache;
 
         public Indexer()
         {
             _directory = FSDirectory.Open($@"index\{Environment.MachineName.ToLowerInvariant()}".FromAppRoot());
             Open();
-        }
-
-        [RunAfterInject]
-        public void Init()
-        {
-            _indexedItemTypes = AppDomain.CurrentDomain
-                .GetAssemblies()
-                .SelectMany(a => a.GetTypes())
-                .Where(t => typeof(IndexedItem).IsAssignableFrom(t))
-                .ToDictionary(t => t.FullName, t => t)
-            ;
         }
 
         private void Open()
@@ -183,20 +172,25 @@ namespace AVA.Indexing
                 {
                     var d = _indexSearcher.Doc(sd.Doc);
 
-                    var type = d.Get("obj_type");
+                    var typeName = d.Get("obj_type");
                     var obj = d.Get("obj");
 
-                    if (!_indexedItemTypes.ContainsKey(type)) return null;
+                    var type = GetClrType(typeName);
+                    if (type == null)
+                    {
+                        _log.Warning($"No CLR type found for indexed item with type name '{typeName}'");
+                        return null;
+                    }
 
-                    var tt = _indexedItemTypes[type];
-                    var ii = JsonConvert.DeserializeObject(obj, tt);
+                    var ii = JsonConvert.DeserializeObject(obj, type);
 
                     var item = ii as IndexedItem;
 
-                    if (item == null) return null;
-
-                    item.Id = sd.Doc;
-                    item.Score = sd.Score;
+                    if (item != null)
+                    {
+                        item.Id = sd.Doc;
+                        item.Score = sd.Score;
+                    }
 
                     return item;
                 })
@@ -206,6 +200,21 @@ namespace AVA.Indexing
                 .ToList();
 
             return docs;
+        }
+
+        private Type GetClrType(string typeName)
+        {
+            if (_typeCache == null)
+            {
+                _typeCache = AppDomain.CurrentDomain
+                   .GetAssemblies()
+                   .SelectMany(ass => ass.GetTypes())
+                   .GroupBy(type => type.FullName).Select(grp => grp.First())
+                   .ToDictionary(type => type.FullName, type => type)
+               ;
+            }
+
+            return _typeCache.TryGetValue(typeName, out var clrType) ? clrType : null;
         }
     }
 }
