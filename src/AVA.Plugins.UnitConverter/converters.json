@@ -1,63 +1,79 @@
 ﻿[
-  // Weights
+  // Distances
   {
-    "Name": "Kilogram to Pounds",
-    "UnitFrom": "kg",
-    "UnitTo": "lb",
-    "Conversion": "x * 2.2046",
-    "Format": "{0}kg = {1}lb"
+    "Name": "Feet to Meters",
+    "UnitFrom": [ "f", "feet", "foot" ],
+    "UnitTo": [ "m", "meter", "meters" ],
+    "Conversion": "x / 3.2808",
+    "Format": "{0} feet = {1} meters"
   },
   {
-    "Name": "Kilogram to Pounds",
-    "UnitFrom": "lb",
-    "UnitTo": "kg",
-    "Conversion": "x / 2.2046",
-    "Format": "{0}lb = {1}kg"
+    "Name": "Meters to Feet",
+    "UnitFrom": [ "m", "meter", "meters" ],
+    "UnitTo": [ "f", "feet", "foot" ],
+    "Conversion": "x * 3.2808",
+    "Format": "{0} meters = {1} feet"
   },
 
   // Temperatures
   {
     "Name": "Celcius to Fahrenheit",
-    "UnitFrom": "c",
-    "UnitTo": "f",
+    "UnitFrom": [ "c" ],
+    "UnitTo": [ "f" ],
     "Conversion": "x * (9/5) + 32",
     "Format": "{0}C = {1}F"
   },
   {
     "Name": "Celcius to Kelvin",
-    "UnitFrom": "c",
-    "UnitTo": "k",
+    "UnitFrom": [ "c" ],
+    "UnitTo": [ "k" ],
     "Conversion": "x + 273.15",
     "Format": "{0}C = {1}K"
   },
 
   {
     "Name": "Fahrenheit to Celcius",
-    "UnitFrom": "f",
-    "UnitTo": "c",
+    "UnitFrom": [ "f" ],
+    "UnitTo": [ "c" ],
     "Conversion": "(x - 32) * (5/9)",
     "Format": "{0}F = {1}C"
   },
   {
     "Name": "Fahrenheit to Kelvin",
-    "UnitFrom": "f",
-    "UnitTo": "k",
+    "UnitFrom": [ "f" ],
+    "UnitTo": [ "k" ],
     "Conversion": "(x + 459.67) * (5/9)",
     "Format": "{0}F = {1}K"
   },
 
   {
     "Name": "Kelvin to Celcius",
-    "UnitFrom": "k",
-    "UnitTo": "c",
+    "UnitFrom": [ "k" ],
+    "UnitTo": [ "c" ],
     "Conversion": "x - 273.15",
     "Format": "{0}K = {1}C"
   },
   {
     "Name": "Kelvin to Fahrenheit",
-    "UnitFrom": "k",
-    "UnitTo": "f",
+    "UnitFrom": [ "k" ],
+    "UnitTo": [ "f" ],
     "Conversion": "x * (5/9) - 459.67",
     "Format": "{0}K = {1}F"
+  },
+
+  // Weights
+  {
+    "Name": "Kilogram to Pounds",
+    "UnitFrom": [ "kg" ],
+    "UnitTo": [ "lb", "pound", "pounds" ],
+    "Conversion": "x * 2.2046",
+    "Format": "{0}kg = {1}lb"
+  },
+  {
+    "Name": "Kilogram to Pounds",
+    "UnitFrom": [ "lb", "pound", "pounds" ],
+    "UnitTo": [ "kg" ],
+    "Conversion": "x / 2.2046",
+    "Format": "{0}lb = {1}kg"
   }
 ]

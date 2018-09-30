@@ -1,4 +1,6 @@
 ﻿using NCalc2;
+using System;
+using System.Linq;
 
 namespace AVA.Plugins.UnitConverter
 {
@@ -6,13 +8,17 @@ namespace AVA.Plugins.UnitConverter
     {
         public string Name { get; set; }
 
-        public string UnitFrom { get; set; }
+        public string[] UnitFrom { get; set; }
 
-        public string UnitTo { get; set; }
+        public string[] UnitTo { get; set; }
 
         public string Conversion { get; set; }
 
         public string Format { get; set; }
+
+        public bool HasUnitFrom(string unit) => UnitFrom.Any(u => u.Equals(unit, StringComparison.OrdinalIgnoreCase));
+
+        public bool HasUnitTo(string unit) => UnitTo.Any(u => u.Equals(unit, StringComparison.OrdinalIgnoreCase));
 
         public float Convert(float from)
         {

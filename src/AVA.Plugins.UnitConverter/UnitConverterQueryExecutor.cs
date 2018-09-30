@@ -14,7 +14,7 @@ namespace AVA.Plugins.UnitConverter
     [Help(Name = "Unit converter", Description = "Converts values from one unit to another", ExampleUsage = "37c to f", Icon = FAIcon.ThermometerEmptySolid)]
     public class UnitConverterQueryExecutor : ListQueryExecutor
     {
-        public static readonly Regex UnitRegex = new Regex(@"^(?<value>[0-9\.-]*)(?<unitFrom>[A-z]*)( to )?(?<unitTo>[A-z]*)?");
+        public static readonly Regex UnitRegex = new Regex(@"^(?<value>[0-9\.-]*) ?(?<unitFrom>[A-z]*)( to )?(?<unitTo>[A-z]*)?");
 
         public override int Order => 0;
 
@@ -49,8 +49,8 @@ namespace AVA.Plugins.UnitConverter
             var idTo = match.Groups["unitTo"];
 
             var conv = _converters
-                .Where(c => c.UnitFrom.Equals(idFrom.Value, StringComparison.OrdinalIgnoreCase))
-                .Where(c => (!idTo.Success || string.IsNullOrWhiteSpace(idTo.Value)) || c.UnitTo.Equals(idTo.Value, StringComparison.OrdinalIgnoreCase))
+                .Where(c => c.HasUnitFrom(idFrom.Value))
+                .Where(c => (!idTo.Success || string.IsNullOrWhiteSpace(idTo.Value)) || c.HasUnitTo(idTo.Value))
             ;
 
             if (!conv.Any()) return Enumerable.Empty<IListQueryResult>();
