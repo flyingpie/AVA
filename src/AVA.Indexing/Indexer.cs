@@ -10,7 +10,6 @@ using MUI.DI;
 using MUI.Logging;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,6 +35,8 @@ namespace AVA.Indexing
         private QueryParser _queryParser;
 
         private ILog _log = Log.Get<Indexer>();
+
+        private Dictionary<string, Type> _typeCache;
 
         public Indexer()
         {
@@ -109,7 +110,7 @@ namespace AVA.Indexing
                     var name = item.Name.ToLowerInvariant();
                     var ext = item.Extension?.ToLowerInvariant();
 
-                    var type = item.GetType().AssemblyQualifiedName;
+                    var type = item.GetType().FullName;
                     var obj = JsonConvert.SerializeObject(item);
 
                     doc.AddTextField("name", name, Field.Store.YES);
@@ -165,20 +166,23 @@ namespace AVA.Indexing
                 query.Add(new BooleanClause(new TermQuery(new Term("ext", ".lnk")) { Boost = 10 }, Occur.SHOULD));
             }
 
-            var dict = new ConcurrentDictionary<string, Type>();
-
             var hits = _indexSearcher.Search(query, 15);
             var docs = hits.ScoreDocs
                 .Select(sd =>
                 {
                     var d = _indexSearcher.Doc(sd.Doc);
 
-                    var type = d.Get("obj_type");
+                    var typeName = d.Get("obj_type");
                     var obj = d.Get("obj");
 
-                    var tt = dict.GetOrAdd(type, t => Type.GetType(t));
+                    var type = GetClrType(typeName);
+                    if (type == null)
+                    {
+                        _log.Warning($"No CLR type found for indexed item with type name '{typeName}'");
+                        return null;
+                    }
 
-                    var ii = JsonConvert.DeserializeObject(obj, tt);
+                    var ii = JsonConvert.DeserializeObject(obj, type);
 
                     var item = ii as IndexedItem;
 
@@ -196,6 +200,21 @@ namespace AVA.Indexing
                 .ToList();
 
             return docs;
+        }
+
+        private Type GetClrType(string typeName)
+        {
+            if (_typeCache == null)
+            {
+                _typeCache = AppDomain.CurrentDomain
+                   .GetAssemblies()
+                   .SelectMany(ass => ass.GetTypes())
+                   .GroupBy(type => type.FullName).Select(grp => grp.First())
+                   .ToDictionary(type => type.FullName, type => type)
+               ;
+            }
+
+            return _typeCache.TryGetValue(typeName, out var clrType) ? clrType : null;
         }
     }
 }
