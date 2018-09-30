@@ -17,7 +17,8 @@ namespace AVA.Indexing.Sources.FileSystem
             {
                 var startInfo = new ProcessStartInfo()
                 {
-                    FileName = Path
+                    FileName = Path,
+                    WorkingDirectory = System.IO.Path.GetDirectoryName(Path)
                 };
 
                 if (Input.IsKeyDown(Keys.LeftControl))
