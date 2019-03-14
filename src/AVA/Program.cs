@@ -13,6 +13,8 @@ namespace AVA
         [STAThread]
         private static void Main(string[] args)
         {
+            MUI.Utils.DependencyMapper.Map();
+
             SetupNativeDependencies();
 
             typeof(Indexing.Indexer).GetType();
