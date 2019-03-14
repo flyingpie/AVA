@@ -1,0 +1,9 @@
+﻿[
+  {
+      "Command" : "vsc",
+      "FileName" : "code",
+
+      "Name" : "Visual Studio Code",
+      "Description" : ""
+  }
+]

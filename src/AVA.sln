@@ -30,6 +30,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA.Plugins.Time", "AVA.Plu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA.Plugins.UnitConverter", "AVA.Plugins.UnitConverter\AVA.Plugins.UnitConverter.csproj", "{6B31A47F-D9EB-470E-A257-3A1E06E81C8F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA.Plugins.Macros", "AVA.Plugins.Macros\AVA.Plugins.Macros.csproj", "{A7F12493-D691-4409-B47F-F94FB35CCEA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +78,10 @@ Global
 		{6B31A47F-D9EB-470E-A257-3A1E06E81C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B31A47F-D9EB-470E-A257-3A1E06E81C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B31A47F-D9EB-470E-A257-3A1E06E81C8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7F12493-D691-4409-B47F-F94FB35CCEA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7F12493-D691-4409-B47F-F94FB35CCEA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7F12493-D691-4409-B47F-F94FB35CCEA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7F12493-D691-4409-B47F-F94FB35CCEA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
