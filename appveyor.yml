@@ -26,3 +26,16 @@ deploy:
     on:
       branch: master
     auth_token: $(github_api_key)
+
+    # Release branch (stable)
+    # Portable
+  - provider: GitHub
+    tag: stable
+    artifact: /.AVA\.zip/
+    draft: false
+    release: stable
+    description: 'Stable release'
+    prerelease: false
+    on:
+      branch: release
+    auth_token: $(github_api_key)
