@@ -19,5 +19,7 @@ namespace AVA.Core.QueryExecutors
         public Task<bool> TryExecuteAsync(QueryContext query) => Task.FromResult(_executor.TryExecute(query));
 
         public void Draw() => _executor.Draw();
+
+        public override string ToString() => _executor.ToString();
     }
 }
