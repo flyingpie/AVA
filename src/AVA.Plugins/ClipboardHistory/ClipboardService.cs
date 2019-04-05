@@ -25,15 +25,24 @@ namespace AVA.Plugins.ClipboardHistory
 
             ClipboardNotification.ClipboardUpdate += (s, a) =>
             {
-                _log.Info("UPDATE");
-                History.Insert(0, ClipboardData.Create());
-                _log.Info("/UPDATE");
+                try
+                {
+                    _log.Info("UPDATE");
+                    History.Insert(0, ClipboardData.Create());
+                    _log.Info("/UPDATE");
 
-                RemoveDupes();
+                    RemoveDupes();
 
-                while (History.Count > 10) History.RemoveAt(History.Count - 1);
+                    while (History.Count > 10) History.RemoveAt(History.Count - 1);
+                }
+                catch (Exception ex)
+                {
+                    _log.Error($"Error while processing clipboard entry: '{ex.Message}'.", ex);
+                }
             };
         }
+
+        public void Clear() => History.Clear();
 
         public void Restore(ClipboardData data)
         {
@@ -88,21 +97,27 @@ namespace AVA.Plugins.ClipboardHistory
             {
                 cd.IsImage = true;
 
-                var imgStream = new MemoryStream();
-
-                using (var thumbStream = new MemoryStream())
-                {
-                    var img = Clipboard.GetImage();
-                    img.Save(imgStream, ImageFormat.Png);
-                    cd.Image = imgStream;
-
-                    var thumb = img.GetThumbnailImage(50, 50, new System.Drawing.Image.GetThumbnailImageAbort(() => false), IntPtr.Zero);
-                    thumb.Save(thumbStream, ImageFormat.Png);
-                    cd.ImageThumbnail = thumbStream.ToArray();
-                }
+                LoadImage(cd);
             }
 
             return cd;
+        }
+
+        private static void LoadImage(ClipboardData cd)
+        {
+            var imgStream = new MemoryStream();
+
+            var img = Clipboard.GetImage();
+            img.Save(imgStream, ImageFormat.Png);
+            cd.Image = imgStream;
+
+            using (var thumbStream = new MemoryStream())
+            {
+                var ratio = (float)img.Height / (float)img.Width;
+                var thumb = img.GetThumbnailImage(50, (int)Math.Ceiling(50f * ratio), new System.Drawing.Image.GetThumbnailImageAbort(() => false), IntPtr.Zero);
+                thumb.Save(thumbStream, ImageFormat.Png);
+                cd.ImageThumbnail = thumbStream.ToArray();
+            }
         }
 
         private string _hash;
