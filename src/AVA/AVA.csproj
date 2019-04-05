@@ -6,7 +6,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <TargetFramework>net462</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <ApplicationIcon />
+    <ApplicationIcon>Resources\Images\default-image.ico</ApplicationIcon>
     <StartupObject />
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
