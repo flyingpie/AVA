@@ -1,5 +1,8 @@
-﻿using MUI.DI;
+﻿using MUI;
+using MUI.DI;
+using MUI.Graphics;
 using MUI.Logging;
+using MUI.Win32.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Drawing.Imaging;
@@ -15,20 +18,20 @@ namespace AVA.Plugins.ClipboardHistory
     [Service]
     public class ClipboardService
     {
-        public List<ClipboardData> History { get; set; }
+        public List<ClipboardEntry> History { get; set; }
 
         private ILog _log = Log.Get<ClipboardService>();
 
         public ClipboardService()
         {
-            History = new List<ClipboardData>();
+            History = new List<ClipboardEntry>();
 
             ClipboardNotification.ClipboardUpdate += (s, a) =>
             {
                 try
                 {
                     _log.Info("UPDATE");
-                    History.Insert(0, ClipboardData.Create());
+                    History.Insert(0, ClipboardEntry.Create());
                     _log.Info("/UPDATE");
 
                     RemoveDupes();
@@ -44,7 +47,7 @@ namespace AVA.Plugins.ClipboardHistory
 
         public void Clear() => History.Clear();
 
-        public void Restore(ClipboardData data)
+        public void Restore(ClipboardEntry data)
         {
             _log.Info("RESTORE");
             data.Restore();
@@ -66,9 +69,11 @@ namespace AVA.Plugins.ClipboardHistory
         }
     }
 
-    public class ClipboardData
+    public class ClipboardEntry
     {
         public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.Now;
+
+        public List<ClipboardData> Data { get; set; }
 
         public bool IsText { get; set; }
 
@@ -76,47 +81,74 @@ namespace AVA.Plugins.ClipboardHistory
 
         public bool IsImage { get; set; }
 
-        public MemoryStream Image { get; set; }
+        public string FileName { get; set; }
 
-        public byte[] ImageThumbnail { get; set; }
+        public bool IsFileName { get; set; }
 
-        public static ClipboardData Create()
+        public Image Icon { get; set; }
+
+        public static ClipboardEntry Create()
         {
             var isText = Clipboard.ContainsText();
             var isImage = Clipboard.ContainsImage();
 
-            var cd = new ClipboardData();
+            var cd = new ClipboardEntry();
 
-            if (isText)
+            if (TryParseFromFileName(cd, out var fileName))
+            {
+                cd.IsFileName = true;
+                cd.FileName = fileName;
+                cd.Icon = cd.Icon = ResourceManager.Instance.LoadImageFromIcon(fileName);
+            }
+            else if (isText)
             {
                 cd.IsText = true;
                 cd.Text = Clipboard.GetText();
             }
-
-            if (isImage)
+            else if (isImage)
             {
                 cd.IsImage = true;
-
-                LoadImage(cd);
+                cd.Icon = LoadImage();
             }
 
             return cd;
         }
 
-        private static void LoadImage(ClipboardData cd)
+        private static bool TryParseFromFileName(ClipboardEntry cd, out string fn)
+        {
+            fn = null;
+            var fileName = Clipboard.GetData("FileName");
+
+            if (fileName is string path && File.Exists(path))
+            {
+                fn = path;
+                return true;
+            }
+
+            if (fileName is string[] paths && paths.Length > 0 && File.Exists(paths[0]))
+            {
+                fn = paths[0];
+                return true;
+            }
+
+            return false;
+        }
+
+        private static Image LoadImage()
         {
             var imgStream = new MemoryStream();
 
             var img = Clipboard.GetImage();
             img.Save(imgStream, ImageFormat.Png);
-            cd.Image = imgStream;
 
             using (var thumbStream = new MemoryStream())
             {
                 var ratio = (float)img.Height / (float)img.Width;
                 var thumb = img.GetThumbnailImage(50, (int)Math.Ceiling(50f * ratio), new System.Drawing.Image.GetThumbnailImageAbort(() => false), IntPtr.Zero);
                 thumb.Save(thumbStream, ImageFormat.Png);
-                cd.ImageThumbnail = thumbStream.ToArray();
+
+                var bytes = thumbStream.ToArray();
+                return ResourceManager.Instance.LoadImage(bytes.HashSHA1(), bytes);
             }
         }
 
@@ -131,6 +163,8 @@ namespace AVA.Plugins.ClipboardHistory
                     if (IsText) _hash = Text.HashSHA1();
 
                     if (IsImage) _hash = Image.ToArray().HashSHA1();
+
+                    if (!string.IsNullOrWhiteSpace(FileName)) return FileName.HashSHA1();
                 }
 
                 return _hash;
@@ -139,17 +173,22 @@ namespace AVA.Plugins.ClipboardHistory
 
         public void Restore()
         {
-            if (IsText)
-            {
-                Clipboard.SetText(Text);
-                return;
-            }
+            //if (IsText)
+            //{
+            //    Clipboard.SetText(Text);
+            //    return;
+            //}
 
-            if (IsImage)
-            {
-                Clipboard.SetImage(System.Drawing.Image.FromStream(Image));
-                return;
-            }
+            //if (IsImage)
+            //{
+            //    Clipboard.SetImage(System.Drawing.Image.FromStream(Image));
+            //    return;
+            //}
+
+            //if (!string.IsNullOrWhiteSpace(FileName))
+            //{
+            //    Clipboard.SetData("FileName", new[] { FileName });
+            //}
         }
 
         public override string ToString()
@@ -157,6 +196,60 @@ namespace AVA.Plugins.ClipboardHistory
             if (IsText) return string.Join("", Text.Take(10));
 
             return "[IMAGE]";
+        }
+    }
+
+    public abstract class ClipboardData
+    {
+        public abstract string Hash { get; }
+
+        public abstract void Restore();
+
+        public abstract bool TryParse(IDataObject dataObject, out ClipboardData data);
+    }
+
+    public class ImageClipboardData : ClipboardData
+    {
+        public override string Hash => throw new NotImplementedException();
+
+        public override void Restore()
+        {
+            throw new NotImplementedException();
+        }
+        
+        public override bool TryParse(IDataObject dataObject, out ClipboardData data)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class TestClipboardData : ClipboardData
+    {
+        public override string Hash => throw new NotImplementedException();
+
+        public override void Restore()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool TryParse(IDataObject dataObject, out ClipboardData data)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class FileDropClipboardData : ClipboardData
+    {
+        public override string Hash => throw new NotImplementedException();
+
+        public override void Restore()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool TryParse(IDataObject dataObject, out ClipboardData data)
+        {
+            throw new NotImplementedException();
         }
     }
 
