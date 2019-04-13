@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2042
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA", "AVA\AVA.csproj", "{E11AA550-8A43-4A41-A4D3-1A19E41A5B04}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -31,6 +31,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA.Plugins.UnitConverter", "AVA.Plugins.UnitConverter\AVA.Plugins.UnitConverter.csproj", "{6B31A47F-D9EB-470E-A257-3A1E06E81C8F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA.Plugins.Macros", "AVA.Plugins.Macros\AVA.Plugins.Macros.csproj", "{A7F12493-D691-4409-B47F-F94FB35CCEA1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AVA.Plugin.Indexer.MsSettings", "AVA.Plugin.Indexer.MsSettings\AVA.Plugin.Indexer.MsSettings.csproj", "{9BA69607-B60E-43E2-900B-757D9D6B3B99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -82,6 +84,10 @@ Global
 		{A7F12493-D691-4409-B47F-F94FB35CCEA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7F12493-D691-4409-B47F-F94FB35CCEA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7F12493-D691-4409-B47F-F94FB35CCEA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BA69607-B60E-43E2-900B-757D9D6B3B99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BA69607-B60E-43E2-900B-757D9D6B3B99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BA69607-B60E-43E2-900B-757D9D6B3B99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BA69607-B60E-43E2-900B-757D9D6B3B99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <TargetFramework>net462</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\AVA.Core\AVA.Core.csproj" />
+        <ProjectReference Include="..\AVA.Indexing\AVA.Indexing.csproj" />
+        <ProjectReference Include="..\MUI\MUI.csproj" />
+    </ItemGroup>
+
+</Project>
