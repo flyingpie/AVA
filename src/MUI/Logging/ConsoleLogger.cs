@@ -13,6 +13,8 @@ namespace MUI.Logging
 
         public void Error(string message) => Write(ConsoleColor.Red, "ERROR", message);
 
+        public void Error(string message, Exception exception) => Write(ConsoleColor.Red, "ERROR", $"{message} {exception.StackTrace}");
+
         public void Info(string message) => Write(ConsoleColor.White, "INFO", message);
 
         public void Warning(string message) => Write(ConsoleColor.Yellow, "WARN", message);

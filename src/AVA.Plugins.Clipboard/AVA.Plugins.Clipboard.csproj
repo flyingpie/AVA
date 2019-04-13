@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <TargetFramework>net462</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\AVA.Core\AVA.Core.csproj" />
+        <ProjectReference Include="..\MUI.Win32\MUI.Win32.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="System.Windows.Forms" />
+    </ItemGroup>
+
+</Project>

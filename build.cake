@@ -1,5 +1,5 @@
-#tool "nuget:?package=GitVersion.CommandLine"
-#tool "vswhere"
+#tool "nuget:?package=GitVersion.CommandLine&version=4.0.0"
+#tool "nuget:?package=vswhere&version=2.5.2"
 
 var configuration = Argument("configuration", "Release");
 var output = Argument("output", "bin");

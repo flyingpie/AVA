@@ -82,6 +82,22 @@ namespace MUI
             }));
         }
 
+        public bool TryLoadImage(string path, out Image image)
+        {
+            image = null;
+
+            try
+            {
+                image = LoadImage(path);
+                return true;
+            }
+            catch
+            {
+                // TODO: LOG
+                return false;
+            }
+        }
+
         // TODO: Add size cap
         public Image LoadImage(string path)
         {

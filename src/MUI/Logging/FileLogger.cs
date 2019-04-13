@@ -53,6 +53,8 @@ namespace MUI.Logging
 
         public void Error(string message) => Write("ERROR", message);
 
+        public void Error(string message, Exception exception) => Write("ERROR", $"{message}{Environment.NewLine}{exception.StackTrace}");
+
         public void Info(string message) => Write("INFO", message);
 
         public void Warning(string message) => Write("WARN", message);
