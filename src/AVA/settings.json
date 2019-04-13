@@ -1,4 +1,11 @@
 ﻿{
+  "AVA.Indexing.Sources.FileSystem.FileSystemIndexerSourceSettings": {
+    "Paths": [
+      "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs",
+      "%APPDATA%\\Microsoft\\Windows\\Start Menu",
+      "%SYNCTHING%"
+    ]
+  },
   "AVA.Core.Settings.AVASettings": {
     "ToggleUIKey": "Z",
     "ToggleUIKeyModifiers": "Alt"

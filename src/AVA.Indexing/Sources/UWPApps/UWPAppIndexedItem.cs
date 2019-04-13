@@ -28,6 +28,6 @@ namespace AVA.Indexing.Sources.UWPApps
             return false;
         }
 
-        public override Image GetIcon() => ResourceManager.Instance.LoadImage(LogoPath);
+        public override Image GetIcon() => ResourceManager.Instance.TryLoadImage(LogoPath, out var image) ? image : null;
     }
 }

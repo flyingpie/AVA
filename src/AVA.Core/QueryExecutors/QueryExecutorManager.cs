@@ -40,7 +40,7 @@ namespace AVA.Core.QueryExecutors
                 }
                 catch (Exception ex)
                 {
-                    _log.Error($"Error while calling 'TryHandle' on query executor '{qe}': '{ex.Message}'");
+                    _log.Error($"Error while calling 'TryHandle' on query executor '{qe}': '{ex.Message}'", ex);
                 }
 
                 return false;
@@ -59,7 +59,7 @@ namespace AVA.Core.QueryExecutors
             }
             catch (Exception ex)
             {
-                _log.Error($"Error while calling 'TryExecute' on query executor '{_activeQueryExecutor}': '{ex.Message}'");
+                _log.Error($"Error while calling 'TryExecute' on query executor '{_activeQueryExecutor}': '{ex.Message}'", ex);
             }
 
             return Task.FromResult(false);

@@ -1,4 +1,6 @@
-﻿namespace MUI.Logging
+﻿using System;
+
+namespace MUI.Logging
 {
     public interface ILog
     {
@@ -7,5 +9,7 @@
         void Warning(string message);
 
         void Error(string message);
+
+        void Error(string message, Exception exception);
     }
 }
