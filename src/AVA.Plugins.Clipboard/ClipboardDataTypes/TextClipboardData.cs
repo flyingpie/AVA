@@ -53,5 +53,10 @@ namespace AVA.Plugins.Clipboard.ClipboardDataTypes
         {
             throw new NotImplementedException();
         }
+
+        public override void GetFormatAndData(out string format, out object data)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

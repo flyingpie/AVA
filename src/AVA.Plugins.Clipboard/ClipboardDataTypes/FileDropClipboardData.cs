@@ -20,6 +20,11 @@ namespace AVA.Plugins.Clipboard.ClipboardDataTypes
 
         public override string Name => throw new NotImplementedException();
 
+        public override void GetFormatAndData(out string format, out object data)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void Restore()
         {
             throw new NotImplementedException();
