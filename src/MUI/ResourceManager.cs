@@ -71,6 +71,21 @@ namespace MUI
             });
         }
 
+        public bool TryLoadImageFromUrl(string url, out Image image)
+        {
+            image = null;
+
+            try
+            {
+                image = LoadImageFromUrl(url);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public Image LoadImageFromUrl(string url)
         {
             return LoadImage(url, loader => new LazyImage(DefaultImage, async () =>

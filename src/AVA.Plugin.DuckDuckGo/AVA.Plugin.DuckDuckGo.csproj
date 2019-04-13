@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <LangVersion>7.1</LangVersion>
+        <TargetFramework>net462</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="DuckDuckGo.Net" Version="1.0.1" />
+        <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+        <PackageReference Include="TimeZoneNames" Version="3.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\AVA.Core\AVA.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="ImGui.NET">
+        <HintPath>..\..\deps\ImGui.NET.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>
