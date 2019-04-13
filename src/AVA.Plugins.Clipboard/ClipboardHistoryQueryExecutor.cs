@@ -3,11 +3,10 @@ using AVA.Core.QueryExecutors.ListQuery;
 using FontAwesomeCS;
 using MUI;
 using MUI.DI;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AVA.Plugins.ClipboardHistory
+namespace AVA.Plugins.Clipboard
 {
     [Help(Name = "Clipboard history", Description = "View and reactivate past clips", ExampleUsage = "cc <term?>", Icon = FAIcon.CopyRegular)]
     public class ClipboardHistoryQueryExecutor : ListQueryExecutor
@@ -22,26 +21,16 @@ namespace AVA.Plugins.ClipboardHistory
         {
             var items = ClipboardService
                 .History
+                .Where(h => h.Name.ToLowerInvariant().Contains(term.ToLowerInvariant()))
                 .Select(h =>
                 {
                     var res = new ListQueryResult()
                     {
-                        Name = h.FileName ?? h.Timestamp.ToString("s"),
-                        Description = "",
+                        Name = h.Name,
+                        Description = h.Timestamp.ToString("MM-dd HH:mm"),
+                        Icon = h.Icon,
                         OnExecute = t => ClipboardService.Restore(h)
                     };
-
-                    if (!string.IsNullOrEmpty(h.Text))
-                    {
-                        res.Description = string.Join("", h.Text.Replace(Environment.NewLine, "").Take(40));
-                    }
-
-                    //if (h.ImageThumbnail != null)
-                    if(h.Icon != null)
-                    {
-                        //res.Icon = ResourceManager.Instance.LoadImage($"cb_{h.Timestamp.ToString("s")}", h.ImageThumbnail);
-                        res.Icon = h.Icon;
-                    }
 
                     return (IListQueryResult)res;
                 })
