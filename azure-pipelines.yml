@@ -10,10 +10,7 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
-- powershell: -File build.ps1 # inline script
-  workingDirectory:  '/'
-  displayName:  'Cake build'
-#  failOnStderr:  #
-#  errorActionPreference:  #
-#  ignoreLASTEXITCODE:  #
-#  env:  # mapping of environment variables to add
+- task: CmdLine@2
+  inputs:
+    script: 'powershell -File build.ps1'
+    failOnStderr: true
