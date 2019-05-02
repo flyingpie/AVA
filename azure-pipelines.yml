@@ -1,0 +1,19 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- powershell: -File build.ps1 # inline script
+  workingDirectory:  '/'
+  displayName:  'Cake build'
+#  failOnStderr:  #
+#  errorActionPreference:  #
+#  ignoreLASTEXITCODE:  #
+#  env:  # mapping of environment variables to add
