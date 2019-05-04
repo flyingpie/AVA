@@ -97,7 +97,13 @@ namespace AVA.Core.Settings
             var sectionAttr = type.GetCustomAttribute<SectionAttribute>();
             var sectionName = sectionAttr?.Name ?? type.FullName;
 
-            var s = Settings[sectionName]?.ToObject(type) ?? defaultObject?.Invoke();
+            var s = Settings
+                .Children<JProperty>()
+                .FirstOrDefault(c => c.Name.Equals(sectionName, StringComparison.OrdinalIgnoreCase))
+                ?.Value
+                ?.ToObject(type)
+                ?? defaultObject?.Invoke()
+            ;
 
             Set(s, type);
 

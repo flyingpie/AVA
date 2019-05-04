@@ -1,17 +1,23 @@
 ﻿{
-  "AVA.Indexing.Sources.FileSystem.FileSystemIndexerSourceSettings": {
+  "AVA": {
+    "ToggleUIKey": "Z",
+    "ToggleUIKeyModifiers": "Alt"
+  },
+  "Indexer.FileSystem": {
     "Paths": [
       "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs",
       "%APPDATA%\\Microsoft\\Windows\\Start Menu",
       "%SYNCTHING%"
     ]
   },
-  "AVA.Core.Settings.AVASettings": {
-    "ToggleUIKey": "Z",
-    "ToggleUIKeyModifiers": "Alt"
-  },
   "Macros": {
     "Macros": [
+
+      {
+        "Command": "vsc",
+        "FileName": "code",
+        "Name": "Visual Studio Code"
+      },
 
       {
         "Command": "vscj",
