@@ -12,6 +12,12 @@ namespace AVA.Indexing.Sources.UWPApps
 
         public string LogoPath { get; set; }
 
+        public override int Boost
+        {
+            get => 10;
+            set { }
+        }
+
         public override bool Execute()
         {
             try

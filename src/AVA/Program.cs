@@ -39,7 +39,7 @@ namespace AVA
             uiContext.PushUI(container.Resolve<UI>());
             uiContext.Run();
 
-            SettingsRoot.Instance.Save();
+            //SettingsRoot.Instance.Save();
         }
 
         private static void SetupNativeDependencies()

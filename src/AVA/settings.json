@@ -1,13 +1,54 @@
 ﻿{
-  "AVA.Indexing.Sources.FileSystem.FileSystemIndexerSourceSettings": {
+  "AVA": {
+    "ToggleUIKey": "Z",
+    "ToggleUIKeyModifiers": "Alt"
+  },
+  "Indexer.FileSystem": {
     "Paths": [
       "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs",
       "%APPDATA%\\Microsoft\\Windows\\Start Menu",
       "%SYNCTHING%"
     ]
   },
-  "AVA.Core.Settings.AVASettings": {
-    "ToggleUIKey": "Z",
-    "ToggleUIKeyModifiers": "Alt"
+  "Macros": {
+    "Macros": [
+
+      {
+        "Command": "vsc",
+        "FileName": "code",
+        "Name": "Visual Studio Code"
+      },
+
+      {
+        "Command": "vscj",
+        "FileName": "%SYNCTHING%/Apps/VSCode/VSCode-Java/VSCode/code.exe",
+        "EnvironmentVars": {
+          "JAVA_HOME": "%SYNCTHING%/Apps/VSCode/VSCode-Java/jdk",
+          "PATH": "%PATH%;%SYNCTHING%/Apps/VSCode/VSCode-Java/jdk/bin;%SYNCTHING%/Apps/VSCode/VSCode-Java/maven/bin"
+        },
+
+        "Name": "Visual Studio Code - Java",
+        "Icon": "%SYNCTHING%/Apps/VSCode/VSCode-Java/icon.png"
+      },
+
+      {
+        "Command": "vscp",
+        "FileName": "%SYNCTHING%/Apps/VSCode/VSCode-Python/VSCode/code.exe",
+        "EnvironmentVars": {
+          "PYTHON37": "%SYNCTHING%/Apps/VSCode/VSCode-Python/python-3.7.2"
+        },
+
+        "Name": "Visual Studio Code - Python",
+        "Icon": "%SYNCTHING%/Apps/VSCode/VSCode-Python/icon.png"
+      },
+
+      {
+        "Command": "vscw",
+        "FileName": "%SYNCTHING%/Apps/VSCode/VSCode-Writer/VSCode/code.exe",
+
+        "Name": "Visual Studio Code - Writer",
+        "Icon": "%SYNCTHING%/Apps/VSCode/VSCode-Writer/icon.png"
+      }
+    ]
   }
 }

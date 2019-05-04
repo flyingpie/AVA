@@ -6,6 +6,8 @@ using FontAwesomeCS;
 using MUI;
 using MUI.DI;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace AVA.Plugins.Settings
 {
@@ -51,7 +53,25 @@ namespace AVA.Plugins.Settings
                 res.Description = "Rebuilding index...";
                 res.Icon = ResourceManager.Instance.LoadingImage;
 
-                await Indexer.RebuildAsync();
+                var progress = new IndexerProgress();
+                var cts = new CancellationTokenSource();
+                var updater = Task.Run(async () =>
+                {
+                    while (!cts.IsCancellationRequested)
+                    {
+                        await Task.Delay(100);
+
+                        if (!progress.HasStarted) continue;
+
+                        res.Description = $"Rebuilding index: {progress.CurrentIndexerName} {progress.ProcessedIndexedItemsPercentage}%% ({progress.ProcessedIndexedItems}/{progress.TotalIndexedItems})";
+                    }
+                });
+
+                await Indexer.RebuildAsync(progress);
+
+                cts.Cancel();
+
+                await updater;
 
                 res.Icon = ResourceManager.Instance.DefaultImage;
                 res.Description = "";

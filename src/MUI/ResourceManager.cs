@@ -86,6 +86,8 @@ namespace MUI
         {
             image = null;
 
+            if (string.IsNullOrWhiteSpace(path)) return false;
+
             try
             {
                 image = LoadImage(path);

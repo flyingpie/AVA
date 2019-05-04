@@ -13,7 +13,7 @@ namespace AVA.Indexing.Sources
             .GetAllPackages()
             .Select(p => new UWPAppIndexedItem()
             {
-                Name = p.DisplayName,
+                IndexerName = p.DisplayName,
                 Description = p.Description,
 
                 FullName = p.FullName,

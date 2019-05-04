@@ -2,6 +2,7 @@
 
 namespace AVA.Plugins.Time
 {
+    [Section("Time")]
     public class TimeSettings : Settings
     {
         public string[] DefaultCities { get; set; } = new[] { "tokyo", "sydney", "moscow", "new york" };

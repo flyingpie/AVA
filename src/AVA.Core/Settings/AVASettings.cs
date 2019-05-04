@@ -4,6 +4,7 @@ using Newtonsoft.Json.Converters;
 
 namespace AVA.Core.Settings
 {
+    [Section("AVA")]
     public class AVASettings : Settings
     {
         [JsonConverter(typeof(StringEnumConverter))]

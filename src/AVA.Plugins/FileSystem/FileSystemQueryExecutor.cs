@@ -20,7 +20,7 @@ namespace AVA.Plugins.FileSystem
             .Query(term)
             .Select(r => (IListQueryResult)new ListQueryResult()
             {
-                Name = r.Name,
+                Name = r.DisplayName,
                 Description = r.Description,
                 Icon = new ImageBox(r.GetIcon())
                 {

@@ -11,11 +11,17 @@ namespace AVA.Indexing
         [JsonIgnore]
         public float Score { get; set; }
 
-        public string Name { get; set; }
+        public virtual int Boost { get; set; }
 
-        public string Description { get; set; }
+        public virtual string DisplayName
+        {
+            get => IndexerName;
+            set { }
+        }
 
-        public string Extension { get; set; }
+        public virtual string IndexerName { get; set; }
+
+        public virtual string Description { get; set; }
 
         public virtual Image GetIcon() => null;
 
