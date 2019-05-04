@@ -19,7 +19,6 @@ namespace AVA.Indexing.Sources.FileSystem
             {
                 IndexerName = Path.GetFileNameWithoutExtension(path),
                 Description = path,
-                Extension = Path.GetExtension(path),
 
                 Path = path,
             })

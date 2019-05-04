@@ -15,8 +15,10 @@ namespace AVA.Indexing.Sources.FileSystem
         {
             get
             {
-                if (Extension.Equals(".exe", StringComparison.OrdinalIgnoreCase)) return 10;
-                if (Extension.Equals(".lnk", StringComparison.OrdinalIgnoreCase)) return 10;
+                var ext = System.IO.Path.GetExtension(Path);
+
+                if (ext?.Equals(".exe", StringComparison.OrdinalIgnoreCase) ?? false) return 10;
+                if (ext?.Equals(".lnk", StringComparison.OrdinalIgnoreCase) ?? false) return 10;
 
                 return 0;
             }

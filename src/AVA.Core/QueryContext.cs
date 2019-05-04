@@ -5,7 +5,12 @@
         private string _text;
         private string _textLower;
 
-        public bool HasPrefix(string prefix) => _textLower.StartsWith(prefix.ToLowerInvariant());
+        public bool HasPrefix(string prefix)
+        {
+            if (string.IsNullOrWhiteSpace(prefix)) return false;
+
+            return _textLower?.StartsWith(prefix.ToLowerInvariant()) ?? false;
+        }
 
         public bool HideUI { get; set; } = true;
 

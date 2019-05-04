@@ -120,16 +120,12 @@ namespace AVA.Indexing
                         var doc = new Document();
 
                         var name = item.IndexerName.ToLowerInvariant();
-                        var ext = item.Extension?.ToLowerInvariant();
 
                         var type = item.GetType().FullName;
                         var obj = JsonConvert.SerializeObject(item);
 
                         doc.AddTextField("name", name, Field.Store.YES);
                         doc.AddStringField("name.keyword", name, Field.Store.YES);
-
-                        if (!string.IsNullOrWhiteSpace(ext))
-                            doc.AddStringField("ext", ext, Field.Store.YES);
 
                         doc.AddStringField("obj_type", type, Field.Store.YES);
                         doc.AddStringField("obj", obj, Field.Store.YES);
@@ -164,25 +160,16 @@ namespace AVA.Indexing
                 var nameMatch = new BooleanQuery();
 
                 // Exact match
-                //nameMatch.Add(new BooleanClause(new TermQuery(new Term("name.keyword", term)) { Boost = 10 }, Occur.SHOULD));
+                nameMatch.Add(new BooleanClause(new TermQuery(new Term("name.keyword", term)) { Boost = 10 }, Occur.SHOULD));
 
                 // Starts with
-                nameMatch.Add(new BooleanClause(new PrefixQuery(new Term("name.keyword", term)) { Boost = 5 }, Occur.SHOULD));
+                nameMatch.Add(new BooleanClause(new PrefixQuery(new Term("name.keyword", term)) { Boost = 7 }, Occur.SHOULD));
 
                 // Contains
-                nameMatch.Add(new BooleanClause(new WildcardQuery(new Term("name", $"*{term}*")) { Boost = 2 }, Occur.SHOULD));
+                nameMatch.Add(new BooleanClause(new WildcardQuery(new Term("name", $"*{term}*")) { Boost = 5 }, Occur.SHOULD));
 
                 query.Add(new BooleanClause(nameMatch, Occur.MUST));
             }
-
-            //// Type (extension)
-            //{
-            //    // Prefer .exe
-            //    query.Add(new BooleanClause(new TermQuery(new Term("ext", ".exe")) { Boost = 16 }, Occur.SHOULD));
-
-            //    // And don't mind .lnk
-            //    query.Add(new BooleanClause(new TermQuery(new Term("ext", ".lnk")) { Boost = 10 }, Occur.SHOULD));
-            //}
 
             // Boost
             {
@@ -245,18 +232,5 @@ namespace AVA.Indexing
 
             return _typeCache.TryGetValue(typeName, out var clrType) ? clrType : null;
         }
-    }
-
-    public class IndexerProgress
-    {
-        public string CurrentIndexerName { get; set; }
-
-        public int TotalIndexedItems { get; set; }
-
-        public int ProcessedIndexedItems { get; set; }
-
-        public int ProcessedIndexedItemsPercentage => HasStarted ? (int)Math.Round((float)ProcessedIndexedItems / (float)TotalIndexedItems * 100, 0) : 0;
-
-        public bool HasStarted => !string.IsNullOrWhiteSpace(CurrentIndexerName) && TotalIndexedItems > 0;
     }
 }

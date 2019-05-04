@@ -30,12 +30,6 @@ namespace AVA.Plugin.Indexer.Macros
             set { }
         }
 
-        public override string Extension
-        {
-            get => ".exe";
-            set { }
-        }
-
         public override int Boost
         {
             get => 10;

@@ -23,8 +23,6 @@ namespace AVA.Indexing
 
         public virtual string Description { get; set; }
 
-        public virtual string Extension { get; set; }
-
         public virtual Image GetIcon() => null;
 
         public virtual bool Execute() => false;

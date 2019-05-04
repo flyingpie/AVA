@@ -12,6 +12,7 @@
   },
   "Macros": {
     "Macros": [
+
       {
         "Command": "vscj",
         "FileName": "%SYNCTHING%/Apps/VSCode/VSCode-Java/VSCode/code.exe",
@@ -23,6 +24,7 @@
         "Name": "Visual Studio Code - Java",
         "Icon": "%SYNCTHING%/Apps/VSCode/VSCode-Java/icon.png"
       },
+
       {
         "Command": "vscp",
         "FileName": "%SYNCTHING%/Apps/VSCode/VSCode-Python/VSCode/code.exe",
@@ -33,6 +35,7 @@
         "Name": "Visual Studio Code - Python",
         "Icon": "%SYNCTHING%/Apps/VSCode/VSCode-Python/icon.png"
       },
+
       {
         "Command": "vscw",
         "FileName": "%SYNCTHING%/Apps/VSCode/VSCode-Writer/VSCode/code.exe",
