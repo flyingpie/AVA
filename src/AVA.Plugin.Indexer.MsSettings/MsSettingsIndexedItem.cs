@@ -10,10 +10,10 @@ namespace AVA.Plugin.Indexer.MsSettings
     {
         public MsSettingsIndexedItem(string name, string commandUri)
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
+            IndexerName = name ?? throw new ArgumentNullException(nameof(name));
             CommandUri = commandUri ?? throw new ArgumentNullException(nameof(commandUri));
 
-            Description = $"Settings - {Name} - {CommandUri}";
+            Description = $"Settings - {IndexerName} - {CommandUri}";
             Extension = ".exe";
         }
 

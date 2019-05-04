@@ -17,7 +17,7 @@ namespace AVA.Indexing.Sources.FileSystem
             .GetFilesRecursiveX()
             .Select(path => new FileSystemIndexedItem()
             {
-                Name = Path.GetFileNameWithoutExtension(path),
+                IndexerName = Path.GetFileNameWithoutExtension(path),
                 Description = path,
                 Extension = Path.GetExtension(path),
 

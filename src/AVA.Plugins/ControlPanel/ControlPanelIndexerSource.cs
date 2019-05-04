@@ -19,7 +19,7 @@ namespace AVA.Plugins.ControlPanel
             {
                 Item = cpi,
 
-                Name = cpi.LocalizedString,
+                IndexerName = cpi.LocalizedString,
                 Description = cpi.ProcessStartInfo.FileName + " " + cpi.ProcessStartInfo.Arguments,
                 Extension = ".exe",
             })

@@ -12,18 +12,13 @@
 
     <ItemGroup>
         <ProjectReference Include="..\AVA.Core\AVA.Core.csproj" />
+        <ProjectReference Include="..\AVA.Indexing\AVA.Indexing.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <Reference Include="ImGui.NET">
         <HintPath>..\..\deps\ImGui.NET.dll</HintPath>
       </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="macros.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
     </ItemGroup>
 
 </Project>

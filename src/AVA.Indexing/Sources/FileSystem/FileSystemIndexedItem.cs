@@ -11,6 +11,18 @@ namespace AVA.Indexing.Sources.FileSystem
     {
         public string Path { get; set; }
 
+        public override int Boost
+        {
+            get
+            {
+                if (Extension.Equals(".exe", StringComparison.OrdinalIgnoreCase)) return 10;
+                if (Extension.Equals(".lnk", StringComparison.OrdinalIgnoreCase)) return 10;
+
+                return 0;
+            }
+            set { }
+        }
+
         public override bool Execute()
         {
             try

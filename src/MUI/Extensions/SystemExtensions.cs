@@ -33,6 +33,13 @@ namespace System
             return source.ToLowerInvariant().Contains(term.ToLowerInvariant());
         }
 
+        public static string ExpandEnvVars(this string source)
+        {
+            if (string.IsNullOrWhiteSpace(source)) return source;
+
+            return Environment.ExpandEnvironmentVariables(source);
+        }
+
         public static string FromAppRoot(this string path)
         {
             var loc = typeof(MUI.UIContext).Assembly.Location;
@@ -49,6 +56,12 @@ namespace System
             loc = Path.GetDirectoryName(loc);
 
             return Path.Combine(loc, path);
+        }
+
+        public static string FromPluginRoot<T>(this string path)
+            where T : class
+        {
+            return path.FromPluginRoot(typeof(T));
         }
 
         public static string FromPluginRoot(this string path, Type pluginType)

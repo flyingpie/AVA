@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace AVA.Core.Settings
 {
@@ -93,7 +94,10 @@ namespace AVA.Core.Settings
 
         public object Get(Type type, Func<object> defaultObject = null)
         {
-            var s = Settings[type.FullName]?.ToObject(type) ?? defaultObject?.Invoke();
+            var sectionAttr = type.GetCustomAttribute<SectionAttribute>();
+            var sectionName = sectionAttr?.Name ?? type.FullName;
+
+            var s = Settings[sectionName]?.ToObject(type) ?? defaultObject?.Invoke();
 
             Set(s, type);
 

@@ -85,7 +85,7 @@ namespace AVA.Indexing
             _log.Info($"Closed index in {sw.Elapsed}");
         }
 
-        public Task RebuildAsync()
+        public Task RebuildAsync(IndexerProgress progress)
         {
             return Task.Run(() =>
             {
@@ -101,28 +101,43 @@ namespace AVA.Indexing
                 sw.Start();
 
                 var count = 0;
-                foreach (var item in IndexerSources.SelectMany(s => s.GetItems()))
+                foreach (var indexerSource in IndexerSources)
                 {
-                    count++;
+                    var items = indexerSource.GetItems().ToList();
 
-                    var doc = new Document();
+                    progress.CurrentIndexerName = indexerSource.GetType().Name;
+                    progress.TotalIndexedItems = items.Count;
 
-                    var name = item.Name.ToLowerInvariant();
-                    var ext = item.Extension?.ToLowerInvariant();
+                    var currentCount = 0;
 
-                    var type = item.GetType().FullName;
-                    var obj = JsonConvert.SerializeObject(item);
+                    foreach (var item in items)
+                    {
+                        count++;
+                        currentCount++;
 
-                    doc.AddTextField("name", name, Field.Store.YES);
-                    doc.AddStringField("name.keyword", name, Field.Store.YES);
+                        progress.ProcessedIndexedItems = currentCount;
 
-                    if (!string.IsNullOrWhiteSpace(ext))
-                        doc.AddStringField("ext", ext, Field.Store.YES);
+                        var doc = new Document();
 
-                    doc.AddStringField("obj_type", type, Field.Store.YES);
-                    doc.AddStringField("obj", obj, Field.Store.YES);
+                        var name = item.IndexerName.ToLowerInvariant();
+                        var ext = item.Extension?.ToLowerInvariant();
 
-                    _indexWriter.AddDocument(doc);
+                        var type = item.GetType().FullName;
+                        var obj = JsonConvert.SerializeObject(item);
+
+                        doc.AddTextField("name", name, Field.Store.YES);
+                        doc.AddStringField("name.keyword", name, Field.Store.YES);
+
+                        if (!string.IsNullOrWhiteSpace(ext))
+                            doc.AddStringField("ext", ext, Field.Store.YES);
+
+                        doc.AddStringField("obj_type", type, Field.Store.YES);
+                        doc.AddStringField("obj", obj, Field.Store.YES);
+
+                        doc.AddInt32Field("boost", item.Boost, Field.Store.YES);
+
+                        _indexWriter.AddDocument(doc);
+                    }
                 }
 
                 _indexWriter.Commit();
@@ -148,22 +163,36 @@ namespace AVA.Indexing
             {
                 var nameMatch = new BooleanQuery();
 
+                // Exact match
+                //nameMatch.Add(new BooleanClause(new TermQuery(new Term("name.keyword", term)) { Boost = 10 }, Occur.SHOULD));
+
                 // Starts with
-                nameMatch.Add(new BooleanClause(new PrefixQuery(new Term("name.keyword", term)) { Boost = 6 }, Occur.SHOULD));
+                nameMatch.Add(new BooleanClause(new PrefixQuery(new Term("name.keyword", term)) { Boost = 5 }, Occur.SHOULD));
 
                 // Contains
-                nameMatch.Add(new BooleanClause(new WildcardQuery(new Term("name", $"*{term}*")) { Boost = 4 }, Occur.SHOULD));
+                nameMatch.Add(new BooleanClause(new WildcardQuery(new Term("name", $"*{term}*")) { Boost = 2 }, Occur.SHOULD));
 
                 query.Add(new BooleanClause(nameMatch, Occur.MUST));
             }
 
-            // Type (extension)
-            {
-                // Prefer .exe
-                query.Add(new BooleanClause(new TermQuery(new Term("ext", ".exe")) { Boost = 16 }, Occur.SHOULD));
+            //// Type (extension)
+            //{
+            //    // Prefer .exe
+            //    query.Add(new BooleanClause(new TermQuery(new Term("ext", ".exe")) { Boost = 16 }, Occur.SHOULD));
 
-                // And don't mind .lnk
-                query.Add(new BooleanClause(new TermQuery(new Term("ext", ".lnk")) { Boost = 10 }, Occur.SHOULD));
+            //    // And don't mind .lnk
+            //    query.Add(new BooleanClause(new TermQuery(new Term("ext", ".lnk")) { Boost = 10 }, Occur.SHOULD));
+            //}
+
+            // Boost
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    var nq = NumericRangeQuery.NewInt32Range("boost", i, i + 1, true, true);
+                    nq.Boost = i + 1;
+
+                    query.Add(new BooleanClause(nq, Occur.SHOULD));
+                }
             }
 
             var hits = _indexSearcher.Search(query, 15);
@@ -196,7 +225,7 @@ namespace AVA.Indexing
                 })
                 .Where(ii => ii != null)
                 .OrderByDescending(ii => ii.Score)
-                .ThenBy(ii => ii.Name)
+                .ThenBy(ii => ii.IndexerName)
                 .ToList();
 
             return docs;
@@ -216,5 +245,18 @@ namespace AVA.Indexing
 
             return _typeCache.TryGetValue(typeName, out var clrType) ? clrType : null;
         }
+    }
+
+    public class IndexerProgress
+    {
+        public string CurrentIndexerName { get; set; }
+
+        public int TotalIndexedItems { get; set; }
+
+        public int ProcessedIndexedItems { get; set; }
+
+        public int ProcessedIndexedItemsPercentage => HasStarted ? (int)Math.Round((float)ProcessedIndexedItems / (float)TotalIndexedItems * 100, 0) : 0;
+
+        public bool HasStarted => !string.IsNullOrWhiteSpace(CurrentIndexerName) && TotalIndexedItems > 0;
     }
 }
