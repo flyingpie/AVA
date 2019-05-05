@@ -1,7 +1,10 @@
 ﻿using AVA.Core.Footers;
+using AVA.Core.Providers;
 using ImGuiNET;
 using MUI;
 using MUI.DI;
+using System.Linq;
+using System.Numerics;
 
 namespace AVA.Plugin.Footer
 {
@@ -9,6 +12,8 @@ namespace AVA.Plugin.Footer
     public class SysMonFooter : IFooter
     {
         [Dependency] private SysMonService SysMon { get; set; }
+
+        [Dependency] private INowPlayingProvider[] NowPlayingProviders { get; set; }
 
         public int Priority => 999;
 
@@ -27,6 +32,20 @@ namespace AVA.Plugin.Footer
                 {
                     ImGui.SameLine();
                     ImGui.Text($"{drive.Name} {drive.Usage.ToString("0.00")}");
+                }
+
+                string nowPlaying = null;
+                var nowPlayingProvider = NowPlayingProviders.FirstOrDefault(np => np.TryGetNowPlaying(out nowPlaying));
+                if (nowPlayingProvider != null)
+                {
+                    ImGui.SameLine();
+
+                    var curPos = ImGui.GetCursorScreenPos();
+                    var avail = ImGui.GetContentRegionAvailable();
+                    var textSize = ImGui.GetTextSize(nowPlaying);
+
+                    ImGui.SetCursorScreenPos(new Vector2(curPos.X + avail.X - textSize.X, curPos.Y));
+                    ImGui.Text(nowPlaying);
                 }
             }
             ImGui.EndChild();
