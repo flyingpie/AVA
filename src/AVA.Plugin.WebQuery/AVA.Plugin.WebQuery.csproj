@@ -2,12 +2,11 @@
 
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <LangVersion>7.1</LangVersion>
     <TargetFramework>net462</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="morelinq" Version="3.0.0" />
+    <PackageReference Include="morelinq" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -2,13 +2,12 @@
 
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <LangVersion>7.1</LangVersion>
     <TargetFramework>net462</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="TimeZoneNames" Version="3.4.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="TimeZoneNames" Version="4.0.1" />
   </ItemGroup>
 
   <ItemGroup>
