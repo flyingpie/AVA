@@ -17,7 +17,7 @@ namespace AVA
 
             SetupNativeDependencies();
 
-            typeof(Indexing.Indexer).GetType();
+            //typeof(Indexing.Indexer).GetType();
 
             var uiContext = new UIContext(600, 300);
 
@@ -34,7 +34,7 @@ namespace AVA
             RegisterServices(container);
 
             // TODO: Remove (pries cache)
-            container.Resolve<Indexing.Indexer>().Query("conemu");
+            //container.Resolve<Indexing.Indexer>().Query("conemu");
 
             uiContext.PushUI(container.Resolve<UI>());
             uiContext.Run();

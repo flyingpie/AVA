@@ -1,4 +1,4 @@
-﻿using AVA.Indexing;
+﻿using AVA.Plugin.Indexer;
 using MUI.DI;
 using MUI.Logging;
 using System.Collections.Generic;

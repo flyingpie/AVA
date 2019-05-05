@@ -12,7 +12,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\AVA.Core\AVA.Core.csproj" />
-        <ProjectReference Include="..\AVA.Indexing\AVA.Indexing.csproj" />
+        <ProjectReference Include="..\AVA.Plugin.Indexer\AVA.Plugin.Indexer.csproj" />
     </ItemGroup>
 
     <ItemGroup>

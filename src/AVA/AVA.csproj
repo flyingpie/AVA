@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AVA.Core\AVA.Core.csproj" />
-    <ProjectReference Include="..\AVA.Indexing\AVA.Indexing.csproj" />
     <ProjectReference Include="..\MUI\MUI.csproj" />
     <ProjectReference Include="..\MUI.Win32\MUI.Win32.csproj" />
   </ItemGroup>
