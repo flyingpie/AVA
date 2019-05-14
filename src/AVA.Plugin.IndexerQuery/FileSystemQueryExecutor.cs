@@ -21,6 +21,7 @@ namespace AVA.Plugin.IndexerQuery
             .Select(r => (IListQueryResult)new ListQueryResult()
             {
                 Name = r.DisplayName,
+                //Name = $"{r.DisplayName} ({r.Score})",
                 Description = r.Description,
                 Icon = new ImageBox(r.GetIcon())
                 {

@@ -155,7 +155,7 @@ namespace AVA.Plugin.Indexer
         public List<IndexedItem> Query(string term)
         {
             // TODO: Can we use an analyzer for this?
-            term = term.ToLowerInvariant();
+            term = term.ToLowerInvariant().Trim();
 
             var query = new BooleanQuery();
 
@@ -164,13 +164,23 @@ namespace AVA.Plugin.Indexer
                 var nameMatch = new BooleanQuery();
 
                 // Exact match
-                nameMatch.Add(new BooleanClause(new TermQuery(new Term("name.keyword", term)) { Boost = 10 }, Occur.SHOULD));
+                //nameMatch.Add(new BooleanClause(new TermQuery(new Term("name.keyword", term)) { Boost = 8 }, Occur.SHOULD));
 
                 // Starts with
-                nameMatch.Add(new BooleanClause(new PrefixQuery(new Term("name.keyword", term)) { Boost = 7 }, Occur.SHOULD));
+                nameMatch.Add(new BooleanClause(new PrefixQuery(new Term("name.keyword", term)) { Boost = 5 }, Occur.SHOULD));
 
                 // Contains
-                nameMatch.Add(new BooleanClause(new WildcardQuery(new Term("name", $"*{term}*")) { Boost = 5 }, Occur.SHOULD));
+                nameMatch.Add(new BooleanClause(new WildcardQuery(new Term("name", $"*{term}*")) { Boost = 2 }, Occur.SHOULD));
+
+                var words = term.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+                if (words.Length > 1)
+                {
+                    var termsMatch = new BooleanQuery();
+
+                    foreach (var word in words) termsMatch.Add(new WildcardQuery(new Term("name", $"*{word}*")) { Boost = 5 }, Occur.MUST);
+
+                    nameMatch.Add(new BooleanClause(termsMatch, Occur.SHOULD));
+                }
 
                 query.Add(new BooleanClause(nameMatch, Occur.MUST));
             }
@@ -216,7 +226,7 @@ namespace AVA.Plugin.Indexer
                 })
                 .Where(ii => ii != null)
                 .OrderByDescending(ii => ii.Score)
-                .ThenBy(ii => ii.IndexerName)
+                //.ThenBy(ii => ii.IndexerName)
                 .ToList();
 
             return docs;
