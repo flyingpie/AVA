@@ -7,6 +7,8 @@ namespace AVA.Core.Settings
     [Section("AVA")]
     public class AVASettings : Settings
     {
+        public string BackgroundImage { get; set; }
+
         [JsonConverter(typeof(StringEnumConverter))]
         public Keys ToggleUIKey { get; set; } = Keys.Space;
 

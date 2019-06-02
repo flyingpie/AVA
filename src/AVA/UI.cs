@@ -3,11 +3,14 @@ using AVA.Core.Footers;
 using AVA.Core.QueryExecutors;
 using AVA.Core.Settings;
 using ImGuiNET;
+using Microsoft.Xna.Framework.Graphics;
 using MUI;
 using MUI.DI;
 using MUI.ImGuiControls;
 using MUI.Logging;
 using MUI.Win32.Input;
+using System;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -27,6 +30,8 @@ namespace AVA
         private ILog _log;
 
         private TextBox _queryBox;
+
+        private Texture2D _bg;
 
         public UI()
         {
@@ -53,11 +58,32 @@ namespace AVA
             // Minimize on focus lost
             _uic.FocusGained += (s, a) => _log.Info("Gained focus");
             _uic.FocusLost += (s, a) => { _log.Info("Lost focus"); Minimize(); };
+
+            // Background image
+            if (!string.IsNullOrWhiteSpace(Settings.BackgroundImage))
+            {
+                string bgImage = null;
+
+                try
+                {
+                    bgImage = Environment.ExpandEnvironmentVariables(Settings.BackgroundImage);
+                    _bg = Texture2D.FromStream(_uic.GraphicsDevice, File.OpenRead(bgImage));
+                }
+                catch (Exception ex)
+                {
+                    _log.Error($"Could not load background image at '{bgImage}': {ex.Message}.", ex);
+                }
+            }
         }
 
         public override void Draw()
         {
             if (Input.IsKeyPressed(Keys.Escape)) Minimize();
+
+            if (_bg != null)
+            {
+                _uic.SpriteBatch.Draw(_bg, new Microsoft.Xna.Framework.Rectangle(0, 0, Width, Height), Microsoft.Xna.Framework.Color.White);
+            }
 
             ImGui.PushStyleVar(StyleVar.WindowRounding, 0);
 

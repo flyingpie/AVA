@@ -13,6 +13,8 @@ namespace AVA.Plugins.FirefoxBookmarks
     {
         private List<Bookmark> _bookmarks;
 
+        public override int Order => 0;
+
         public override string Prefix => "ff ";
 
         public override void Initialize()
