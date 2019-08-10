@@ -37,7 +37,6 @@ Task("Default").Does(() =>
     DeleteFiles($"{output}/AVA/settings.json");
 
     System.IO.Directory.Delete($"{output}/AVA.Core", true);
-    System.IO.Directory.Delete($"{output}/AVA.Indexing", true);
 
     System.IO.Directory.Delete($"{output}/MUI", true);
     System.IO.Directory.Delete($"{output}/MUI.Scripting", true);

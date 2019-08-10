@@ -1,4 +1,4 @@
-﻿using AVA.Indexing;
+﻿using AVA.Plugin.Indexer;
 using MUI;
 using MUI.Graphics;
 using MUI.Logging;
@@ -64,10 +64,11 @@ namespace AVA.Plugin.Indexer.Macros
                 proc.StartInfo.FileName = FileName.ExpandEnvVars();
                 proc.StartInfo.Arguments = Arguments.ExpandEnvVars();
                 proc.StartInfo.WorkingDirectory = WorkingDirectory.ExpandEnvVars();
-                proc.StartInfo.UseShellExecute = false;
 
                 if (EnvironmentVars != null)
                 {
+                    proc.StartInfo.UseShellExecute = false;
+
                     foreach (var envVar in EnvironmentVars)
                     {
                         proc.StartInfo.Environment[envVar.Key] = envVar.Value.ExpandEnvVars();

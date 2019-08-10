@@ -1,4 +1,4 @@
-﻿using AVA.Indexing;
+﻿using AVA.Plugin.Indexer;
 using AVA.Plugin.Indexer.MsSettings.Resources;
 using MUI;
 using MUI.Graphics;
