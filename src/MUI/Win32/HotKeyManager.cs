@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace MUI.Win32.Input
+namespace MUI.Win32
 {
     public static class HotKeyManager
     {

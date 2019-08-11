@@ -20,7 +20,7 @@ namespace AVA.Plugin.Footer
         public void Draw()
         {
             ImGui.PushFont(Fonts.Regular16);
-            ImGui.BeginChild("footer", false, WindowFlags.Default);
+            ImGui.BeginChild("footer", ImGui.GetContentRegionAvail(), false, ImGuiWindowFlags.None);
             {
                 // SysMon
                 ImGui.Text($"CPU {SysMon.CpuUsage.ToString("0.00")}");
@@ -41,8 +41,8 @@ namespace AVA.Plugin.Footer
                     ImGui.SameLine();
 
                     var curPos = ImGui.GetCursorScreenPos();
-                    var avail = ImGui.GetContentRegionAvailable();
-                    var textSize = ImGui.GetTextSize(nowPlaying);
+                    var avail = ImGui.GetContentRegionAvail();
+                    var textSize = ImGui.CalcTextSize(nowPlaying);
 
                     ImGui.SetCursorScreenPos(new Vector2(curPos.X + avail.X - textSize.X, curPos.Y));
                     ImGui.Text(nowPlaying);

@@ -1,6 +1,7 @@
 ﻿using MUI.Graphics;
 using MUI.Logging;
 using System.IO;
+using Windows.Storage.FileProperties;
 
 namespace MUI.Win32.Extensions
 {

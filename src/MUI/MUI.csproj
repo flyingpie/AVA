@@ -1,23 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-      <TargetFramework>net462</TargetFramework>
+      <TargetFramework>net472</TargetFramework>
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <!--<Platforms>x64</Platforms>-->
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="ImGui.NET" Version="1.71.0" />
+        <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.7.1.189" />
         <PackageReference Include="morelinq" Version="3.1.1" />
         <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
+        <PackageReference Include="UwpDesktop" Version="10.0.14393.3" />
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="FNA">
-            <HintPath>..\..\deps\FNA.dll</HintPath>
-        </Reference>
-        <Reference Include="ImGui.NET">
-            <HintPath>..\..\deps\ImGui.NET.dll</HintPath>
-        </Reference>
         <Reference Include="System.Net.Http" />
+        <Reference Include="System.Windows.Forms" />
     </ItemGroup>
 
     <ItemGroup>

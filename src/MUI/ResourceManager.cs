@@ -52,9 +52,9 @@ namespace MUI
             WhiteImage = _textureLoader.Load(transp.ToByteArray());
         }
 
-        public Font LoadFont(string path, int pixelSize)
+        public ImFontPtr LoadFont(string path, int pixelSize)
         {
-            var font = ImGui.GetIO().FontAtlas.AddFontFromFileTTF(path, pixelSize);
+            var font = ImGui.GetIO().Fonts.AddFontFromFileTTF(path, pixelSize);
 
             _imGuiRenderer.RebuildFontAtlas();
 

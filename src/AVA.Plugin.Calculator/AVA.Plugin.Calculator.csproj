@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
+    <!--<Platforms>AnyCPU;x64</Platforms>-->
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,12 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AVA.Core\AVA.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="ImGui.NET">
-      <HintPath>..\..\deps\ImGui.NET.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>

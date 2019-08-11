@@ -20,12 +20,12 @@ namespace AVA.Core
 
         public override void Draw()
         {
-            ImGui.PushStyleVar(StyleVar.WindowRounding, 0);
+            ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 0);
 
-            ImGui.SetNextWindowPos(Vector2.Zero, Condition.Always);
-            ImGui.SetNextWindowSize(new Vector2(UIContext.Instance.Window.ClientBounds.Width, UIContext.Instance.Window.ClientBounds.Height), Condition.Always);
+            ImGui.SetNextWindowPos(Vector2.Zero, ImGuiCond.Always);
+            ImGui.SetNextWindowSize(new Vector2(UIContext.Instance.Window.ClientBounds.Width, UIContext.Instance.Window.ClientBounds.Height), ImGuiCond.Always);
 
-            ImGui.BeginWindow(string.Empty, WindowFlags.NoMove | WindowFlags.NoResize | WindowFlags.NoTitleBar);
+            ImGui.Begin(string.Empty, ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoTitleBar);
             {
                 ImGui.Text("Surprise motherfucker!");
                 if (ImGui.Button("Close"))
@@ -33,7 +33,7 @@ namespace AVA.Core
                     UIContext.Instance.PopUI();
                 }
             }
-            ImGui.EndWindow();
+            ImGui.End();
         }
     }
 }

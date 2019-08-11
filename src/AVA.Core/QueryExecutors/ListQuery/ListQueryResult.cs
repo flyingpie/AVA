@@ -36,9 +36,9 @@ namespace AVA.Core.QueryExecutors.ListQuery
             var iconSize = Mode == ListMode.Large ? 50 : 25;
 
             // Selection
-            if (isSelected) ImGui.PushStyleColor(ColorTarget.ChildBg, new Vector4(1, 1, 1, .1f));
+            if (isSelected) ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(1, 1, 1, .1f));
 
-            ImGui.BeginChild($"query-result-{Id}", new Vector2(ImGui.GetWindowContentRegionWidth(), iconSize), false, WindowFlags.Default);
+            ImGui.BeginChild($"query-result-{Id}", new Vector2(ImGui.GetWindowContentRegionWidth(), iconSize), false, ImGuiWindowFlags.None);
             {
                 ImGui.Columns(2, " ", false);
 
@@ -61,7 +61,8 @@ namespace AVA.Core.QueryExecutors.ListQuery
                     if (Mode == ListMode.Large && !string.IsNullOrWhiteSpace(Description))
                     {
                         ImGui.PushFont(Fonts.Regular16);
-                        ImGui.Text(Description, new Vector4(1f, 1f, 1f, 0.5f));
+                        // TODO: new Vector4(1f, 1f, 1f, 0.5f)
+                        ImGui.Text(Description);
                         ImGui.PopFont();
                     }
                 }
@@ -74,7 +75,7 @@ namespace AVA.Core.QueryExecutors.ListQuery
 
             ImGui.PopFont();
 
-            if (isSelected) ImGui.SetScrollHere();
+            if (isSelected) ImGui.SetScrollHereY();
         }
 
         public Task ExecuteAsync(QueryContext query)
