@@ -21,9 +21,9 @@ Task("Default").Does(() =>
         Configuration = configuration,
         MaxCpuCount = 0, // As many as available
         NodeReuse = false, // Required to prevent build task dll's from being locked
-		PlatformTarget = platform,
+        //PlatformTarget = platform,
         ToolPath = GetFiles(VSWhereLatest() + "/**/MSBuild.exe").FirstOrDefault()
-    });
+    }.WithProperty("runtime", "win10-x64"));
 
     // TEST //
     VSTest("./bin/**/*.UnitTest.dll", new VSTestSettings
