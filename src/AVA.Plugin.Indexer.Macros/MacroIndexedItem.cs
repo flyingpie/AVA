@@ -75,7 +75,7 @@ namespace AVA.Plugin.Indexer.Macros
                     }
                 }
 
-                if (RunAsAdmin)
+                if (RunAsAdmin || Input.IsKeyDown(Keys.LeftControl))
                 {
                     proc.StartInfo.Verb = "runas";
                 }

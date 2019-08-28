@@ -25,7 +25,7 @@ namespace AVA
 
         [Dependency] public IFooter[] Footers { get; set; }
 
-        private UIContext _uic;
+        private UIContext? _uic;
         private QueryContext _queryContext;
         private ILog _log;
 

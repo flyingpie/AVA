@@ -1,9 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <ApplicationIcon>Resources\Images\default-image.ico</ApplicationIcon>
+    <LangVersion>8.0</LangVersion>
+    <NullableReferenceTypes>true</NullableReferenceTypes>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net462</TargetFramework>
-    <ApplicationIcon>Resources\Images\default-image.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
