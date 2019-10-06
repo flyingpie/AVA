@@ -11,6 +11,9 @@
       "%SYNCTHING%"
     ]
   },
+  "LocalBookmarks": {
+    "PathToBookmarks": "%SYNCTHING%\\Chest\\Bookmarks.csv"
+  },
   "Macros": {
     "Macros": [
 

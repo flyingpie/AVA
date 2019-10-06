@@ -41,8 +41,6 @@ Task("Default").Does(() =>
     System.IO.Directory.Delete($"{output}/AVA.Core", true);
 
     System.IO.Directory.Delete($"{output}/MUI", true);
-    System.IO.Directory.Delete($"{output}/MUI.Scripting", true);
-    System.IO.Directory.Delete($"{output}/MUI.Win32", true);
 
     System.IO.Directory.Delete($"{output}/obj", true);
 });
