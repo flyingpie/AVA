@@ -114,7 +114,7 @@ namespace AVA.Plugin.WebQuery
 
             if (_command.Icon != null)
             {
-                _command.Icon.Size = new Vector2(ImGui.GetContentRegionAvailableWidth(), IconSize);
+                _command.Icon.Size = new Vector2(ImGui.GetContentRegionAvail().X, IconSize);
                 _command.Icon.Tint = new Vector4(Vector3.Zero, .25f);
 
                 _command.Icon.Draw();

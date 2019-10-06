@@ -52,9 +52,9 @@ namespace MUI
             WhiteImage = _textureLoader.Load(transp.ToByteArray());
         }
 
-        public Font LoadFont(string path, int pixelSize)
+        public ImFontPtr LoadFont(string path, int pixelSize)
         {
-            var font = ImGui.GetIO().FontAtlas.AddFontFromFileTTF(path, pixelSize);
+            var font = ImGui.GetIO().Fonts.AddFontFromFileTTF(path, pixelSize);
 
             _imGuiRenderer.RebuildFontAtlas();
 
@@ -63,23 +63,39 @@ namespace MUI
 
         public Image LoadGlyph(string glyph, System.Drawing.FontFamily fontFamily, int fontSizeEm)
         {
-            return LoadImage($"glyph_{fontFamily.Name}_{fontSizeEm}_{glyph}", loader =>
+            try
             {
-                var img = GlyphRenderer.RenderGlyph(glyph, fontFamily, fontSizeEm, System.Drawing.Color.White);
+                return LoadImage($"glyph_{fontFamily.Name}_{fontSizeEm}_{glyph}", loader =>
+                {
+                    var img = GlyphRenderer.RenderGlyph(glyph, fontFamily, fontSizeEm, System.Drawing.Color.White);
 
-                return loader.Load(img.ToByteArray());
-            });
+                    return loader.Load(img.ToByteArray());
+                });
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"Could not load glyph: '{ex.Message}'", ex);
+                return DefaultImage;
+            }
         }
 
         public Image LoadImageFromUrl(string url)
         {
-            return LoadImage(url, loader => new LazyImage(DefaultImage, async () =>
+            try
             {
-                var response = await new HttpClient().GetAsync(url);
-                var data = await response.Content.ReadAsByteArrayAsync();
+                return LoadImage(url, loader => new LazyImage(DefaultImage, async () =>
+                {
+                    var response = await new HttpClient().GetAsync(url);
+                    var data = await response.Content.ReadAsByteArrayAsync();
 
-                return loader.Load(data);
-            }));
+                    return loader.Load(data);
+                }));
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"Could not load image from url '{url}': '{ex.Message}'.", ex);
+                return DefaultImage;
+            }
         }
 
         public bool TryLoadImage(string path, out Image image)
@@ -93,9 +109,9 @@ namespace MUI
                 image = LoadImage(path);
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
-                // TODO: LOG
+                _log.Error($"Could not load image '{path}': '{ex.Message}'", ex);
                 return false;
             }
         }
@@ -103,22 +119,46 @@ namespace MUI
         // TODO: Add size cap
         public Image LoadImage(string path)
         {
-            return LoadImage(path, File.ReadAllBytes(path));
+            try
+            {
+                return LoadImage(path, File.ReadAllBytes(path));
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"Could not load image '{path}': '{ex.Message}'", ex);
+                return DefaultImage;
+            }
         }
 
         // TODO: Add size cap
         public Image LoadImage(string cacheKey, byte[] data)
         {
-            return LoadImage(cacheKey, factory => factory.Load(data));
+            try
+            {
+                return LoadImage(cacheKey, factory => factory.Load(data));
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"Could not load image with cache key '{cacheKey}': '{ex.Message}'", ex);
+                return DefaultImage;
+            }
         }
 
         public Image LoadImage(string cacheKey, Func<TextureLoader, Image> factory)
         {
-            var image = _loadedImages.GetOrAdd(cacheKey, key => factory(_textureLoader));
+            try
+            {
+                var image = _loadedImages.GetOrAdd(cacheKey, key => factory(_textureLoader));
 
-            image.Initialize();
+                image.Initialize();
 
-            return image;
+                return image;
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"Could not load image with cache key '{cacheKey}': '{ex.Message}'", ex);
+                return DefaultImage;
+            }
         }
     }
 }

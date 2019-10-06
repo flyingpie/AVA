@@ -1,5 +1,4 @@
-﻿using AVA.Plugin.Indexer;
-using MUI;
+﻿using MUI;
 using MUI.DI;
 using MUI.Graphics;
 using MUI.Win32.Extensions;

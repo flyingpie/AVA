@@ -10,20 +10,22 @@ namespace AVA.Plugin.Time
     {
         public DateTimeOffset Time { get; set; }
 
-        public Font Font { get; set; }
+        public ImFontPtr Font { get; set; }
 
         public override void Draw(bool isSelected)
         {
             ImGui.PushFont(Fonts.Regular24);
 
-            ImGui.BeginChild($"query-result-{Id}", new Vector2(ImGui.GetWindowContentRegionWidth(), 50), false, WindowFlags.Default);
+            ImGui.BeginChild($"query-result-{Id}", new Vector2(ImGui.GetWindowContentRegionWidth(), 50), false, ImGuiWindowFlags.None);
             {
                 ImGui.Columns(2, " ", false);
 
                 ImGui.SetColumnWidth(0, 80);
 
                 ImGui.PushFont(Fonts.Regular32);
-                ImGui.Text(Time.ToString("HH:mm"), new Vector4(1f, 1f, 1f, .7f));
+                ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1f, 1f, 1f, .7f));
+                ImGui.Text(Time.ToString("HH:mm"));
+                ImGui.PopStyleColor();
                 ImGui.PopFont();
 
                 ImGui.SetCursorScreenPos(new Vector2(ImGui.GetCursorScreenPos().X + 15, ImGui.GetCursorScreenPos().Y - 5));
@@ -41,7 +43,9 @@ namespace AVA.Plugin.Time
                     if (Mode == ListMode.Large && !string.IsNullOrWhiteSpace(Description))
                     {
                         ImGui.PushFont(Fonts.Regular16);
-                        ImGui.Text(Description, new Vector4(1f, 1f, 1f, 0.5f));
+                        ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1f, 1f, 1f, 0.5f));
+                        ImGui.Text(Description);
+                        ImGui.PopStyleColor();
                         ImGui.PopFont();
                     }
                 }

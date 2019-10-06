@@ -2,73 +2,25 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <ApplicationIcon>Resources\Images\default-image.ico</ApplicationIcon>
+    <Platforms>x64</Platforms>
+    <RuntimeIdentifiers>MSIL;win10-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ImGui.NET" Version="1.71.0" />
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.7.1.189" />
     <PackageReference Include="morelinq" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AVA.Core\AVA.Core.csproj" />
     <ProjectReference Include="..\MUI\MUI.csproj" />
-    <ProjectReference Include="..\MUI.Win32\MUI.Win32.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="FNA">
-      <HintPath>..\..\deps\FNA.dll</HintPath>
-    </Reference>
-    <Reference Include="ImGui.NET">
-      <HintPath>..\..\deps\ImGui.NET.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\deps\cimgui\win-x64\cimgui.dll" Link="Deps\win64\cimgui.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\deps\fnalibs\x64\libjpeg-9.dll" Link="Deps\win64\libjpeg-9.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\deps\fnalibs\x64\libogg-0.dll" Link="Deps\win64\libogg-0.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\deps\fnalibs\x64\libpng16-16.dll" Link="Deps\win64\libpng16-16.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\deps\fnalibs\x64\libtheoradec-1.dll" Link="Deps\win64\libtheoradec-1.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\deps\fnalibs\x64\libtheorafile.dll" Link="Deps\win64\libtheorafile.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\deps\fnalibs\x64\libvorbis-0.dll" Link="Deps\win64\libvorbis-0.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\deps\fnalibs\x64\libvorbisfile.dll" Link="Deps\win64\libvorbisfile.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\deps\fnalibs\x64\MojoShader.dll" Link="Deps\win64\MojoShader.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\deps\fnalibs\x64\SDL2.dll" Link="Deps\win64\SDL2.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\deps\fnalibs\x64\SDL2_image.dll" Link="Deps\win64\SDL2_image.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\deps\fnalibs\x64\soft_oal.dll" Link="Deps\win64\soft_oal.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\deps\fnalibs\x64\zlib1.dll" Link="Deps\win64\zlib1.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ItemGroup>

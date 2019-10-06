@@ -48,7 +48,7 @@ namespace MUI.ImGuiControls
 
             unsafe
             {
-                ImGui.InputText("q" + _id, _termBuffer, (uint)_termBuffer.Length - 1, InputTextFlags.CallbackAlways, new TextEditCallback(data =>
+                ImGui.InputText("q" + _id, _termBuffer, (uint)_termBuffer.Length - 1, ImGuiInputTextFlags.CallbackAlways, new ImGuiInputTextCallback(data =>
                 {
                     if (_reset)
                     {

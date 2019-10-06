@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <TargetFramework>net462</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,12 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AVA.Core\AVA.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="ImGui.NET">
-      <HintPath>..\..\deps\ImGui.NET.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>

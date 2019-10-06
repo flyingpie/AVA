@@ -15,11 +15,10 @@ namespace AVA
         {
             MUI.Utils.DependencyMapper.Map();
 
-            SetupNativeDependencies();
-
             //typeof(Indexing.Indexer).GetType();
 
             var uiContext = new UIContext(600, 300);
+            uiContext.RunOneFrame();
 
             var container = new Container()
                 .Register<ResourceManager, ResourceManager>(c => uiContext.ResourceManager)
@@ -37,7 +36,7 @@ namespace AVA
             //container.Resolve<Indexing.Indexer>().Query("conemu");
 
             uiContext.PushUI(container.Resolve<UI>());
-            uiContext.Run();
+            using (uiContext) uiContext.Run();
 
             //SettingsRoot.Instance.Save();
         }

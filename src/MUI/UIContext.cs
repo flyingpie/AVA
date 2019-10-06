@@ -1,13 +1,15 @@
 ﻿using ImGuiNET.XNA;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MUI.Extensions;
 using MUI.Logging;
-using SDL2;
+using MUI.Win32;
+using MUI.Win32.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace MUI
 {
@@ -26,27 +28,24 @@ namespace MUI
         private GraphicsDeviceManager _graphics;
         private ImGuiRenderer _imGuiRenderer;
 
-        private bool _isVisible = true;
-
         public int FrameNumber { get; private set; }
 
         private Stack<UIBase> _uis;
 
+        private Form _form;
+
         public bool IsVisible
         {
-            get => _isVisible;
-            set
-            {
-                if (value) SDL.SDL_ShowWindow(Window.Handle);
-                else SDL.SDL_HideWindow(Window.Handle);
-
-                _isVisible = value;
-            }
+            get => _form.Visible;
+            set => _form.InvokeIfRequired(() => _form.Visible = value);
         }
 
         public float Opacity
         {
-            set => SDL.SDL_SetWindowOpacity(Window.Handle, value);
+            set
+            {
+                // TODO
+            }
         }
 
         private bool _wasActive;
@@ -62,27 +61,38 @@ namespace MUI
             _graphics.PreferredBackBufferHeight = height;
             _graphics.PreferMultiSampling = true;
 
-            SpriteBatch = new SpriteBatch(GraphicsDevice);
-
-            _imGuiRenderer = new ImGuiRenderer(this);
-
-            ResourceManager = new ResourceManager(GraphicsDevice, _imGuiRenderer);
-            Fonts.Load(ResourceManager);
-
-            Window.IsBorderlessEXT = true;
+            Window.IsBorderless = true;
             IsMouseVisible = true;
-        }
 
-        private ILog _sdlLog = Log.Get(typeof(SDL));
+            _form = Control.FromHandle(Window.Handle)?.FindForm() ?? throw new InvalidOperationException("Parent form not found");
+
+        }
 
         public void CenterWindowToDisplayWithMouse()
         {
-            Sdl2Extensions.CenterWindowToDisplayWithMouse(Window.Handle);
+            var screen = Screen.AllScreens.FirstOrDefault(s => s.Bounds.Contains(Cursor.Position));
+
+            var x = screen.Bounds.X + screen.Bounds.Width / 2 - _form.Size.Width / 2;
+            var y = screen.Bounds.Y + screen.Bounds.Height / 2 - _form.Size.Height / 2;
+
+            _form.Location = new System.Drawing.Point(x, y);
         }
 
         public void Focus()
         {
-            SDL.SDL_RaiseWindow(Window.Handle);
+            PInvoke.SetForegroundWindow(Window.Handle);
+        }
+
+        public void HideFromTaskbar(bool hide)
+        {
+            if (hide)
+            {
+                PInvoke.SetWindowLong(Window.Handle, PInvoke.GWL_EX_STYLE, (PInvoke.GetWindowLong(Window.Handle, PInvoke.GWL_EX_STYLE) | PInvoke.WS_EX_TOOLWINDOW) & ~PInvoke.WS_EX_APPWINDOW);
+            }
+            else
+            {
+                PInvoke.SetWindowLong(Window.Handle, PInvoke.GWL_EX_STYLE, (PInvoke.GetWindowLong(Window.Handle, PInvoke.GWL_EX_STYLE) | PInvoke.WS_EX_TOOLWINDOW) & PInvoke.WS_EX_APPWINDOW);
+            }
         }
 
         public void Resize(int width, int height)
@@ -101,6 +111,8 @@ namespace MUI
             Resize(ui.Width, ui.Height);
 
             _uis.Push(ui);
+
+            ui.Load();
         }
 
         public UIBase PopUI()
@@ -114,6 +126,13 @@ namespace MUI
 
         protected override void Initialize()
         {
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
+
+            _imGuiRenderer = new ImGuiRenderer(this);
+
+            ResourceManager = new ResourceManager(GraphicsDevice, _imGuiRenderer);
+            Fonts.Load(ResourceManager);
+
             ResourceManager.Init();
 
             _imGuiRenderer.RebuildFontAtlas();
@@ -123,14 +142,16 @@ namespace MUI
 
         protected override void LoadContent()
         {
-            _uis.Peek().Load();
+            if (_uis.Any())
+                _uis.Peek().Load();
 
             base.LoadContent();
         }
 
         protected override void UnloadContent()
         {
-            _uis.Peek().Unload();
+            if (_uis.Any())
+                _uis.Peek().Unload();
 
             base.UnloadContent();
         }
@@ -156,7 +177,7 @@ namespace MUI
             if (_updateTask?.IsCompleted ?? false)
                 _updateTask = null;
 
-            if (_updateTask == null)
+            if (_updateTask == null && _uis.Any())
                 _updateTask = _uis.Peek().Update();
 
             base.Update(gameTime);
@@ -171,7 +192,8 @@ namespace MUI
             Input.InputSnapshot.Update();
             _imGuiRenderer.BeforeLayout(gameTime);
 
-            _uis.Peek().Draw();
+            if (_uis.Any())
+                _uis.Peek().Draw();
 
             SpriteBatch.End();
 

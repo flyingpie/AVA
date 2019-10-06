@@ -8,7 +8,7 @@ using MUI;
 using MUI.DI;
 using MUI.ImGuiControls;
 using MUI.Logging;
-using MUI.Win32.Input;
+using MUI.Win32;
 using System;
 using System.IO;
 using System.Linq;
@@ -47,6 +47,8 @@ namespace AVA
 
         public override void Load()
         {
+            _uic.HideFromTaskbar(true);
+
             _uic.Opacity = .9f;
 
             Maximize();
@@ -85,12 +87,13 @@ namespace AVA
                 _uic.SpriteBatch.Draw(_bg, new Microsoft.Xna.Framework.Rectangle(0, 0, Width, Height), Microsoft.Xna.Framework.Color.White);
             }
 
-            ImGui.PushStyleVar(StyleVar.WindowRounding, 0);
+            ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
+            ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 0);
 
-            ImGui.SetNextWindowPos(Vector2.Zero, Condition.Always);
-            ImGui.SetNextWindowSize(new Vector2(_uic.Window.ClientBounds.Width, _uic.Window.ClientBounds.Height), Condition.Always);
+            ImGui.SetNextWindowPos(Vector2.Zero, ImGuiCond.Always);
+            ImGui.SetNextWindowSize(new Vector2(_uic.Window.ClientBounds.Width, _uic.Window.ClientBounds.Height), ImGuiCond.Always);
 
-            ImGui.BeginWindow(string.Empty, WindowFlags.NoMove | WindowFlags.NoResize | WindowFlags.NoTitleBar);
+            ImGui.Begin(string.Empty, ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoTitleBar);
             {
                 // Search bar
                 ImGui.PushFont(Fonts.Regular24);
@@ -100,7 +103,7 @@ namespace AVA
                 ImGui.Spacing();
 
                 // Query executor
-                ImGui.BeginChild("query-executor", new Vector2(ImGui.GetWindowContentRegionWidth(), ImGui.GetContentRegionAvailable().Y - 20), false, WindowFlags.Default);
+                ImGui.BeginChild("query-executor", new Vector2(ImGui.GetWindowContentRegionWidth(), ImGui.GetContentRegionAvail().Y - 20), false, ImGuiWindowFlags.None);
                 {
                     QueryExecutorManager.Draw();
                 }
@@ -111,7 +114,7 @@ namespace AVA
 
                 ImGui.PopFont();
             }
-            ImGui.EndWindow();
+            ImGui.End();
         }
 
         public override async Task Update()

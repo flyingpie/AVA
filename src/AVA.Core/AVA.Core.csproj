@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net462</TargetFramework>
+        <TargetFramework>net472</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
@@ -11,15 +11,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\MUI\MUI.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Reference Include="FNA">
-            <HintPath>..\..\deps\FNA.dll</HintPath>
-        </Reference>
-        <Reference Include="ImGui.NET">
-            <HintPath>..\..\deps\ImGui.NET.dll</HintPath>
-        </Reference>
     </ItemGroup>
 
 </Project>
