@@ -2,6 +2,7 @@
 using AVA.Core.QueryExecutors.ListQuery;
 using MUI;
 using MUI.DI;
+using MUI.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,7 +11,7 @@ using System.Linq;
 
 namespace AVA.Plugin.LocalBookmarks
 {
-    [Service, Help(Name = "Local bookmarks", Description = "Queries local bookmarks file", ExampleUsage = "bm podcast")]
+    [Service, Help(Name = "Local bookmarks", Description = "Queries local bookmarks file", ExampleUsage = "dd podcast")]
     public class LocalBookmarksQueryExecutor : ListQueryExecutor
     {
         private List<Bookmark> Bookmarks { get; set; }
@@ -25,9 +26,34 @@ namespace AVA.Plugin.LocalBookmarks
         {
             base.Initialize();
 
+            InitializeBookmarks();
+        }
+
+        private FileSystemWatcher _fsWatcher;
+
+        private bool _refresh;
+
+        private void InitializeBookmarks()
+        {
             try
             {
-                Bookmarks = File.ReadAllLines(Environment.ExpandEnvironmentVariables(Settings.PathToBookmarks))
+                var pathToBookmarks = Environment.ExpandEnvironmentVariables(Settings.PathToBookmarks);
+
+                Log.Get<LocalBookmarksQueryExecutor>().Info($"Initializing bookmarks from file '{pathToBookmarks}'...");
+
+                if (_fsWatcher == null)
+                {
+                    _fsWatcher = new FileSystemWatcher();
+
+                    _fsWatcher.Path = Path.GetDirectoryName(pathToBookmarks);
+                    _fsWatcher.Filter = Path.GetFileName(pathToBookmarks);
+
+                    _fsWatcher.Changed += (s, a) => _refresh = true;
+
+                    _fsWatcher.EnableRaisingEvents = true;
+                }
+
+                Bookmarks = File.ReadAllLines(pathToBookmarks)
                     .Where(l => !string.IsNullOrWhiteSpace(l))
                     .Select(l => l.Split(','))
                     .Where(l => l.Length == 4)
@@ -42,6 +68,8 @@ namespace AVA.Plugin.LocalBookmarks
                     })
                     .ToList()
                 ;
+
+                _refresh = false;
             }
             catch
             {
@@ -54,6 +82,8 @@ namespace AVA.Plugin.LocalBookmarks
             term = term.Substring(Prefix.Length);
             term = term.ToLowerInvariant();
             var terms = term.Split(' ');
+
+            if (_refresh) InitializeBookmarks();
 
             return Bookmarks
                 .Where(b => terms.All(t => b.CategoryLower.Contains(t) || b.NameLower.Contains(t)))
