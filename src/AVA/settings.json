@@ -12,7 +12,7 @@
     ]
   },
   "LocalBookmarks": {
-    "PathToBookmarks": "D:\\Syncthing\\Chest\\Bookmarks.csv"
+    "PathToBookmarks": "%SYNCTHING%\\Chest\\Bookmarks.csv"
   },
   "Macros": {
     "Macros": [
