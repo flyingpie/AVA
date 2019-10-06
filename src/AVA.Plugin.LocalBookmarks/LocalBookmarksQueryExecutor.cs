@@ -4,6 +4,7 @@ using MUI;
 using MUI.DI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -60,7 +61,8 @@ namespace AVA.Plugin.LocalBookmarks
                 {
                     Icon = ResourceManager.Instance.LoadImageFromUrl(b.FaviconUrl),
                     Name = b.Name,
-                    Description = b.Url
+                    Description = b.Url,
+                    OnExecute = qt => Process.Start(b.Url).Dispose()
                 })
                 .ToList()
             ;
