@@ -11,6 +11,9 @@
       "%SYNCTHING%"
     ]
   },
+  "LocalBookmarks": {
+    "PathToBookmarks": "D:\\Syncthing\\Chest\\Bookmarks.csv"
+  },
   "Macros": {
     "Macros": [
 
