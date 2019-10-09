@@ -1,5 +1,6 @@
 ﻿using AVA.Core.QueryExecutors;
 using AVA.Core.QueryExecutors.ListQuery;
+using FontAwesomeCS;
 using MUI;
 using MUI.DI;
 using MUI.Logging;
@@ -11,7 +12,7 @@ using System.Linq;
 
 namespace AVA.Plugin.LocalBookmarks
 {
-    [Service, Help(Name = "Local bookmarks", Description = "Queries local bookmarks file", ExampleUsage = "dd podcast")]
+    [Service, Help(Name = "Local bookmarks", Description = "Queries local bookmarks file", ExampleUsage = "dd podcast", Icon = FAIcon.BookmarkRegular)]
     public class LocalBookmarksQueryExecutor : ListQueryExecutor
     {
         private List<Bookmark> Bookmarks { get; set; }
