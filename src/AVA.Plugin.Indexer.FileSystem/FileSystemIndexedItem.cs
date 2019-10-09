@@ -10,6 +10,8 @@ namespace AVA.Plugin.Indexer.FileSystem
 {
     public class FileSystemIndexedItem : IndexedItem
     {
+        public override string DisplayName { get; set; }
+
         public string Path { get; set; }
 
         public override int Boost

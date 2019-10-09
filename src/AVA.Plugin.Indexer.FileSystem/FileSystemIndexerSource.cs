@@ -1,5 +1,4 @@
-﻿using AVA.Plugin.Indexer;
-using MUI.DI;
+﻿using MUI.DI;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,7 +17,8 @@ namespace AVA.Plugin.Indexer.FileSystem
             .GetFilesRecursiveX()
             .Select(path => new FileSystemIndexedItem()
             {
-                IndexerName = Path.GetFileNameWithoutExtension(path),
+                DisplayName = Path.GetFileNameWithoutExtension(path),
+                IndexerName = Path.GetFileName(path),
                 Description = path,
 
                 Path = path,
