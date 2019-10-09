@@ -76,6 +76,10 @@ namespace AVA
                     _log.Error($"Could not load background image at '{bgImage}': {ex.Message}.", ex);
                 }
             }
+
+            // TODO: Make configurable
+            var style = ImGui.GetStyle();
+            style.Colors[(int)ImGuiCol.FrameBg] = new Vector4(.2f, .2f, .2f, .5f);
         }
 
         public override void Draw()
