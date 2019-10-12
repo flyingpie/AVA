@@ -80,6 +80,7 @@ namespace AVA
             // TODO: Make configurable
             var style = ImGui.GetStyle();
             style.Colors[(int)ImGuiCol.FrameBg] = new Vector4(.2f, .2f, .2f, .5f);
+            style.Colors[(int)ImGuiCol.WindowBg] = new Vector4(0f, 0f, 0f, .8f);
         }
 
         public override void Draw()
