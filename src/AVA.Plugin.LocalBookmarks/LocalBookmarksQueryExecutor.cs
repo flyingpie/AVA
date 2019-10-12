@@ -3,6 +3,7 @@ using AVA.Core.QueryExecutors.ListQuery;
 using FontAwesomeCS;
 using MUI;
 using MUI.DI;
+using MUI.Glyphs;
 using MUI.Logging;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,11 @@ namespace AVA.Plugin.LocalBookmarks
     [Service, Help(Name = "Local bookmarks", Description = "Queries local bookmarks file", ExampleUsage = "dd podcast", Icon = FAIcon.BookmarkRegular)]
     public class LocalBookmarksQueryExecutor : ListQueryExecutor
     {
+        private static string EditTerm = "edit";
+
         private List<Bookmark> Bookmarks { get; set; }
+
+        [Dependency] public ResourceManager Resources { get; set; }
 
         [Dependency] public LocalBookmarksSettings Settings { get; set; }
 
@@ -38,7 +43,7 @@ namespace AVA.Plugin.LocalBookmarks
         {
             try
             {
-                var pathToBookmarks = Environment.ExpandEnvironmentVariables(Settings.PathToBookmarks);
+                var pathToBookmarks = GetPathToBookmarks();
 
                 Log.Get<LocalBookmarksQueryExecutor>().Info($"Initializing bookmarks from file '{pathToBookmarks}'...");
 
@@ -78,10 +83,29 @@ namespace AVA.Plugin.LocalBookmarks
             }
         }
 
+        private string GetPathToBookmarks() => Environment.ExpandEnvironmentVariables(Settings.PathToBookmarks);
+
         public override IEnumerable<IListQueryResult> GetQueryResults(string term)
         {
             term = term.Substring(Prefix.Length);
             term = term.ToLowerInvariant();
+
+            if (term.Equals(EditTerm, StringComparison.OrdinalIgnoreCase))
+            {
+                var pathToBookmarks = GetPathToBookmarks();
+
+                return new[]
+                {
+                    new ListQueryResult()
+                    {
+                        Icon = Resources.LoadFontAwesomeIcon(FAIcon.EditRegular, 50 / 3),
+                        Name = "Edit bookmarks",
+                        Description = pathToBookmarks,
+                        OnExecute = qt => Process.Start(pathToBookmarks).Dispose()
+                    }
+                };
+            }
+
             var terms = term.Split(' ');
 
             if (_refresh) InitializeBookmarks();
@@ -122,7 +146,7 @@ namespace AVA.Plugin.LocalBookmarks
 
                     try
                     {
-                        var uri = new System.Uri(value);
+                        var uri = new Uri(value);
                         var fav = $"{uri.Scheme}://{uri.Host}/favicon.ico";
 
                         FaviconUrl = fav;
