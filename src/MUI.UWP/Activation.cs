@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace MUI.Win32.UWP
+namespace MUI.UWP
 {
     public enum ActivateOptions
     {

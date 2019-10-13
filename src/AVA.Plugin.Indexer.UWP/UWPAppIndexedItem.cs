@@ -1,8 +1,7 @@
-﻿using AVA.Plugin.Indexer;
-using MUI;
+﻿using MUI;
 using MUI.Graphics;
 using MUI.Logging;
-using MUI.Win32.UWP;
+using MUI.UWP;
 using System;
 
 namespace AVA.Plugin.Indexer.UWP

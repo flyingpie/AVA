@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MUI.Win32.UWP
+namespace MUI.UWP
 {
     public class ManifestInfo
     {

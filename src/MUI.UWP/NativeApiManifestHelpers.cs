@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using Windows.Management.Deployment;
 
-namespace MUI.Win32.UWP
+namespace MUI.UWP
 {
     public static class NativeApiManifestHelpers
     {

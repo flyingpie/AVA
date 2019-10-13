@@ -1,6 +1,5 @@
-﻿using AVA.Plugin.Indexer;
-using MUI.DI;
-using MUI.Win32.UWP;
+﻿using MUI.DI;
+using MUI.UWP;
 using System.Collections.Generic;
 using System.Linq;
 

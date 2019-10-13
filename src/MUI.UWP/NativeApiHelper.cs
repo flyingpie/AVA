@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 
-namespace MUI.Win32.UWP
+namespace MUI.UWP
 {
     using System.Linq;
 
