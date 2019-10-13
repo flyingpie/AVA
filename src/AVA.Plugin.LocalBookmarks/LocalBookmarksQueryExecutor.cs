@@ -65,13 +65,14 @@ namespace AVA.Plugin.LocalBookmarks
                     .Where(l => l.Length == 4)
                     .Select(l => new Bookmark()
                     {
-                        IsActive = bool.TryParse(l[0], out var isActive) ? isActive : true,
+                        IsActive = int.TryParse(l[0], out var isActive) && isActive > 0 ? true : false,
                         Category = l[1],
                         CategoryLower = l[1].ToLowerInvariant(),
                         Name = l[2],
                         NameLower = l[2].ToLowerInvariant(),
                         Url = l[3]
                     })
+                    .Where(b => b.IsActive)
                     .ToList()
                 ;
 
@@ -121,41 +122,6 @@ namespace AVA.Plugin.LocalBookmarks
                 })
                 .ToList()
             ;
-        }
-
-        public class Bookmark
-        {
-            public bool IsActive { get; set; }
-
-            public string Category { get; set; }
-
-            public string CategoryLower { get; set; }
-
-            public string Name { get; set; }
-
-            public string NameLower { get; set; }
-
-            private string _url;
-
-            public string Url
-            {
-                get => _url;
-                set
-                {
-                    _url = value;
-
-                    try
-                    {
-                        var uri = new Uri(value);
-                        var fav = $"{uri.Scheme}://{uri.Host}/favicon.ico";
-
-                        FaviconUrl = fav;
-                    }
-                    catch { }
-                }
-            }
-
-            public string FaviconUrl { get; set; }
         }
     }
 }
