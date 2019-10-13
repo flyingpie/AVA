@@ -4,16 +4,20 @@
     "ToggleUIKey": "Z",
     "ToggleUIKeyModifiers": "Alt"
   },
+
   "Indexer.FileSystem": {
     "Paths": [
-      "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs",
-      "%APPDATA%\\Microsoft\\Windows\\Start Menu",
-      "%SYNCTHING%"
+      { "Path": "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs", "Includes": [ "**" ] },
+      { "Path": "%APPDATA%\\Microsoft\\Windows\\Start Menu", "Includes": [ "**" ] },
+      { "Path": "%SYNCTHING%", "Includes": [ "**.exe" ] },
+      { "Path": "%SYNCTHING%", "Includes": [ "**" ], "Excludes": [ "Apps" ] }
     ]
   },
+
   "LocalBookmarks": {
     "PathToBookmarks": "%SYNCTHING%\\Chest\\Bookmarks.csv"
   },
+
   "Macros": {
     "Macros": [
 
@@ -62,6 +66,7 @@
         "Name": "Visual Studio Code - Writer",
         "Icon": "%SYNCTHING%/Apps/VSCode/VSCode-Writer/icon.png"
       }
+
     ]
   }
 }
