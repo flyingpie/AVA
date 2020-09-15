@@ -8,8 +8,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="ImGui.NET" Version="1.75.0" />
-		<PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.7.1.189" />
+		<PackageReference Include="ImGui.NET" Version="1.78.0" />
+		<PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.0.1641" />
 		<PackageReference Include="morelinq" Version="3.3.2" />
 	</ItemGroup>
 
