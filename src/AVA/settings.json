@@ -1,72 +1,85 @@
 ﻿{
-  "AVA": {
-    "BackgroundImage": "%SYNCTHING%/Chest/Images/Games/DOOM/vlcsnap-2019-05-14-23h21m27s843.png",
-    "ToggleUIKey": "Z",
-    "ToggleUIKeyModifiers": "Alt"
-  },
+	"AVA": {
+		"BackgroundImage": "%SYNCTHING%/Chest/Images/Games/DOOM/vlcsnap-2019-05-14-23h21m27s843.png",
+		"ToggleUIKey": "Z",
+		"ToggleUIKeyModifiers": "Alt"
+	},
 
-  "Indexer.FileSystem": {
-    "Paths": [
-      { "Path": "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs", "Includes": [ "**" ] },
-      { "Path": "%APPDATA%\\Microsoft\\Windows\\Start Menu", "Includes": [ "**" ] },
-      { "Path": "%SYNCTHING%", "Includes": [ "**.exe" ] },
-      { "Path": "%SYNCTHING%", "Includes": [ "**" ], "Excludes": [ "Apps" ] }
-    ]
-  },
+	"Indexer.FileSystem": {
+		"Paths": [
+			{
+				"Path": "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs",
+				"Includes": [ "**" ]
+			},
+			{
+				"Path": "%APPDATA%\\Microsoft\\Windows\\Start Menu",
+				"Includes": [ "**" ]
+			},
+			{
+				"Path": "%SYNCTHING%",
+				"Includes": [ "**.exe" ]
+			},
+			{
+				"Path": "%SYNCTHING%",
+				"Includes": [ "**" ],
+				"Excludes": [ "Apps" ]
+			}
+		]
+	},
 
-  "LocalBookmarks": {
-    "PathToBookmarks": "%SYNCTHING%\\Chest\\Bookmarks.csv"
-  },
+	"LocalBookmarks": {
+		"PathToBookmarks": "%SYNCTHING%\\Chest\\Bookmarks.csv"
+	},
 
-  "Macros": {
-    "Macros": [
+	"Macros": {
+		"Macros": [
 
-      {
-        "Name": "Edit Hosts File",
-        "Command": "hosts",
+			{
+				"Name": "Edit Hosts File",
+				"Command": "hosts",
 
-        "FileName": "notepad",
-        "Arguments": "C:/Windows/System32/drivers/etc/hosts",
-        "RunAsAdmin": true
-      },
+				"FileName": "notepad",
+				"Arguments": "C:/Windows/System32/drivers/etc/hosts",
+				"RunAsAdmin": true
+			},
 
-      {
-        "Command": "vsc",
-        "FileName": "code",
-        "Name": "Visual Studio Code"
-      },
+			{
+				"Command": "vsc",
+				"FileName": "code",
+				"Name": "Visual Studio Code"
+			},
 
-      {
-        "Command": "vscj",
-        "FileName": "%SYNCTHING%/Apps/VSCode/VSCode-Java/VSCode/code.exe",
-        "EnvironmentVars": {
-          "JAVA_HOME": "%SYNCTHING%/Apps/VSCode/VSCode-Java/jdk",
-          "PATH": "%PATH%;%SYNCTHING%/Apps/VSCode/VSCode-Java/jdk/bin;%SYNCTHING%/Apps/VSCode/VSCode-Java/maven/bin"
-        },
+			{
+				"Command": "vscj",
+				"FileName": "%SYNCTHING%/Apps/VSCode/VSCode-Java/VSCode/code.exe",
+				"EnvironmentVars": {
+					"JAVA_HOME": "%SYNCTHING%/Apps/VSCode/VSCode-Java/jdk",
+					"PATH": "%PATH%;%SYNCTHING%/Apps/VSCode/VSCode-Java/jdk/bin;%SYNCTHING%/Apps/VSCode/VSCode-Java/maven/bin"
+				},
 
-        "Name": "Visual Studio Code - Java",
-        "Icon": "%SYNCTHING%/Apps/VSCode/VSCode-Java/icon.png"
-      },
+				"Name": "Visual Studio Code - Java",
+				"Icon": "%SYNCTHING%/Apps/VSCode/VSCode-Java/icon.png"
+			},
 
-      {
-        "Command": "vscp",
-        "FileName": "%SYNCTHING%/Apps/VSCode/VSCode-Python/VSCode/code.exe",
-        "EnvironmentVars": {
-          "PYTHON37": "%SYNCTHING%/Apps/VSCode/VSCode-Python/python-3.7.2"
-        },
+			{
+				"Command": "vscp",
+				"FileName": "%SYNCTHING%/Apps/VSCode/VSCode-Python/VSCode/code.exe",
+				"EnvironmentVars": {
+					"PYTHON37": "%SYNCTHING%/Apps/VSCode/VSCode-Python/python-3.7.2"
+				},
 
-        "Name": "Visual Studio Code - Python",
-        "Icon": "%SYNCTHING%/Apps/VSCode/VSCode-Python/icon.png"
-      },
+				"Name": "Visual Studio Code - Python",
+				"Icon": "%SYNCTHING%/Apps/VSCode/VSCode-Python/icon.png"
+			},
 
-      {
-        "Command": "vscw",
-        "FileName": "%SYNCTHING%/Apps/VSCode/VSCode-Writer/VSCode/code.exe",
+			{
+				"Command": "vscw",
+				"FileName": "%SYNCTHING%/Apps/VSCode/VSCode-Writer/VSCode/code.exe",
 
-        "Name": "Visual Studio Code - Writer",
-        "Icon": "%SYNCTHING%/Apps/VSCode/VSCode-Writer/icon.png"
-      }
+				"Name": "Visual Studio Code - Writer",
+				"Icon": "%SYNCTHING%/Apps/VSCode/VSCode-Writer/icon.png"
+			}
 
-    ]
-  }
+		]
+	}
 }

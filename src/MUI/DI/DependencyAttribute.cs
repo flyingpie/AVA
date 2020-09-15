@@ -2,7 +2,7 @@
 
 namespace MUI.DI
 {
-    public class DependencyAttribute : Attribute
-    {
-    }
+	public class DependencyAttribute : Attribute
+	{
+	}
 }

@@ -1,11 +1,11 @@
 ﻿namespace MUI
 {
-    public interface IInputSnapshot
-    {
-        bool IsKeyDown(Keys key);
+	public interface IInputSnapshot
+	{
+		bool IsKeyDown(Keys key);
 
-        bool WasKeyDown(Keys key);
+		bool WasKeyDown(Keys key);
 
-        void Update();
-    }
+		void Update();
+	}
 }

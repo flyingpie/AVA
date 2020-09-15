@@ -5,24 +5,24 @@ using System.Linq;
 
 namespace MUI.Utils
 {
-    public static class Glob
-    {
-        public static ICollection<string> Execute(string dir, string[] includes, string[] excludes)
-        {
-            var dirInfo = new DirectoryInfo(dir);
-            var dirInfoWrapper = new DirectoryInfoWrapper(dirInfo);
+	public static class Glob
+	{
+		public static ICollection<string> Execute(string dir, string[] includes, string[] excludes)
+		{
+			var dirInfo = new DirectoryInfo(dir);
+			var dirInfoWrapper = new DirectoryInfoWrapper(dirInfo);
 
-            var matcher = new Microsoft.Extensions.FileSystemGlobbing.Matcher();
+			var matcher = new Microsoft.Extensions.FileSystemGlobbing.Matcher();
 
-            foreach (var incl in includes ?? new string[0]) matcher.AddInclude(incl);
-            foreach (var excl in excludes ?? new string[0]) matcher.AddExclude(excl);
+			foreach (var incl in includes ?? new string[0]) matcher.AddInclude(incl);
+			foreach (var excl in excludes ?? new string[0]) matcher.AddExclude(excl);
 
-            var result = matcher.Execute(dirInfoWrapper);
+			var result = matcher.Execute(dirInfoWrapper);
 
-            return result.Files
-                .Select(f => Path.Combine(dir, f.Path))
-                .ToList()
-            ;
-        }
-    }
+			return result.Files
+				.Select(f => Path.Combine(dir, f.Path))
+				.ToList()
+			;
+		}
+	}
 }

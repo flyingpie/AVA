@@ -2,10 +2,10 @@
 
 namespace AVA.Core.QueryExecutors.ListQuery
 {
-    public interface IListQueryResult
-    {
-        void Draw(bool isSelected);
+	public interface IListQueryResult
+	{
+		void Draw(bool isSelected);
 
-        Task ExecuteAsync(QueryContext query);
-    }
+		Task ExecuteAsync(QueryContext query);
+	}
 }

@@ -2,8 +2,8 @@
 
 namespace AVA.Plugin.Indexer
 {
-    public interface IIndexerSource
-    {
-        IEnumerable<IndexedItem> GetItems();
-    }
+	public interface IIndexerSource
+	{
+		IEnumerable<IndexedItem> GetItems();
+	}
 }

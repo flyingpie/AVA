@@ -1,13 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net472</TargetFramework>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\AVA.Core\AVA.Core.csproj" />
-    <ProjectReference Include="..\AVA.Plugin.Indexer\AVA.Plugin.Indexer.csproj" />
-    <ProjectReference Include="..\MUI.UWP\MUI.UWP.csproj" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<ProjectReference Include="..\AVA.Core\AVA.Core.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.Indexer\AVA.Plugin.Indexer.csproj" />
+		<ProjectReference Include="..\MUI.UWP\MUI.UWP.csproj" />
+	</ItemGroup>
 </Project>

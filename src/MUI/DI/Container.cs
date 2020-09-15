@@ -6,277 +6,268 @@ using System.Reflection;
 
 namespace MUI.DI
 {
-    public interface IContainer
-    {
-        IContainer Register<TInterface, TImplementation>(ServiceLifetime lifetime = ServiceLifetime.Singleton)
-            where TImplementation : TInterface;
+	public interface IContainer
+	{
+		IContainer Register<TInterface, TImplementation>(ServiceLifetime lifetime = ServiceLifetime.Singleton)
+			where TImplementation : TInterface;
 
-        IContainer Register<TInterface, TImplementation>(Func<IContainer, TImplementation> factory, ServiceLifetime lifetime = ServiceLifetime.Singleton)
-            where TImplementation : TInterface;
+		IContainer Register<TInterface, TImplementation>(Func<IContainer, TImplementation> factory, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+			where TImplementation : TInterface;
 
-        IContainer Register(Type type, ServiceLifetime lifetime = ServiceLifetime.Singleton);
+		IContainer Register(Type type, ServiceLifetime lifetime = ServiceLifetime.Singleton);
 
-        IContainer Register(Type type, Func<IContainer, object> factory, ServiceLifetime lifetime = ServiceLifetime.Singleton);
+		IContainer Register(Type type, Func<IContainer, object> factory, ServiceLifetime lifetime = ServiceLifetime.Singleton);
 
-        IContainer Register<TInterface, TImplementation>(TImplementation implementation)
-            where TImplementation : TInterface;
+		IContainer Register<TInterface, TImplementation>(TImplementation implementation)
+			where TImplementation : TInterface;
 
-        IContainer Register<TService>(TService service);
+		IContainer Register<TService>(TService service);
 
-        object Resolve(Type type);
+		object Resolve(Type type);
 
-        T Resolve<T>();
+		T Resolve<T>();
 
-        IEnumerable<object> ResolveAll(Type type);
+		IEnumerable<object> ResolveAll(Type type);
 
-        IEnumerable<T> ResolveAll<T>();
+		IEnumerable<T> ResolveAll<T>();
 
-        void Wireup(object instance);
-    }
+		void Wireup(object instance);
+	}
 
-    public class Container : IContainer
-    {
-        private Dictionary<Type, ServiceRegistration> _registrations;
-        private ILog _log;
+	public class Container : IContainer
+	{
+		private Dictionary<Type, ServiceRegistration> _registrations;
+		private ILog _log;
 
-        public Container()
-        {
-            _registrations = new Dictionary<Type, ServiceRegistration>();
-            _log = Log.Get(this);
+		public Container()
+		{
+			_registrations = new Dictionary<Type, ServiceRegistration>();
+			_log = Log.Get(this);
 
-            Register(this);
-        }
+			Register(this);
+		}
 
-        public IContainer Register<TInterface, TImplementation>(ServiceLifetime lifetime = ServiceLifetime.Singleton)
-            where TImplementation : TInterface
-        {
-            return Register<TInterface, TImplementation>(c =>
-            {
-                _log.Info($"Creating instance of type '{typeof(TInterface).FullName}', using implementation of type '{typeof(TImplementation).FullName}'...");
+		public IContainer Register<TInterface, TImplementation>(ServiceLifetime lifetime = ServiceLifetime.Singleton)
+			where TImplementation : TInterface
+		{
+			return Register<TInterface, TImplementation>(c =>
+			{
+				_log.Info($"Creating instance of type '{typeof(TInterface).FullName}', using implementation of type '{typeof(TImplementation).FullName}'...");
 
-                return Activator.CreateInstance<TImplementation>();
-            }, lifetime);
-        }
+				return Activator.CreateInstance<TImplementation>();
+			}, lifetime);
+		}
 
-        public IContainer Register<TInterface, TImplementation>(Func<IContainer, TImplementation> factory, ServiceLifetime lifetime = ServiceLifetime.Singleton)
-            where TImplementation : TInterface
-        {
-            return Register(typeof(TInterface), c => factory(c), lifetime);
-        }
+		public IContainer Register<TInterface, TImplementation>(Func<IContainer, TImplementation> factory, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+			where TImplementation : TInterface
+		{
+			return Register(typeof(TInterface), c => factory(c), lifetime);
+		}
 
-        public IContainer Register<TInterface, TImplementation>(TImplementation implementation)
-            where TImplementation : TInterface
-        {
-            return Register<TInterface, TImplementation>(c => implementation, ServiceLifetime.Singleton);
-        }
+		public IContainer Register<TInterface, TImplementation>(TImplementation implementation)
+			where TImplementation : TInterface
+		{
+			return Register<TInterface, TImplementation>(c => implementation, ServiceLifetime.Singleton);
+		}
 
-        public IContainer Register(Type type, ServiceLifetime lifetime = ServiceLifetime.Singleton)
-        {
-            _log.Info($"Registering service of type '{type.FullName}' with lifetime '{lifetime}'");
+		public IContainer Register(Type type, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+		{
+			_log.Info($"Registering service of type '{type.FullName}' with lifetime '{lifetime}'");
 
-            return Register(type, c => Activator.CreateInstance(type), lifetime);
-        }
+			return Register(type, c => Activator.CreateInstance(type), lifetime);
+		}
 
-        public IContainer Register(Type type, Func<IContainer, object> factory, ServiceLifetime lifetime = ServiceLifetime.Singleton)
-        {
-            _registrations.Add(type, new ServiceRegistration()
-            {
-                Type = type,
-                Lifetime = lifetime,
-                Resolver = c => factory(c)
-            });
+		public IContainer Register(Type type, Func<IContainer, object> factory, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+		{
+			_registrations.Add(type, new ServiceRegistration()
+			{
+				Type = type,
+				Lifetime = lifetime,
+				Resolver = c => factory(c)
+			});
 
-            return this;
-        }
+			return this;
+		}
 
-        public IContainer Register<TService>(TService service)
-        {
-            return Register<TService, TService>(service);
-        }
+		public IContainer Register<TService>(TService service)
+		{
+			return Register<TService, TService>(service);
+		}
 
-        public object Resolve(Type type)
-        {
-            var implementingType = _registrations.Keys.FirstOrDefault(k => type.IsAssignableFrom(k));
+		public object Resolve(Type type)
+		{
+			var implementingType = _registrations.Keys.FirstOrDefault(k => type.IsAssignableFrom(k));
 
-            if (implementingType == null)
-                throw new InvalidOperationException($"No service found of type '{type.FullName}'");
+			if (implementingType == null)
+				throw new InvalidOperationException($"No service found of type '{type.FullName}'");
 
-            return _registrations[implementingType].Resolve(this);
-        }
+			return _registrations[implementingType].Resolve(this);
+		}
 
-        public T Resolve<T>() => (T)Resolve(typeof(T));
+		public T Resolve<T>() => (T)Resolve(typeof(T));
 
-        public IEnumerable<object> ResolveAll(Type type)
-        {
-            return _registrations
-                .Where(r => type.IsAssignableFrom(r.Key))
-                .Select(r => r.Value.Resolve(this))
-                .ToList();
-        }
+		public IEnumerable<object> ResolveAll(Type type)
+		{
+			return _registrations
+				.Where(r => type.IsAssignableFrom(r.Key))
+				.Select(r => r.Value.Resolve(this))
+				.ToList();
+		}
 
-        public IEnumerable<T> ResolveAll<T>() => ResolveAll(typeof(T)).Select(s => (T)s).ToArray();
+		public IEnumerable<T> ResolveAll<T>() => ResolveAll(typeof(T)).Select(s => (T)s).ToArray();
 
-        public void Wireup(object instance)
-        {
-            _log.Info($"Wiring up instance of type '{instance}'...");
+		public void Wireup(object instance)
+		{
+			_log.Info($"Wiring up instance of type '{instance}'...");
 
-            // TODO: Test - Circular reference
+			// TODO: Test - Circular reference
 
-            var members = instance.GetType()
-                //.GetMembers(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
-                .GetAllMembers()
-                .Select(m => new
-                {
-                    Member = m,
-                    DependencyAttribute = m.GetCustomAttribute<DependencyAttribute>(),
-                    RunAfterInjectAttribute = m.GetCustomAttribute<RunAfterInjectAttribute>()
-                })
-                .OrderBy(m => m.Member.Name)
-                .ToList();
+			var members = instance.GetType()
+				//.GetMembers(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)
+				.GetAllMembers()
+				.Select(m => new
+				{
+					Member = m,
+					DependencyAttribute = m.GetCustomAttribute<DependencyAttribute>(),
+					RunAfterInjectAttribute = m.GetCustomAttribute<RunAfterInjectAttribute>()
+				})
+				.OrderBy(m => m.Member.Name)
+				.ToList();
 
-            var mm = members.Where(m => m.Member.Name.Contains("_context")).ToList();
+			var mm = members.Where(m => m.Member.Name.Contains("_context")).ToList();
 
-            // Inject dependencies
-            foreach (var member in members.Where(m => m.DependencyAttribute != null))
-            {
-                if (member.Member.MemberType == MemberTypes.Field)
-                {
-                    var field = (FieldInfo)member.Member;
-                    var fieldType = field.FieldType;
+			// Inject dependencies
+			foreach (var member in members.Where(m => m.DependencyAttribute != null))
+			{
+				if (member.Member.MemberType == MemberTypes.Field)
+				{
+					var field = (FieldInfo)member.Member;
+					var fieldType = field.FieldType;
 
-                    if (typeof(object[]).IsAssignableFrom(fieldType))
-                    {
-                        var serviceType = fieldType.GetElementType();
-                        var services = ResolveAll(serviceType).ToArray();
+					if (typeof(object[]).IsAssignableFrom(fieldType))
+					{
+						var serviceType = fieldType.GetElementType();
+						var services = ResolveAll(serviceType).ToArray();
 
-                        var serviceArray = Array.CreateInstance(serviceType, services.Length);
-                        services.CopyTo(serviceArray, 0);
+						var serviceArray = Array.CreateInstance(serviceType, services.Length);
+						services.CopyTo(serviceArray, 0);
 
-                        field.SetValue(instance, serviceArray);
-                    }
-                    else
-                    {
-                        var dependency = Resolve(fieldType);
+						field.SetValue(instance, serviceArray);
+					}
+					else
+					{
+						var dependency = Resolve(fieldType);
 
-                        _log.Info($"Injecting dependency of type '{dependency.GetType().FullName}' into instance field ('{instance.GetType().FullName}')'{field.Name}'");
+						_log.Info($"Injecting dependency of type '{dependency.GetType().FullName}' into instance field ('{instance.GetType().FullName}')'{field.Name}'");
 
-                        field.SetValue(instance, dependency);
-                    }
+						field.SetValue(instance, dependency);
+					}
 
-                    continue;
-                }
-                else if (member.Member.MemberType == MemberTypes.Property)
-                {
-                    var property = (PropertyInfo)member.Member;
-                    var propertyType = property.PropertyType;
+					continue;
+				}
+				else if (member.Member.MemberType == MemberTypes.Property)
+				{
+					var property = (PropertyInfo)member.Member;
+					var propertyType = property.PropertyType;
 
-                    if (typeof(object[]).IsAssignableFrom(propertyType))
-                    {
-                        var serviceType = propertyType.GetElementType();
-                        var services = ResolveAll(serviceType).ToArray();
+					if (typeof(object[]).IsAssignableFrom(propertyType))
+					{
+						var serviceType = propertyType.GetElementType();
+						var services = ResolveAll(serviceType).ToArray();
 
-                        var serviceArray = Array.CreateInstance(serviceType, services.Length);
-                        services.CopyTo(serviceArray, 0);
+						var serviceArray = Array.CreateInstance(serviceType, services.Length);
+						services.CopyTo(serviceArray, 0);
 
-                        property.SetValue(instance, serviceArray);
-                    }
-                    else
-                    {
-                        var dependency = Resolve(propertyType);
+						property.SetValue(instance, serviceArray);
+					}
+					else
+					{
+						var dependency = Resolve(propertyType);
 
-                        _log.Info($"Injecting dependency of type '{dependency.GetType().FullName}' into instance field ('{instance.GetType().FullName}')'{property.Name}'");
+						_log.Info($"Injecting dependency of type '{dependency.GetType().FullName}' into instance field ('{instance.GetType().FullName}')'{property.Name}'");
 
-                        property.SetValue(instance, dependency);
-                    }
+						property.SetValue(instance, dependency);
+					}
 
-                    continue;
-                }
-                // TODO: properties
-            }
+					continue;
+				}
+				// TODO: properties
+			}
 
-            // Call post-injection methods
-            foreach (var member in members.Where(m => m.RunAfterInjectAttribute != null))
-            {
-                if (member.Member.MemberType == MemberTypes.Method)
-                {
-                    var method = (MethodInfo)member.Member;
+			// Call post-injection methods
+			foreach (var member in members.Where(m => m.RunAfterInjectAttribute != null))
+			{
+				if (member.Member.MemberType == MemberTypes.Method)
+				{
+					var method = (MethodInfo)member.Member;
 
-                    method.Invoke(instance, new object[0]);
-                }
-            }
-        }
-    }
+					method.Invoke(instance, new object[0]);
+				}
+			}
+		}
+	}
 
-    public static class SystemExtensions
-    {
-        public static IEnumerable<MemberInfo> GetAllMembers(this Type type)
-        {
-            foreach (var member in type.GetMembers(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
-            {
-                yield return member;
+	public static class SystemExtensions
+	{
+		public static IEnumerable<MemberInfo> GetAllMembers(this Type type)
+		{
+			foreach (var member in type.GetMembers(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
+			{
+				yield return member;
+			}
 
-                //.Select(m => new
-                //{
-                //    Member = m,
-                //    DependencyAttribute = m.GetCustomAttribute<DependencyAttribute>(),
-                //    RunAfterInjectAttribute = m.GetCustomAttribute<RunAfterInjectAttribute>()
-                //});
-            }
-            //.OrderBy(m => m.Member.Name)
-            //.ToList();
+			if (type.BaseType != null)
+			{
+				foreach (var member in type.BaseType.GetAllMembers())
+				{
+					yield return member;
+				}
+			}
+		}
+	}
 
-            if (type.BaseType != null)
-            {
-                foreach (var member in type.BaseType.GetAllMembers())
-                {
-                    yield return member;
-                }
-            }
-        }
-    }
+	public class ServiceRegistration
+	{
+		public Type Type { get; set; }
 
-    public class ServiceRegistration
-    {
-        public Type Type { get; set; }
+		public ServiceLifetime Lifetime { get; set; }
 
-        public ServiceLifetime Lifetime { get; set; }
+		public Func<Container, object> Resolver { get; set; }
 
-        public Func<Container, object> Resolver { get; set; }
+		private object _instance;
 
-        private object _instance;
+		public object Resolve(Container container)
+		{
+			object instance = null;
 
-        public object Resolve(Container container)
-        {
-            object instance = null;
+			switch (Lifetime)
+			{
+				case ServiceLifetime.Singleton:
+					{
+						if (_instance == null)
+						{
+							_instance = Resolver(container);
+							container.Wireup(_instance);
+						}
 
-            switch (Lifetime)
-            {
-                case ServiceLifetime.Singleton:
-                    {
-                        if (_instance == null)
-                        {
-                            _instance = Resolver(container);
-                            container.Wireup(_instance);
-                        }
+						instance = _instance;
+						break;
+					}
+				case ServiceLifetime.Transient:
+					{
+						instance = Resolver(container);
+						container.Wireup(instance);
 
-                        instance = _instance;
-                        break;
-                    }
-                case ServiceLifetime.Transient:
-                    {
-                        instance = Resolver(container);
-                        container.Wireup(instance);
+						break;
+					}
+			}
 
-                        break;
-                    }
-            }
+			if (instance == null)
+			{
+				throw new InvalidOperationException($"Resolver for type '{Type.FullName}' resulted in a null-reference");
+			}
 
-            if (instance == null)
-            {
-                throw new InvalidOperationException($"Resolver for type '{Type.FullName}' resulted in a null-reference");
-            }
-
-            return instance;
-        }
-    }
+			return instance;
+		}
+	}
 }

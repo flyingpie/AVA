@@ -2,14 +2,14 @@
 
 namespace AVA.Core.QueryExecutors
 {
-    public interface IAsyncQueryExecutor
-    {
-        int Order { get; }
+	public interface IAsyncQueryExecutor
+	{
+		int Order { get; }
 
-        bool TryHandle(QueryContext query);
+		bool TryHandle(QueryContext query);
 
-        Task<bool> TryExecuteAsync(QueryContext query);
+		Task<bool> TryExecuteAsync(QueryContext query);
 
-        void Draw();
-    }
+		void Draw();
+	}
 }

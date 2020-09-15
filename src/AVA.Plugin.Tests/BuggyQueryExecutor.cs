@@ -6,31 +6,31 @@ using System;
 
 namespace AVA.Plugin.Tests
 {
-    [Service]
-    public class BuggyQueryExecutor : IQueryExecutor
-    {
-        public int Order => 0;
+	[Service]
+	public class BuggyQueryExecutor : IQueryExecutor
+	{
+		public int Order => 0;
 
-        public bool TryHandle(QueryContext query)
-        {
-            if (query.Text.ToLowerInvariant().Equals("bug handle")) throw new InvalidOperationException($"Exception from {nameof(BuggyQueryExecutor)}.{nameof(TryHandle)}");
+		public bool TryHandle(QueryContext query)
+		{
+			if (query.Text.ToLowerInvariant().Equals("bug handle")) throw new InvalidOperationException($"Exception from {nameof(BuggyQueryExecutor)}.{nameof(TryHandle)}");
 
-            if (query.HasPrefix("bug ")) return true;
+			if (query.HasPrefix("bug ")) return true;
 
-            return false;
-        }
+			return false;
+		}
 
-        public bool TryExecute(QueryContext query)
-        {
-            if (query.Text.ToLowerInvariant().Equals("bug execute")) throw new InvalidOperationException($"Exception from {nameof(BuggyQueryExecutor)}.{nameof(TryExecute)}");
+		public bool TryExecute(QueryContext query)
+		{
+			if (query.Text.ToLowerInvariant().Equals("bug execute")) throw new InvalidOperationException($"Exception from {nameof(BuggyQueryExecutor)}.{nameof(TryExecute)}");
 
-            return false;
-        }
+			return false;
+		}
 
-        public void Draw()
-        {
-            ImGui.Text("Crash on execute: 'bug execute'");
-            ImGui.Text("Crash on handle: 'bug handle'");
-        }
-    }
+		public void Draw()
+		{
+			ImGui.Text("Crash on execute: 'bug execute'");
+			ImGui.Text("Crash on handle: 'bug handle'");
+		}
+	}
 }

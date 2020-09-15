@@ -1,7 +1,6 @@
 ﻿using ImGuiNET.XNA;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MUI.Logging;
 using MUI.Win32;
 using MUI.Win32.Extensions;
 using System;
@@ -13,195 +12,195 @@ using System.Windows.Forms;
 
 namespace MUI
 {
-    public class UIContext : Game
-    {
-        public static UIContext Instance { get; private set; }
+	public class UIContext : Game
+	{
+		public static UIContext Instance { get; private set; }
 
-        public ResourceManager ResourceManager { get; set; }
+		public ResourceManager ResourceManager { get; set; }
 
-        public SpriteBatch SpriteBatch { get; private set; }
+		public SpriteBatch SpriteBatch { get; private set; }
 
-        public event EventHandler FocusGained = delegate { };
+		public event EventHandler FocusGained = delegate { };
 
-        public event EventHandler FocusLost = delegate { };
+		public event EventHandler FocusLost = delegate { };
 
-        private GraphicsDeviceManager _graphics;
-        private ImGuiRenderer _imGuiRenderer;
+		private GraphicsDeviceManager _graphics;
+		private ImGuiRenderer _imGuiRenderer;
 
-        public int FrameNumber { get; private set; }
+		public int FrameNumber { get; private set; }
 
-        private Stack<UIBase> _uis;
+		private Stack<UIBase> _uis;
 
-        private Form _form;
+		private Form _form;
 
-        public bool IsVisible
-        {
-            get => _form.Visible;
-            set => _form.InvokeIfRequired(() => _form.Visible = value);
-        }
+		public bool IsVisible
+		{
+			get => _form.Visible;
+			set => _form.InvokeIfRequired(() => _form.Visible = value);
+		}
 
-        public float Opacity
-        {
-            set
-            {
-                var old = PInvoke.GetWindowLong(_form.Handle, PInvoke.GWL_EX_STYLE);
-                PInvoke.SetWindowLong(_form.Handle, PInvoke.GWL_EX_STYLE, old | PInvoke.WS_EX_LAYERED);
+		public float Opacity
+		{
+			set
+			{
+				var old = PInvoke.GetWindowLong(_form.Handle, PInvoke.GWL_EX_STYLE);
+				PInvoke.SetWindowLong(_form.Handle, PInvoke.GWL_EX_STYLE, old | PInvoke.WS_EX_LAYERED);
 
-                PInvoke.SetLayeredWindowAttributes(_form.Handle, 0, (byte)Math.Ceiling(255f * value), PInvoke.LWA_ALPHA);
-            }
-        }
+				PInvoke.SetLayeredWindowAttributes(_form.Handle, 0, (byte)Math.Ceiling(255f * value), PInvoke.LWA_ALPHA);
+			}
+		}
 
-        private bool _wasActive;
+		private bool _wasActive;
 
-        public UIContext(int width, int height)
-        {
-            Instance = this;
+		public UIContext(int width, int height)
+		{
+			Instance = this;
 
-            _uis = new Stack<UIBase>();
+			_uis = new Stack<UIBase>();
 
-            _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = width;
-            _graphics.PreferredBackBufferHeight = height;
-            _graphics.PreferMultiSampling = true;
+			_graphics = new GraphicsDeviceManager(this);
+			_graphics.PreferredBackBufferWidth = width;
+			_graphics.PreferredBackBufferHeight = height;
+			_graphics.PreferMultiSampling = true;
 
-            Window.IsBorderless = true;
-            IsMouseVisible = true;
+			Window.IsBorderless = true;
+			IsMouseVisible = true;
 
-            _form = Control.FromHandle(Window.Handle)?.FindForm() ?? throw new InvalidOperationException("Parent form not found");
-        }
+			_form = Control.FromHandle(Window.Handle)?.FindForm() ?? throw new InvalidOperationException("Parent form not found");
+		}
 
-        public void CenterWindowToDisplayWithMouse()
-        {
-            var screen = Screen.AllScreens.FirstOrDefault(s => s.Bounds.Contains(Cursor.Position));
+		public void CenterWindowToDisplayWithMouse()
+		{
+			var screen = Screen.AllScreens.FirstOrDefault(s => s.Bounds.Contains(Cursor.Position));
 
-            var x = screen.Bounds.X + screen.Bounds.Width / 2 - _form.Size.Width / 2;
-            var y = screen.Bounds.Y + screen.Bounds.Height / 2 - _form.Size.Height / 2;
+			var x = screen.Bounds.X + screen.Bounds.Width / 2 - _form.Size.Width / 2;
+			var y = screen.Bounds.Y + screen.Bounds.Height / 2 - _form.Size.Height / 2;
 
-            _form.Location = new System.Drawing.Point(x, y);
-        }
+			_form.Location = new System.Drawing.Point(x, y);
+		}
 
-        public void Focus()
-        {
-            PInvoke.SetForegroundWindow(Window.Handle);
-        }
+		public void Focus()
+		{
+			PInvoke.SetForegroundWindow(Window.Handle);
+		}
 
-        public void HideFromTaskbar(bool hide)
-        {
-            if (hide)
-            {
-                PInvoke.SetWindowLong(Window.Handle, PInvoke.GWL_EX_STYLE, (PInvoke.GetWindowLong(Window.Handle, PInvoke.GWL_EX_STYLE) | PInvoke.WS_EX_TOOLWINDOW) & ~PInvoke.WS_EX_APPWINDOW);
-            }
-            else
-            {
-                PInvoke.SetWindowLong(Window.Handle, PInvoke.GWL_EX_STYLE, (PInvoke.GetWindowLong(Window.Handle, PInvoke.GWL_EX_STYLE) | PInvoke.WS_EX_TOOLWINDOW) & PInvoke.WS_EX_APPWINDOW);
-            }
-        }
+		public void HideFromTaskbar(bool hide)
+		{
+			if (hide)
+			{
+				PInvoke.SetWindowLong(Window.Handle, PInvoke.GWL_EX_STYLE, (PInvoke.GetWindowLong(Window.Handle, PInvoke.GWL_EX_STYLE) | PInvoke.WS_EX_TOOLWINDOW) & ~PInvoke.WS_EX_APPWINDOW);
+			}
+			else
+			{
+				PInvoke.SetWindowLong(Window.Handle, PInvoke.GWL_EX_STYLE, (PInvoke.GetWindowLong(Window.Handle, PInvoke.GWL_EX_STYLE) | PInvoke.WS_EX_TOOLWINDOW) & PInvoke.WS_EX_APPWINDOW);
+			}
+		}
 
-        public void Resize(int width, int height)
-        {
-            if (_graphics.PreferredBackBufferHeight == width && _graphics.PreferredBackBufferHeight == height) return;
+		public void Resize(int width, int height)
+		{
+			if (_graphics.PreferredBackBufferHeight == width && _graphics.PreferredBackBufferHeight == height) return;
 
-            _graphics.PreferredBackBufferWidth = width;
-            _graphics.PreferredBackBufferHeight = height;
-            _graphics.ApplyChanges();
+			_graphics.PreferredBackBufferWidth = width;
+			_graphics.PreferredBackBufferHeight = height;
+			_graphics.ApplyChanges();
 
-            CenterWindowToDisplayWithMouse();
-        }
+			CenterWindowToDisplayWithMouse();
+		}
 
-        public void PushUI(UIBase ui)
-        {
-            Resize(ui.Width, ui.Height);
+		public void PushUI(UIBase ui)
+		{
+			Resize(ui.Width, ui.Height);
 
-            _uis.Push(ui);
+			_uis.Push(ui);
 
-            ui.Load();
-        }
+			ui.Load();
+		}
 
-        public UIBase PopUI()
-        {
-            var ui = _uis.Pop();
+		public UIBase PopUI()
+		{
+			var ui = _uis.Pop();
 
-            Resize(_uis.Peek().Width, _uis.Peek().Height);
+			Resize(_uis.Peek().Width, _uis.Peek().Height);
 
-            return ui;
-        }
+			return ui;
+		}
 
-        protected override void Initialize()
-        {
-            SpriteBatch = new SpriteBatch(GraphicsDevice);
+		protected override void Initialize()
+		{
+			SpriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _imGuiRenderer = new ImGuiRenderer(this);
+			_imGuiRenderer = new ImGuiRenderer(this);
 
-            ResourceManager = new ResourceManager(GraphicsDevice, _imGuiRenderer);
-            Fonts.Load(ResourceManager);
+			ResourceManager = new ResourceManager(GraphicsDevice, _imGuiRenderer);
+			Fonts.Load(ResourceManager);
 
-            ResourceManager.Init();
+			ResourceManager.Init();
 
-            _imGuiRenderer.RebuildFontAtlas();
+			_imGuiRenderer.RebuildFontAtlas();
 
-            base.Initialize();
-        }
+			base.Initialize();
+		}
 
-        protected override void LoadContent()
-        {
-            if (_uis.Any())
-                _uis.Peek().Load();
+		protected override void LoadContent()
+		{
+			if (_uis.Any())
+				_uis.Peek().Load();
 
-            base.LoadContent();
-        }
+			base.LoadContent();
+		}
 
-        protected override void UnloadContent()
-        {
-            if (_uis.Any())
-                _uis.Peek().Unload();
+		protected override void UnloadContent()
+		{
+			if (_uis.Any())
+				_uis.Peek().Unload();
 
-            base.UnloadContent();
-        }
+			base.UnloadContent();
+		}
 
-        private Task _updateTask;
+		private Task _updateTask;
 
-        protected override void Update(GameTime gameTime)
-        {
-            FrameNumber++;
+		protected override void Update(GameTime gameTime)
+		{
+			FrameNumber++;
 
-            if (IsActive && !_wasActive) FocusGained(this, EventArgs.Empty);
-            if (!IsActive && _wasActive) FocusLost(this, EventArgs.Empty);
+			if (IsActive && !_wasActive) FocusGained(this, EventArgs.Empty);
+			if (!IsActive && _wasActive) FocusLost(this, EventArgs.Empty);
 
-            if (!IsActive || !IsVisible)
-            {
-                SuppressDraw();
+			if (!IsActive || !IsVisible)
+			{
+				SuppressDraw();
 
-                Thread.Sleep(10);
-            }
+				Thread.Sleep(10);
+			}
 
-            _wasActive = IsActive;
+			_wasActive = IsActive;
 
-            if (_updateTask?.IsCompleted ?? false)
-                _updateTask = null;
+			if (_updateTask?.IsCompleted ?? false)
+				_updateTask = null;
 
-            if (_updateTask == null && _uis.Any())
-                _updateTask = _uis.Peek().Update();
+			if (_updateTask == null && _uis.Any())
+				_updateTask = _uis.Peek().Update();
 
-            base.Update(gameTime);
-        }
+			base.Update(gameTime);
+		}
 
-        protected override void Draw(GameTime gameTime)
-        {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+		protected override void Draw(GameTime gameTime)
+		{
+			GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            SpriteBatch.Begin();
+			SpriteBatch.Begin();
 
-            Input.InputSnapshot.Update();
-            _imGuiRenderer.BeforeLayout(gameTime);
+			Input.InputSnapshot.Update();
+			_imGuiRenderer.BeforeLayout(gameTime);
 
-            if (_uis.Any())
-                _uis.Peek().Draw();
+			if (_uis.Any())
+				_uis.Peek().Draw();
 
-            SpriteBatch.End();
+			SpriteBatch.End();
 
-            _imGuiRenderer.AfterLayout();
+			_imGuiRenderer.AfterLayout();
 
-            base.Draw(gameTime);
-        }
-    }
+			base.Draw(gameTime);
+		}
+	}
 }

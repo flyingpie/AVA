@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
 	<PropertyGroup>
 		<TargetFramework>net472</TargetFramework>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -8,5 +7,4 @@
 	<ItemGroup>
 		<PackageReference Include="UwpDesktop" Version="10.0.14393.3" />
 	</ItemGroup>
-
 </Project>

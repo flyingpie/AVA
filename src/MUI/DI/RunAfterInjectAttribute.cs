@@ -2,7 +2,7 @@
 
 namespace MUI.DI
 {
-    public class RunAfterInjectAttribute : Attribute
-    {
-    }
+	public class RunAfterInjectAttribute : Attribute
+	{
+	}
 }
