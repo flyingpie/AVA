@@ -44,7 +44,10 @@ namespace MUI
         {
             set
             {
-                // TODO
+                var old = PInvoke.GetWindowLong(_form.Handle, PInvoke.GWL_EX_STYLE);
+                PInvoke.SetWindowLong(_form.Handle, PInvoke.GWL_EX_STYLE, old | PInvoke.WS_EX_LAYERED);
+
+                PInvoke.SetLayeredWindowAttributes(_form.Handle, 0, (byte)Math.Ceiling(255f * value), PInvoke.LWA_ALPHA);
             }
         }
 
@@ -65,7 +68,6 @@ namespace MUI
             IsMouseVisible = true;
 
             _form = Control.FromHandle(Window.Handle)?.FindForm() ?? throw new InvalidOperationException("Parent form not found");
-
         }
 
         public void CenterWindowToDisplayWithMouse()
