@@ -1,7 +1,7 @@
 ﻿{
 	"AVA": {
 		"BackgroundImage": "%SYNCTHING%/Chest/Images/Games/DOOM/vlcsnap-2019-05-14-23h21m27s843.png",
-		"ToggleUIKey": "Z",
+		"ToggleUIKey": "Space",
 		"ToggleUIKeyModifiers": "Alt"
 	},
 
@@ -16,8 +16,9 @@
 				"Includes": [ "**" ]
 			},
 			{
-				"Path": "%SYNCTHING%",
-				"Includes": [ "**.exe" ]
+				"Path": "%SYNCTHING%\\Apps",
+				"Includes": [ "**.exe", ".msc" ],
+				"Excludes": [ "**/VSCode/**" ]
 			},
 			{
 				"Path": "%SYNCTHING%",
@@ -35,18 +36,51 @@
 		"Macros": [
 
 			{
-				"Name": "Edit Hosts File",
-				"Command": "hosts",
+				"Command": "ps",
+				"Name": "PowerShell",
+				"FileName": "powershell",
+				"Arguments": "-nologo"
+			},
+			{
+				"Command": "ps6",
+				"Name": "PowerShell 6",
+				"FileName": "pwsh",
+				"Arguments": "-nologo"
+			},
 
-				"FileName": "notepad",
+			{
+				"Command": "hosts",
+				"FileName": "notepad++",
 				"Arguments": "C:/Windows/System32/drivers/etc/hosts",
+				"Name": "Edit Hosts File",
 				"RunAsAdmin": true
+			},
+
+			{
+				"Command": "lnx201",
+				"FileName": "putty",
+				"Arguments": "marco@lnx201",
+				"Name": "PuTTY LNX201"
+			},
+
+			{
+				"Command": "lnx01",
+				"Name": "LNX01",
+				"FileName": "putty",
+				"Arguments": "marco@lnx101"
+			},
+			{
+				"Command": "vps",
+				"Name": "SSH - Flyingpie.nl",
+				"FileName": "putty",
+				"Arguments": "marco@flyingpie.nl"
 			},
 
 			{
 				"Command": "vsc",
 				"FileName": "code",
-				"Name": "Visual Studio Code"
+				"Name": "Visual Studio Code",
+				"Icon": "%SYNCTHING%/Apps/VSCode/VSCode/icon.png"
 			},
 
 			{
@@ -56,7 +90,6 @@
 					"JAVA_HOME": "%SYNCTHING%/Apps/VSCode/VSCode-Java/jdk",
 					"PATH": "%PATH%;%SYNCTHING%/Apps/VSCode/VSCode-Java/jdk/bin;%SYNCTHING%/Apps/VSCode/VSCode-Java/maven/bin"
 				},
-
 				"Name": "Visual Studio Code - Java",
 				"Icon": "%SYNCTHING%/Apps/VSCode/VSCode-Java/icon.png"
 			},
@@ -67,19 +100,37 @@
 				"EnvironmentVars": {
 					"PYTHON37": "%SYNCTHING%/Apps/VSCode/VSCode-Python/python-3.7.2"
 				},
-
 				"Name": "Visual Studio Code - Python",
 				"Icon": "%SYNCTHING%/Apps/VSCode/VSCode-Python/icon.png"
 			},
 
 			{
+				"Command": "vscphp",
+				"FileName": "%SYNCTHING%/Apps/VSCode/VSCode-PHP/VSCode/code.exe",
+				"EnvironmentVars": {
+					"PATH": "%PATH%;%SYNCTHING%/Apps/VSCode/VSCode-PHP/php"
+				},
+				"Name": "Visual Studio Code - PHP",
+				"Icon": "%SYNCTHING%/Apps/VSCode/VSCode-PHP/icon.png"
+			},
+
+			{
 				"Command": "vscw",
 				"FileName": "%SYNCTHING%/Apps/VSCode/VSCode-Writer/VSCode/code.exe",
-
 				"Name": "Visual Studio Code - Writer",
 				"Icon": "%SYNCTHING%/Apps/VSCode/VSCode-Writer/icon.png"
 			}
 
 		]
+	},
+
+	"Time": {
+		"DefaultCities": [
+			"tokyo",
+			"sydney",
+			"moscow",
+			"new york"
+		],
+		"MinPopulation": 500000
 	}
 }

@@ -34,10 +34,24 @@ namespace AVA.Plugin.WebQuery
 			{
 				new Command()
 				{
+					Prefix = "choco",
+					Icon = FAIcon.CookieBiteSolid,
+					Pattern = "https://community.chocolatey.org/packages?q={term}",
+					Description = "Chocolatey"
+				},
+				new Command()
+				{
 					Prefix = "ddg",
 					Icon = Resources.Resources.DuckDuckGo,
 					Pattern = "https://duckduckgo.com/?q={term}",
 					Description = "Duck Duck Go"
+				},
+				new Command()
+				{
+					Prefix = "dh",
+					Icon = FAIcon.DockerBrands,
+					Pattern = "https://hub.docker.com/search?q={term}&type=image",
+					Description = "Docker Hub"
 				},
 				new Command()
 				{
@@ -73,13 +87,6 @@ namespace AVA.Plugin.WebQuery
 					Icon = FAIcon.RedditBrands,
 					Pattern = "https://www.reddit.com/search?q={term}",
 					Description = "Reddit"
-				},
-				new Command()
-				{
-					Prefix = "twitter",
-					Icon = FAIcon.TwitterBrands,
-					Pattern = "https://twitter.com/search?f=users&vertical=news&q={term}&src=typd",
-					Description = "Twitter"
 				},
 				new Command()
 				{

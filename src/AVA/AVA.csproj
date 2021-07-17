@@ -1,10 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net472</TargetFramework>
 		<ApplicationIcon>Resources\Images\default-image.ico</ApplicationIcon>
-		<Platforms>x64</Platforms>
-		<RuntimeIdentifiers>MSIL;win10-x64</RuntimeIdentifiers>
 	</PropertyGroup>
 
 	<ItemGroup>

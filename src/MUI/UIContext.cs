@@ -6,7 +6,6 @@ using MUI.Win32.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -169,9 +168,9 @@ namespace MUI
 			if (!IsActive || !IsVisible)
 			{
 				SuppressDraw();
-
-				Thread.Sleep(10);
 			}
+
+			Input.InputSnapshot.Update();
 
 			_wasActive = IsActive;
 
@@ -190,7 +189,6 @@ namespace MUI
 
 			SpriteBatch.Begin();
 
-			Input.InputSnapshot.Update();
 			_imGuiRenderer.BeforeLayout(gameTime);
 
 			if (_uis.Any())

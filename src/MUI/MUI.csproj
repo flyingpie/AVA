@@ -1,12 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net472</TargetFramework>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="ImGui.NET" Version="1.78.0" />
-		<PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="3.1.8" />
+		<PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="5.0.0" />
 		<PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.0.1641" />
 		<PackageReference Include="morelinq" Version="3.3.2" />
 		<PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
