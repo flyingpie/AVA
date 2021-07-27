@@ -1,7 +1,7 @@
 ﻿{
 	"AVA": {
 		"BackgroundImage": "%SYNCTHING%/Chest/Images/Games/DOOM/vlcsnap-2019-05-14-23h21m27s843.png",
-		"ToggleUIKey": "Space",
+		"ToggleUIKey": "Z",
 		"ToggleUIKeyModifiers": "Alt"
 	},
 

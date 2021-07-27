@@ -12,6 +12,29 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\AVA.Core\AVA.Core.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.Calculator\AVA.Plugin.Calculator.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.ClipboardHistory\AVA.Plugin.ClipboardHistory.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.EnvironmentVariables\AVA.Plugin.EnvironmentVariables.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.FileSystemBrowser\AVA.Plugin.FileSystemBrowser.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.Footer\AVA.Plugin.Footer.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.Help\AVA.Plugin.Help.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.Indexer.ControlPanel\AVA.Plugin.Indexer.ControlPanel.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.Indexer.FileSystem\AVA.Plugin.Indexer.FileSystem.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.Indexer.Macros\AVA.Plugin.Indexer.Macros.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.Indexer.MsSettings\AVA.Plugin.Indexer.MsSettings.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.Indexer.UWP\AVA.Plugin.Indexer.UWP.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.IndexerQuery\AVA.Plugin.IndexerQuery.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.Indexer\AVA.Plugin.Indexer.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.LocalBookmarks\AVA.Plugin.LocalBookmarks.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.NoResults\AVA.Plugin.NoResults.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.Settings\AVA.Plugin.Settings.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.Shell\AVA.Plugin.Shell.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.Spotify\AVA.Plugin.Spotify.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.Tests\AVA.Plugin.Tests.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.Time\AVA.Plugin.Time.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.UnitConverter\AVA.Plugin.UnitConverter.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.Uri\AVA.Plugin.Uri.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.WebQuery\AVA.Plugin.WebQuery.csproj" />
 		<ProjectReference Include="..\MUI\MUI.csproj" />
 	</ItemGroup>
 
