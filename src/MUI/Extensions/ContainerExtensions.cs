@@ -25,7 +25,8 @@ namespace MUI
 					.ToList();
 
 				var plugins = Directory
-					.GetFiles(pluginsDir, "AVA.Plugin*.dll", SearchOption.AllDirectories)
+					//.GetFiles(pluginsDir, "AVA.Plugin*.dll", SearchOption.AllDirectories)
+					.GetFiles(pluginsDir, "*.dll", SearchOption.AllDirectories)
 					.Where(dll => !loadedDlls.Any(loadedDll => Path.GetFileName(loadedDll).Equals(Path.GetFileName(dll), StringComparison.OrdinalIgnoreCase)))
 					.OrderBy(path => path)
 					.ToList()
@@ -40,8 +41,10 @@ namespace MUI
 
 					try
 					{
-						var pluginAssName = AssemblyName.GetAssemblyName(plugin);
-						var pluginAss = AppDomain.CurrentDomain.Load(pluginAssName);
+						var pluginAss = Assembly.LoadFile(plugin);
+
+						//var pluginAssName = AssemblyName.GetAssemblyName(plugin);
+						//var pluginAss = AppDomain.CurrentDomain.Load(pluginAssName);
 
 						loadedDlls.Add(new Uri(pluginAss.CodeBase).LocalPath);
 

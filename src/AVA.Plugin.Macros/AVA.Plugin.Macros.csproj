@@ -1,10 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
-		<PackageReference Include="morelinq" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\AVA.Core\AVA.Core.csproj" />
-		<ProjectReference Include="..\MUI\MUI.csproj" />
 	</ItemGroup>
 </Project>

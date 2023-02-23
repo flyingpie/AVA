@@ -34,6 +34,7 @@ namespace AVA.Plugin.Indexer.FileSystem
 				var startInfo = new ProcessStartInfo()
 				{
 					FileName = Path,
+					UseShellExecute = true,
 					WorkingDirectory = System.IO.Path.GetDirectoryName(Path)
 				};
 

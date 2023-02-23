@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="TimeZoneNames" Version="4.2.0" />
+		<ProjectReference Include="..\AVA.Core\AVA.Core.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\AVA.Core\AVA.Core.csproj" />
+		<PackageReference Include="Newtonsoft.Json" />
+		<PackageReference Include="TimeZoneNames" />
 	</ItemGroup>
 
 	<ItemGroup>

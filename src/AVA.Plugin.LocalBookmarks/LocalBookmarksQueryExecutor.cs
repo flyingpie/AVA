@@ -102,7 +102,11 @@ namespace AVA.Plugin.LocalBookmarks
 						Icon = Resources.LoadFontAwesomeIcon(FAIcon.EditRegular, 50 / 3),
 						Name = "Edit bookmarks",
 						Description = pathToBookmarks,
-						OnExecute = qt => Process.Start(pathToBookmarks).Dispose()
+						OnExecute = qt => Process.Start(new ProcessStartInfo()
+						{
+							FileName = pathToBookmarks,
+							UseShellExecute = true
+						}).Dispose()
 					}
 				};
 			}
@@ -118,7 +122,11 @@ namespace AVA.Plugin.LocalBookmarks
 					Icon = ResourceManager.Instance.LoadImageFromUrl(b.FaviconUrl),
 					Name = b.Name,
 					Description = b.Url,
-					OnExecute = qt => Process.Start(b.Url).Dispose()
+					OnExecute = qt => Process.Start(new ProcessStartInfo()
+					{
+						FileName = b.Url,
+						UseShellExecute = true
+					}).Dispose()
 				})
 				.ToList()
 			;

@@ -1,52 +1,29 @@
-﻿{
+{
 	"AVA": {
-		"BackgroundImage": "%SYNCTHING%/Chest/Images/Games/DOOM/vlcsnap-2019-05-14-23h21m27s843.png",
-		"ToggleUIKey": "Z",
+		"BackgroundImage": "%SYNCTHING%/personal/images/games/DOOM/vlcsnap-2019-05-14-23h21m27s843.png",
+		"ToggleUIKey": "Space",
 		"ToggleUIKeyModifiers": "Alt"
 	},
 
 	"Indexer.FileSystem": {
 		"Paths": [
-			{
-				"Path": "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs",
-				"Includes": [ "**" ]
-			},
-			{
-				"Path": "%APPDATA%\\Microsoft\\Windows\\Start Menu",
-				"Includes": [ "**" ]
-			},
-			{
-				"Path": "%SYNCTHING%\\Apps",
-				"Includes": [ "**.exe", ".msc" ],
-				"Excludes": [ "**/VSCode/**" ]
-			},
-			{
-				"Path": "%SYNCTHING%",
-				"Includes": [ "**" ],
-				"Excludes": [ "Apps" ]
-			}
+			{ "Path": "%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs", "Includes": [ "**" ] },
+			{ "Path": "%APPDATA%\\Microsoft\\Windows\\Start Menu", "Includes": [ "**" ] },
+			{ "Path": "%SYNCTHING%\\apps", "Includes": [ "**.exe", ".msc" ] },
+			{ "Path": "%SYNCTHING%", "Includes": [ "**" ], "Excludes": [ "apps" ] }
 		]
 	},
 
 	"LocalBookmarks": {
-		"PathToBookmarks": "%SYNCTHING%\\Chest\\Bookmarks.csv"
+		"PathToBookmarks": "%SYNCTHING%\\personal\\notes\\bookmarks.csv"
 	},
 
 	"Macros": {
 		"Macros": [
+			{ "Command": "kp",		"Name": "KeePassXC",		"FileName": "%SYNCTHING%/apps/keepassxc/keepassxc.exe" },
 
-			{
-				"Command": "ps",
-				"Name": "PowerShell",
-				"FileName": "powershell",
-				"Arguments": "-nologo"
-			},
-			{
-				"Command": "ps6",
-				"Name": "PowerShell 6",
-				"FileName": "pwsh",
-				"Arguments": "-nologo"
-			},
+			{ "Command": "ps",		"Name": "PowerShell",		"FileName": "powershell",	"Arguments": "-nologo" },
+			{ "Command": "ps6",		"Name": "PowerShell 6",		"FileName": "pwsh",			"Arguments": "-nologo" },
 
 			{
 				"Command": "hosts",
@@ -57,68 +34,17 @@
 			},
 
 			{
-				"Command": "lnx201",
-				"FileName": "putty",
-				"Arguments": "marco@lnx201",
-				"Name": "PuTTY LNX201"
-			},
-
-			{
-				"Command": "lnx01",
-				"Name": "LNX01",
-				"FileName": "putty",
-				"Arguments": "marco@lnx101"
-			},
-			{
-				"Command": "vps",
-				"Name": "SSH - Flyingpie.nl",
-				"FileName": "putty",
-				"Arguments": "marco@flyingpie.nl"
-			},
-
-			{
 				"Command": "vsc",
 				"FileName": "code",
 				"Name": "Visual Studio Code",
-				"Icon": "%SYNCTHING%/Apps/VSCode/VSCode/icon.png"
+				"Icon": "%SYNCTHING%/Apps/vscode/oceanic_next.png"
 			},
 
 			{
-				"Command": "vscj",
-				"FileName": "%SYNCTHING%/Apps/VSCode/VSCode-Java/VSCode/code.exe",
-				"EnvironmentVars": {
-					"JAVA_HOME": "%SYNCTHING%/Apps/VSCode/VSCode-Java/jdk",
-					"PATH": "%PATH%;%SYNCTHING%/Apps/VSCode/VSCode-Java/jdk/bin;%SYNCTHING%/Apps/VSCode/VSCode-Java/maven/bin"
-				},
-				"Name": "Visual Studio Code - Java",
-				"Icon": "%SYNCTHING%/Apps/VSCode/VSCode-Java/icon.png"
-			},
-
-			{
-				"Command": "vscp",
-				"FileName": "%SYNCTHING%/Apps/VSCode/VSCode-Python/VSCode/code.exe",
-				"EnvironmentVars": {
-					"PYTHON37": "%SYNCTHING%/Apps/VSCode/VSCode-Python/python-3.7.2"
-				},
-				"Name": "Visual Studio Code - Python",
-				"Icon": "%SYNCTHING%/Apps/VSCode/VSCode-Python/icon.png"
-			},
-
-			{
-				"Command": "vscphp",
-				"FileName": "%SYNCTHING%/Apps/VSCode/VSCode-PHP/VSCode/code.exe",
-				"EnvironmentVars": {
-					"PATH": "%PATH%;%SYNCTHING%/Apps/VSCode/VSCode-PHP/php"
-				},
-				"Name": "Visual Studio Code - PHP",
-				"Icon": "%SYNCTHING%/Apps/VSCode/VSCode-PHP/icon.png"
-			},
-
-			{
-				"Command": "vscw",
-				"FileName": "%SYNCTHING%/Apps/VSCode/VSCode-Writer/VSCode/code.exe",
-				"Name": "Visual Studio Code - Writer",
-				"Icon": "%SYNCTHING%/Apps/VSCode/VSCode-Writer/icon.png"
+				"Command": "vscjs",
+				"FileName": "C:/tools/vsc/js/code.exe",
+				"Name": "VS Code - JS",
+				"Icon": "%SYNCTHING%/Apps/vscode/oceanic_next.png"
 			}
 
 		]

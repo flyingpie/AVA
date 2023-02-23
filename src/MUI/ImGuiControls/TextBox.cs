@@ -48,6 +48,12 @@ namespace MUI.ImGuiControls
 
 			unsafe
 			{
+				if (_focus)
+				{
+					ImGui.SetKeyboardFocusHere();
+					_focus = false;
+				}
+
 				ImGui.InputText("q" + _id, _termBuffer, (uint)_termBuffer.Length - 1, ImGuiInputTextFlags.CallbackAlways, new ImGuiInputTextCallback(data =>
 				{
 					if (_reset)
@@ -61,12 +67,6 @@ namespace MUI.ImGuiControls
 					}
 					return 0;
 				}));
-
-				if (_focus)
-				{
-					ImGui.SetKeyboardFocusHere();
-					_focus = false;
-				}
 			}
 
 			var term = _termBuffer.BufferToString();

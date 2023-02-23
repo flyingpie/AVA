@@ -34,7 +34,7 @@ Task("Build").Does(() =>
 		Restore = true,
 		ToolPath = GetFiles(VSWhereLatest() + "/**/MSBuild.exe").FirstOrDefault(),
 	}
-		.WithProperty("runtime", "win10-x64")
+//		.WithProperty("runtime", "win10-x64")
 	);
 });
 

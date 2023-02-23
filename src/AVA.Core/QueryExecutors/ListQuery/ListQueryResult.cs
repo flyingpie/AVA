@@ -38,7 +38,12 @@ namespace AVA.Core.QueryExecutors.ListQuery
 			// Selection
 			if (isSelected) ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(1, 1, 1, .1f));
 
-			ImGui.BeginChild($"query-result-{Id}", new Vector2(ImGui.GetWindowContentRegionWidth(), iconSize), false, ImGuiWindowFlags.None);
+			// ImGui.GetWindowContentRegionWidth()
+			var cMin = ImGui.GetWindowContentRegionMin();
+			var cMax = ImGui.GetWindowContentRegionMax();
+			var cWidth = cMax.X - cMin.X;
+
+			ImGui.BeginChild($"query-result-{Id}", new Vector2(cWidth, iconSize), false, ImGuiWindowFlags.None);
 			{
 				ImGui.Columns(2, " ", false);
 

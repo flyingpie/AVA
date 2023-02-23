@@ -5,35 +5,35 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace AVA.Plugin.Indexer.Macros
+namespace AVA.Plugin.Macros
 {
-	public class MacroIndexedItem : IndexedItem
+	public class Macro
 	{
 		public string Name { get; set; }
 
-		public override string Description
+		public string Description
 		{
 			get => $"Macro - {Command}";
 			set { }
 		}
 
-		public override string DisplayName
+		public string DisplayName
 		{
 			get => Name;
 			set => Name = value;
 		}
 
-		public override string IndexerName
-		{
-			get => Command;
-			set { }
-		}
+		//public string IndexerName
+		//{
+		//	get => Command;
+		//	set { }
+		//}
 
-		public override int Boost
-		{
-			get => 10;
-			set { }
-		}
+		//public override int Boost
+		//{
+		//	get => 10;
+		//	set { }
+		//}
 
 		public string Command { get; set; }
 
@@ -51,7 +51,7 @@ namespace AVA.Plugin.Indexer.Macros
 
 		public bool RunAsAdmin { get; set; }
 
-		public override bool Execute()
+		public bool Execute()
 		{
 			var log = Log.Get(this);
 
@@ -91,9 +91,9 @@ namespace AVA.Plugin.Indexer.Macros
 			}
 		}
 
-		public override Image GetIcon()
+		public Image GetIcon()
 		{
-			return ResourceManager.Instance.TryLoadImage(Icon.ExpandEnvVars().FromPluginRoot<MacroIndexedItem>(), out var icon)
+			return ResourceManager.Instance.TryLoadImage(Icon.ExpandEnvVars().FromPluginRoot<Macro>(), out var icon)
 				? icon
 				: ResourceManager.Instance.DefaultImage;
 		}

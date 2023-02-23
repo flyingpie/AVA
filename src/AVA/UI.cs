@@ -108,7 +108,11 @@ namespace AVA
 				ImGui.Spacing();
 
 				// Query executor
-				ImGui.BeginChild("query-executor", new Vector2(ImGui.GetWindowContentRegionWidth(), ImGui.GetContentRegionAvail().Y - 20), false, ImGuiWindowFlags.None);
+				var cMin = ImGui.GetWindowContentRegionMin();
+				var cMax = ImGui.GetWindowContentRegionMax();
+				var cWidth = cMax.X - cMin.X;
+
+				ImGui.BeginChild("query-executor", new Vector2(cWidth, ImGui.GetContentRegionAvail().Y - 20), false, ImGuiWindowFlags.None);
 				{
 					QueryExecutorManager.Draw();
 				}

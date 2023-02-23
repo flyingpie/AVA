@@ -16,7 +16,11 @@ namespace AVA.Plugin.Time
 		{
 			ImGui.PushFont(Fonts.Regular24);
 
-			ImGui.BeginChild($"query-result-{Id}", new Vector2(ImGui.GetWindowContentRegionWidth(), 50), false, ImGuiWindowFlags.None);
+			var cMin = ImGui.GetWindowContentRegionMin();
+			var cMax = ImGui.GetWindowContentRegionMax();
+			var cWidth = cMax.X - cMin.X;
+
+			ImGui.BeginChild($"query-result-{Id}", new Vector2(cWidth, 50), false, ImGuiWindowFlags.None);
 			{
 				ImGui.Columns(2, " ", false);
 

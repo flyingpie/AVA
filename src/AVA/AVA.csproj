@@ -5,14 +5,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="ImGui.NET" Version="1.78.0" />
-		<PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.0.1641" />
-		<PackageReference Include="morelinq" Version="3.3.2" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<ProjectReference Include="..\AVA.Core\AVA.Core.csproj" />
-		<ProjectReference Include="..\AVA.Plugin.Calculator\AVA.Plugin.Calculator.csproj" />
+		<!--<ProjectReference Include="..\AVA.Plugin.Calculator\AVA.Plugin.Calculator.csproj" />
 		<ProjectReference Include="..\AVA.Plugin.ClipboardHistory\AVA.Plugin.ClipboardHistory.csproj" />
 		<ProjectReference Include="..\AVA.Plugin.EnvironmentVariables\AVA.Plugin.EnvironmentVariables.csproj" />
 		<ProjectReference Include="..\AVA.Plugin.FileSystemBrowser\AVA.Plugin.FileSystemBrowser.csproj" />
@@ -25,21 +19,27 @@
 		<ProjectReference Include="..\AVA.Plugin.Indexer.UWP\AVA.Plugin.Indexer.UWP.csproj" />
 		<ProjectReference Include="..\AVA.Plugin.IndexerQuery\AVA.Plugin.IndexerQuery.csproj" />
 		<ProjectReference Include="..\AVA.Plugin.Indexer\AVA.Plugin.Indexer.csproj" />
-		<ProjectReference Include="..\AVA.Plugin.LocalBookmarks\AVA.Plugin.LocalBookmarks.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.LocalBookmarks\AVA.Plugin.LocalBookmarks.csproj" />-->
 		<ProjectReference Include="..\AVA.Plugin.NoResults\AVA.Plugin.NoResults.csproj" />
-		<ProjectReference Include="..\AVA.Plugin.Settings\AVA.Plugin.Settings.csproj" />
+		<!--<ProjectReference Include="..\AVA.Plugin.Settings\AVA.Plugin.Settings.csproj" />
 		<ProjectReference Include="..\AVA.Plugin.Shell\AVA.Plugin.Shell.csproj" />
-		<ProjectReference Include="..\AVA.Plugin.Spotify\AVA.Plugin.Spotify.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.Spotify\AVA.Plugin.Spotify.csproj" />-->
 		<ProjectReference Include="..\AVA.Plugin.Tests\AVA.Plugin.Tests.csproj" />
-		<ProjectReference Include="..\AVA.Plugin.Time\AVA.Plugin.Time.csproj" />
+		<!--<ProjectReference Include="..\AVA.Plugin.Time\AVA.Plugin.Time.csproj" />
 		<ProjectReference Include="..\AVA.Plugin.UnitConverter\AVA.Plugin.UnitConverter.csproj" />
 		<ProjectReference Include="..\AVA.Plugin.Uri\AVA.Plugin.Uri.csproj" />
-		<ProjectReference Include="..\AVA.Plugin.WebQuery\AVA.Plugin.WebQuery.csproj" />
+		<ProjectReference Include="..\AVA.Plugin.WebQuery\AVA.Plugin.WebQuery.csproj" />-->
 		<ProjectReference Include="..\MUI\MUI.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Reference Include="System.Windows.Forms" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="ImGui.NET" />
+		<PackageReference Include="MonoGame.Framework.WindowsDX" />
+		<PackageReference Include="morelinq" />
 	</ItemGroup>
 
 	<ItemGroup>

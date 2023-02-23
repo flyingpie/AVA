@@ -144,7 +144,11 @@ namespace AVA.Plugin.WebQuery
 			{
 				Execute = term =>
 				{
-					Process.Start(Pattern.Replace("{term}", WebUtility.UrlEncode(term))).Dispose();
+					Process.Start(new ProcessStartInfo()
+					{
+						FileName = Pattern.Replace("{term}", WebUtility.UrlEncode(term)),
+						UseShellExecute = true
+					}).Dispose();
 
 					return true;
 				};

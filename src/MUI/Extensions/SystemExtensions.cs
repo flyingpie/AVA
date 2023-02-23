@@ -46,7 +46,8 @@ namespace System
 
 			var loc = typeof(MUI.UIContext).Assembly.Location;
 
-			loc = Path.GetDirectoryName(Path.GetDirectoryName(loc));
+			//loc = Path.GetDirectoryName(Path.GetDirectoryName(loc));
+			loc = Path.GetDirectoryName(loc);
 
 			return Path.Combine(loc, path);
 		}

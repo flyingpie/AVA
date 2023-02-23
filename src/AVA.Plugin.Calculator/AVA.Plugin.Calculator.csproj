@@ -4,10 +4,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="NCalc2" Version="2.1.0" />
+		<Reference Include="System.Windows.Forms" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="System.Windows.Forms" />
+		<PackageReference Include="NCalc2" />
 	</ItemGroup>
 </Project>

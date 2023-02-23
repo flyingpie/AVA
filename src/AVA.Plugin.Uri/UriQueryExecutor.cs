@@ -23,7 +23,11 @@ namespace AVA.Plugin.Uri
 
 		public bool TryExecute(QueryContext query)
 		{
-			Process.Start(_url);
+			Process.Start(new ProcessStartInfo()
+			{
+				FileName = _url,
+				UseShellExecute = true,
+			});
 
 			return true;
 		}
