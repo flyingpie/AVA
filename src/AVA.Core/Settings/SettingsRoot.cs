@@ -19,10 +19,10 @@ namespace AVA.Core.Settings
 		private string[] _paths = new[]
 		{
 			"settings.json".FromAppRoot(),
-			Path.Combine("".FromAppRoot(), nameof(AVA), "settings.json")
+			System.IO.Path.Combine("".FromAppRoot(), nameof(AVA), "settings.json")
 		};
 
-		private string _path;
+		public string Path { get; private set; }
 
 		private JsonSerializerSettings _serializeSettings;
 		private ILog _log;
@@ -36,7 +36,7 @@ namespace AVA.Core.Settings
 
 			_serializeSettings.Converters.Add(new StringEnumConverter());
 
-			_path = _paths.First();
+			Path = _paths.First();
 			_log = Log.Get(this);
 
 			Load();
@@ -64,11 +64,11 @@ namespace AVA.Core.Settings
 				{
 					if (File.Exists(path))
 					{
-						_path = path;
+						Path = path;
 
-						_log.Info($"Loading settings from path '{_path}'...");
+						_log.Info($"Loading settings from path '{Path}'...");
 
-						Settings = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(_path), _serializeSettings);
+						Settings = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(Path), _serializeSettings);
 					}
 				}
 				catch (Exception ex)
@@ -82,7 +82,7 @@ namespace AVA.Core.Settings
 		{
 			try
 			{
-				File.WriteAllText(_path, JsonConvert.SerializeObject(Settings, _serializeSettings));
+				File.WriteAllText(Path, JsonConvert.SerializeObject(Settings, _serializeSettings));
 			}
 			catch (Exception ex)
 			{

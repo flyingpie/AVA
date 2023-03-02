@@ -63,11 +63,10 @@ namespace AVA.Plugin.Macros
 				proc.StartInfo.FileName = FileName.ExpandEnvVars();
 				proc.StartInfo.Arguments = Arguments.ExpandEnvVars();
 				proc.StartInfo.WorkingDirectory = WorkingDirectory.ExpandEnvVars();
+				proc.StartInfo.UseShellExecute = true;
 
 				if (EnvironmentVars != null)
 				{
-					proc.StartInfo.UseShellExecute = false;
-
 					foreach (var envVar in EnvironmentVars)
 					{
 						proc.StartInfo.Environment[envVar.Key] = envVar.Value.ExpandEnvVars();

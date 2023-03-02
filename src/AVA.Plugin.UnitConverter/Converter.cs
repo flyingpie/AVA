@@ -1,4 +1,4 @@
-﻿using NCalc2;
+﻿using NCalc;
 using System;
 using System.Linq;
 

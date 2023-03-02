@@ -8,6 +8,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="NCalc2" />
+		<PackageReference Include="CoreCLR-NCalc" />
 	</ItemGroup>
 </Project>

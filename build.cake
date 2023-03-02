@@ -1,11 +1,7 @@
-#tool "nuget:?package=GitVersion.CommandLine&version=4.0.0"
-#tool "nuget:?package=vswhere&version=2.6.7"
-
 using static System.IO.Path;
 
 var configuration = Argument("configuration", "Release");
 var output = Argument("output", "artifacts");
-var platform = Argument("platform", PlatformTarget.x64);
 
 var sln = "src/Ava.sln";
 
@@ -14,28 +10,14 @@ Task("Clean").Does(() =>
 	CleanDirectory(output);
 });
 
-Task("Build.MSIL").Does(() =>
-{
-	MSBuild(sln, new MSBuildSettings
-	{
-		Configuration = configuration,
-		PlatformTarget = platform,
-		Restore = true,
-		ToolPath = GetFiles(VSWhereLatest() + "/**/MSBuild.exe").FirstOrDefault(),
-	});
-});
-
 Task("Build").Does(() =>
 {
 	MSBuild(sln, new MSBuildSettings
 	{
 		Configuration = configuration,
 		PlatformTarget = platform,
-		Restore = true,
-		ToolPath = GetFiles(VSWhereLatest() + "/**/MSBuild.exe").FirstOrDefault(),
-	}
-//		.WithProperty("runtime", "win10-x64")
-	);
+		Restore = true
+	});
 });
 
 Task("Artifact.App").Does(() =>

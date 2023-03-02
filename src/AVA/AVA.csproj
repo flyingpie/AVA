@@ -39,7 +39,6 @@
 	<ItemGroup>
 		<PackageReference Include="ImGui.NET" />
 		<PackageReference Include="MonoGame.Framework.WindowsDX" />
-		<PackageReference Include="morelinq" />
 	</ItemGroup>
 
 	<ItemGroup>

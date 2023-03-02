@@ -4,7 +4,6 @@
 		<PackageReference Include="Lucene.Net.Analysis.Common" />
 		<PackageReference Include="Lucene.Net.Queries" />
 		<PackageReference Include="Lucene.Net.QueryParser" />
-		<PackageReference Include="morelinq" />
 		<PackageReference Include="Newtonsoft.Json" />
 	</ItemGroup>
 

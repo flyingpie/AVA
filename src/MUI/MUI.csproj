@@ -8,7 +8,6 @@
 		<PackageReference Include="ImGui.NET" />
 		<PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" />
 		<PackageReference Include="MonoGame.Framework.WindowsDX" />
-		<PackageReference Include="morelinq" />
 		<PackageReference Include="System.Numerics.Vectors" />
 	</ItemGroup>
 

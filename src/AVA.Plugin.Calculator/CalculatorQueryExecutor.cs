@@ -4,7 +4,7 @@ using FontAwesomeCS;
 using ImGuiNET;
 using MUI;
 using MUI.DI;
-using NCalc2;
+using NCalc;
 using System.Windows.Forms;
 
 namespace AVA.Plugin.Calculator

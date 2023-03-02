@@ -1,6 +1,5 @@
 ﻿using AVA.Core;
 using AVA.Core.QueryExecutors.ListQuery;
-using MoreLinq;
 using MUI;
 using MUI.Win32.Extensions;
 using System;

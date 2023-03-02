@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<ItemGroup>
+		<PackageReference Include="CoreCLR-NCalc" />
 		<PackageReference Include="Newtonsoft.Json" />
-		<PackageReference Include="NCalc2" />
 	</ItemGroup>
 
 	<ItemGroup>
