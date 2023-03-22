@@ -44,7 +44,8 @@ namespace AVA.Plugin.Indexer.MsSettings
 		{
 			Process.Start(new ProcessStartInfo()
 			{
-				FileName = CommandUri
+				FileName = CommandUri,
+				UseShellExecute = true,
 			}).Dispose();
 
 			return true;

@@ -3,22 +3,14 @@
 		<TargetFramework>net7.0-windows10.0.19041.0</TargetFramework>
 		<LangVersion>11.0</LangVersion>
 
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<ServerGarbageCollection>false</ServerGarbageCollection>
 
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
 		<BaseOutputPath>$(MSBuildThisFileDirectory)\build</BaseOutputPath>
-
-		<!--<BaseOutputPath>$(MSBuildThisFileDirectory)\build\bin\$(MSBuildProjectName)</BaseOutputPath>-->
 		<BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)\build\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
-
 		<OutputPath>$(MSBuildThisFileDirectory)\build\bin</OutputPath>
-
-		<!--<BaseOutputPath>$(MSBuildThisFileDirectory)\build\bin</BaseOutputPath>-->
-		<!--<BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)\build\obj</BaseIntermediateOutputPath>-->
 
 		<DebugType>full</DebugType>
 		<DebugSymbols>true</DebugSymbols>

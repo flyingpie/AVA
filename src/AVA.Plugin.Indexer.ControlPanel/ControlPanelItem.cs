@@ -53,7 +53,8 @@ namespace AVA.Plugin.Indexer.ControlPanel
 			{
 				FileName = FileName,
 				Arguments = Arguments,
-				WindowStyle = WindowStyle
+				UseShellExecute = true,
+				WindowStyle = WindowStyle,
 			};
 		}
 	}
