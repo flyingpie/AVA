@@ -16,9 +16,9 @@ namespace MUI
 		{
 		}
 
-		public virtual Task Update()
+		public virtual void Update()
 		{
-			return Task.CompletedTask;
+			//return Task.CompletedTask;
 		}
 
 		public virtual void Draw()

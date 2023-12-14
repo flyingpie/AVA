@@ -1,92 +1,91 @@
 ﻿using MUI.Graphics;
-using MUI.Logging;
-using System;
-using System.IO;
 
-namespace MUI.Win32.Extensions
+namespace MUI.Win32.Extensions;
+
+public static class ResourceManagerExtensions
 {
-	public static class ResourceManagerExtensions
+	public static Image LoadImageFromIcon(this ResourceManager resourceManager, string path)
 	{
-		public static Image LoadImageFromIcon(this ResourceManager resourceManager, string path)
+		Guard.Against.Null(resourceManager, nameof(resourceManager));
+		Guard.Against.NullOrWhiteSpace(path, nameof(path));
+
+		return resourceManager.LoadImage(path, textureLoader => new LazyImage(resourceManager.DefaultImage, () =>
 		{
-			return resourceManager.LoadImage(path, textureLoader => new LazyImage(resourceManager.DefaultImage, () =>
+			var _log = Log.Get<ResourceManager>();
+
+			try
 			{
-				var _log = Log.Get<ResourceManager>();
+				// Normalize path
+				path = Path.GetFullPath(path);
 
-				try
+				_log.Info($"Loading image from icon at path '{path}'...");
+
+				using (var bmpStream = new MemoryStream())
 				{
-					// Normalize path
-					path = Path.GetFullPath(path);
+					var bmp = ThumbnailLoader.GetThumbnail(path, 50, 50, ThumbnailOptions.None);
+					bmp.Save(bmpStream, System.Drawing.Imaging.ImageFormat.Bmp);
 
-					_log.Info($"Loading image from icon at path '{path}'...");
-
-					using (var bmpStream = new MemoryStream())
-					{
-						var bmp = ThumbnailLoader.GetThumbnail(path, 50, 50, ThumbnailOptions.None);
-						bmp.Save(bmpStream, System.Drawing.Imaging.ImageFormat.Bmp);
-
-						// Convert to texture
-						return textureLoader.Load(bmpStream.ToArray());
-					}
+					// Convert to texture
+					return textureLoader.Load(bmpStream.ToArray());
 				}
-				catch (Exception ex)
-				{
-					_log.Error($"Could not load image from icon: '{ex.Message}'.", ex);
-					return ResourceManager.Instance.DefaultImage;
-				}
-			}));
-		}
+			}
+			catch (Exception ex)
+			{
+				_log.Error($"Could not load image from icon: '{ex.Message}'.", ex);
+				return ResourceManager.Instance.DefaultImage;
+			}
+		}));
+	}
 
-		public static Image LoadImageFromIcon(this ResourceManager resourceManager, string cacheKey, System.Drawing.Icon icon)
+	public static Image LoadImageFromIcon(this ResourceManager resourceManager, string cacheKey, System.Drawing.Icon icon)
+	{
+		return resourceManager.LoadImage(cacheKey, textureLoader => new LazyImage(resourceManager.DefaultImage, () =>
 		{
-			return resourceManager.LoadImage(cacheKey, textureLoader => new LazyImage(resourceManager.DefaultImage, () =>
+			var _log = Log.Get<ResourceManager>();
+
+			try
 			{
-				var _log = Log.Get<ResourceManager>();
+				_log.Info($"Loading image from icon...");
 
-				try
+				using (var bmpStream = new MemoryStream())
 				{
-					_log.Info($"Loading image from icon...");
+					// Convert to bitmap
+					icon.ToBitmap().Save(bmpStream, System.Drawing.Imaging.ImageFormat.Bmp);
 
-					using (var bmpStream = new MemoryStream())
-					{
-						// Convert to bitmap
-						icon.ToBitmap().Save(bmpStream, System.Drawing.Imaging.ImageFormat.Bmp);
-
-						// Convert to texture
-						return textureLoader.Load(bmpStream.ToArray());
-					}
+					// Convert to texture
+					return textureLoader.Load(bmpStream.ToArray());
 				}
-				catch (Exception ex)
-				{
-					_log.Error($"Could not load image from icon: '{ex.Message}'.", ex);
-					return ResourceManager.Instance.DefaultImage;
-				}
-			}));
-		}
+			}
+			catch (Exception ex)
+			{
+				_log.Error($"Could not load image from icon: '{ex.Message}'.", ex);
+				return ResourceManager.Instance.DefaultImage;
+			}
+		}));
+	}
 
-		public static Image LoadImageFromBitmap(this ResourceManager resourceManager, string cacheKey, System.Drawing.Image image)
+	public static Image LoadImageFromBitmap(this ResourceManager resourceManager, string cacheKey, System.Drawing.Image image)
+	{
+		return resourceManager.LoadImage(cacheKey, textureLoader => new LazyImage(resourceManager.DefaultImage, () =>
 		{
-			return resourceManager.LoadImage(cacheKey, textureLoader => new LazyImage(resourceManager.DefaultImage, () =>
+			var _log = Log.Get<ResourceManager>();
+			try
 			{
-				var _log = Log.Get<ResourceManager>();
-				try
-				{
-					_log.Info($"Loading image from System.Drawing.Image...");
+				_log.Info($"Loading image from System.Drawing.Image...");
 
-					using (var bmpStream = new MemoryStream())
-					{
-						image.Save(bmpStream, System.Drawing.Imaging.ImageFormat.Bmp);
-
-						// Convert to texture
-						return textureLoader.Load(bmpStream.ToArray());
-					}
-				}
-				catch (Exception ex)
+				using (var bmpStream = new MemoryStream())
 				{
-					_log.Error($"Could not load image from icon: '{ex.Message}'.", ex);
-					return ResourceManager.Instance.DefaultImage;
+					image.Save(bmpStream, System.Drawing.Imaging.ImageFormat.Bmp);
+
+					// Convert to texture
+					return textureLoader.Load(bmpStream.ToArray());
 				}
-			}));
-		}
+			}
+			catch (Exception ex)
+			{
+				_log.Error($"Could not load image from icon: '{ex.Message}'.", ex);
+				return ResourceManager.Instance.DefaultImage;
+			}
+		}));
 	}
 }

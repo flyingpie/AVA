@@ -66,11 +66,11 @@ namespace AVA.Core.QueryExecutors.ListQuery
 			return QueryResults.Any();
 		}
 
-		public virtual async Task<bool> TryExecuteAsync(QueryContext query)
+		public virtual bool TryExecuteAsync(QueryContext query)
 		{
 			if (IsSelectable && QueryResults.Count > SelectedItemIndex)
 			{
-				await QueryResults[SelectedItemIndex].ExecuteAsync(query);
+				QueryResults[SelectedItemIndex].ExecuteAsync(query);
 
 				return true;
 			}

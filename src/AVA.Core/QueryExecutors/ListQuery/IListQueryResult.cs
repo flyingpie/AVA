@@ -6,6 +6,6 @@ namespace AVA.Core.QueryExecutors.ListQuery
 	{
 		void Draw(bool isSelected);
 
-		Task ExecuteAsync(QueryContext query);
+		void ExecuteAsync(QueryContext query);
 	}
 }

@@ -8,33 +8,33 @@ indent_size = 4
 ##################################
 # Turn on all analyzers
 ##################################
-dotnet_analyzer_diagnostic.severity = warning
+#dotnet_analyzer_diagnostic.severity = warning
 
 ##################################
 # Turn off some stuff
 ##################################
 
-dotnet_diagnostic.CA1031.severity = none # CA1031: Do not catch general exception types
-dotnet_diagnostic.CA1054.severity = none # CA1054: URI-like parameters should not be strings
-dotnet_diagnostic.CA1055.severity = none # CA1055: URI-like return values should not be strings
-dotnet_diagnostic.CA1056.severity = none # CA1056: URI-like properties should not be strings
-dotnet_diagnostic.CA1308.severity = none # CA1308: Normalize strings to uppercase
-dotnet_diagnostic.CA1848.severity = none # CA1848: Use the LoggerMessage delegates
-dotnet_diagnostic.CA2008.severity = none # CA2008: Do not create tasks without passing a TaskScheduler
-dotnet_diagnostic.CS1591.severity = none # CS1591: Missing XML comment for publicly visible type or member
-dotnet_diagnostic.IDE0008.severity = none # IDE0008: Use explicit type
-dotnet_diagnostic.IDE0021.severity = none # IDE0021: Use block body for constructors
-dotnet_diagnostic.IDE0022.severity = none # IDE0022: Use expression body for methods
-dotnet_diagnostic.IDE0025.severity = none # IDE0025: Use expression body for properties
-dotnet_diagnostic.IDE0027.severity = none # IDE0027: Use expression body for accessors
-dotnet_diagnostic.IDE0058.severity = none # IDE0058: Expression value is never used
-dotnet_diagnostic.IDE0160.severity = none # IDE0160: Convert to block scoped namespace
-dotnet_diagnostic.S1135.severity = none # S1135: Track uses of "TODO" tags
-dotnet_diagnostic.S2971.severity = none # S2971: "IEnumerable" LINQs should be simplified
-dotnet_diagnostic.S3236.severity = none # S3236: Caller information arguments should not be provided explicitly
-dotnet_diagnostic.S3267.severity = none # S3267: Loops should be simplified with "LINQ" expressions
-dotnet_diagnostic.S4457.severity = none # S4457: Parameter validation in "async"/"await" methods should be wrapped
-dotnet_diagnostic.S4487.severity = none # S4487: Unread "private" fields should be removed
+#dotnet_diagnostic.CA1031.severity = none # CA1031: Do not catch general exception types
+#dotnet_diagnostic.CA1054.severity = none # CA1054: URI-like parameters should not be strings
+#dotnet_diagnostic.CA1055.severity = none # CA1055: URI-like return values should not be strings
+#dotnet_diagnostic.CA1056.severity = none # CA1056: URI-like properties should not be strings
+#dotnet_diagnostic.CA1308.severity = none # CA1308: Normalize strings to uppercase
+#dotnet_diagnostic.CA1848.severity = none # CA1848: Use the LoggerMessage delegates
+#dotnet_diagnostic.CA2008.severity = none # CA2008: Do not create tasks without passing a TaskScheduler
+#dotnet_diagnostic.CS1591.severity = none # CS1591: Missing XML comment for publicly visible type or member
+#dotnet_diagnostic.IDE0008.severity = none # IDE0008: Use explicit type
+#dotnet_diagnostic.IDE0021.severity = none # IDE0021: Use block body for constructors
+#dotnet_diagnostic.IDE0022.severity = none # IDE0022: Use expression body for methods
+#dotnet_diagnostic.IDE0025.severity = none # IDE0025: Use expression body for properties
+#dotnet_diagnostic.IDE0027.severity = none # IDE0027: Use expression body for accessors
+#dotnet_diagnostic.IDE0058.severity = none # IDE0058: Expression value is never used
+#dotnet_diagnostic.IDE0160.severity = none # IDE0160: Convert to block scoped namespace
+#dotnet_diagnostic.S1135.severity = none # S1135: Track uses of "TODO" tags
+#dotnet_diagnostic.S2971.severity = none # S2971: "IEnumerable" LINQs should be simplified
+#dotnet_diagnostic.S3236.severity = none # S3236: Caller information arguments should not be provided explicitly
+#dotnet_diagnostic.S3267.severity = none # S3267: Loops should be simplified with "LINQ" expressions
+#dotnet_diagnostic.S4457.severity = none # S4457: Parameter validation in "async"/"await" methods should be wrapped
+#dotnet_diagnostic.S4487.severity = none # S4487: Unread "private" fields should be removed
 
 ##################################
 # Naming

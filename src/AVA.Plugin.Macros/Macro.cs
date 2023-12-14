@@ -1,9 +1,8 @@
 ﻿using MUI;
 using MUI.Graphics;
-using MUI.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
 
 namespace AVA.Plugin.Macros
 {
@@ -23,18 +22,6 @@ namespace AVA.Plugin.Macros
 			set => Name = value;
 		}
 
-		//public string IndexerName
-		//{
-		//	get => Command;
-		//	set { }
-		//}
-
-		//public override int Boost
-		//{
-		//	get => 10;
-		//	set { }
-		//}
-
 		public string Command { get; set; }
 
 		public bool RunOnMatch { get; set; }
@@ -53,41 +40,16 @@ namespace AVA.Plugin.Macros
 
 		public bool Execute()
 		{
-			var log = Log.Get(this);
+			using var process = new ProcessRunner(
+				fileName: FileName,
+				arguments: Arguments,
+				workingDirectory: WorkingDirectory,
+				environmentVariables: EnvironmentVars?.Select(e => (e.Key, e.Value)),
+				runAsAdmin: RunAsAdmin || Input.IsKeyDown(Keys.LeftControl));
 
-			// TODO: Log
-			try
-			{
-				var proc = new Process();
+			process.Start();
 
-				proc.StartInfo.FileName = FileName.ExpandEnvVars();
-				proc.StartInfo.Arguments = Arguments.ExpandEnvVars();
-				proc.StartInfo.WorkingDirectory = WorkingDirectory.ExpandEnvVars();
-				proc.StartInfo.UseShellExecute = true;
-
-				if (EnvironmentVars != null)
-				{
-					foreach (var envVar in EnvironmentVars)
-					{
-						proc.StartInfo.Environment[envVar.Key] = envVar.Value.ExpandEnvVars();
-					}
-				}
-
-				if (RunAsAdmin || Input.IsKeyDown(Keys.LeftControl))
-				{
-					proc.StartInfo.Verb = "runas";
-				}
-
-				proc.Start();
-				proc.Dispose();
-
-				return true;
-			}
-			catch (Exception ex)
-			{
-				log.Error($"Could not start process '{FileName}': {ex.Message}");
-				return true;
-			}
+			return true;
 		}
 
 		public Image GetIcon()

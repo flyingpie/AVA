@@ -42,7 +42,7 @@ namespace AVA
 			_queryBox = new TextBox();
 
 			Width = 600;
-			Height = 300;
+			Height = 340;
 		}
 
 		public override void Load()
@@ -112,7 +112,7 @@ namespace AVA
 				var cMax = ImGui.GetWindowContentRegionMax();
 				var cWidth = cMax.X - cMin.X;
 
-				ImGui.BeginChild("query-executor", new Vector2(cWidth, ImGui.GetContentRegionAvail().Y - 20), false, ImGuiWindowFlags.None);
+				ImGui.BeginChild("query-executor", new Vector2(cWidth, ImGui.GetContentRegionAvail().Y - 20), ImGuiChildFlags.None, ImGuiWindowFlags.None);
 				{
 					QueryExecutorManager.Draw();
 				}
@@ -126,14 +126,14 @@ namespace AVA
 			ImGui.End();
 		}
 
-		public override async Task Update()
+		public override void Update()
 		{
 			// Execute when ENTER was pressed
 			if (Input.IsKeyPressed(Keys.Enter))
 			{
 				_log.Info($"ENTER");
 
-				if (await QueryExecutorManager.TryExecuteAsync(_queryContext))
+				if (QueryExecutorManager.TryExecuteAsync(_queryContext))
 				{
 					if (_queryContext.HideUI) Minimize();
 
@@ -178,13 +178,21 @@ namespace AVA
 
 		private void Toggle()
 		{
-			if (_uic.IsVisible) Minimize();
-			else Maximize();
+			if (_uic.IsVisible)
+			{
+				Minimize();
+			}
+			else
+			{
+				Maximize();
+			}
 		}
 
 		private void Maximize()
 		{
 			_log.Info("Maximize");
+
+			_uic.Maximize();
 
 			_uic.CenterWindowToDisplayWithMouse();
 
@@ -196,14 +204,11 @@ namespace AVA
 
 		private void Minimize()
 		{
-			Task.Run(() =>
-			{
-				_log.Info("Minimize");
+			_log.Info("Minimize");
 
-				_queryContext.Reset();
+			_queryContext.Reset();
 
-				_uic.IsVisible = false;
-			});
+			_uic.Minimize();
 		}
 	}
 }

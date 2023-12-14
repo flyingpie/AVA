@@ -59,6 +59,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02-Core", "02-Core", "{DD2B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00-Build", "00-Build", "{D8F13658-66A7-421E-9FDE-B82C48FC8A2C}"
 	ProjectSection(SolutionItems) = preProject
+		..\.editorconfig = ..\.editorconfig
 		..\appveyor.yml = ..\appveyor.yml
 		..\build.cake = ..\build.cake
 		..\build.ps1 = ..\build.ps1

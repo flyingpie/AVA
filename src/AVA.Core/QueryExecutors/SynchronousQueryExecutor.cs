@@ -16,7 +16,7 @@ namespace AVA.Core.QueryExecutors
 
 		public bool TryHandle(QueryContext query) => _executor.TryHandle(query);
 
-		public Task<bool> TryExecuteAsync(QueryContext query) => Task.FromResult(_executor.TryExecute(query));
+		public bool TryExecuteAsync(QueryContext query) => _executor.TryExecute(query);
 
 		public void Draw() => _executor.Draw();
 

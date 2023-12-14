@@ -94,7 +94,13 @@ namespace AVA.Plugin.WebQuery
 					Icon = Resources.Resources.Wikipedia,
 					Pattern = "https://en.wikipedia.org/w/index.php?search={term}",
 					Description = "Wikipedia"
-				}
+				},
+				new Command()
+				{
+					Prefix = "scoop",
+					Pattern = "https://scoop.sh/#/apps?q={term}",
+					Description = "Scoop",
+				},
 			};
 		}
 

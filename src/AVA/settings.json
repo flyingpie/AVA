@@ -20,10 +20,12 @@
 
 	"Macros": {
 		"Macros": [
-			{ "Command": "kp",		"Name": "KeePassXC",		"FileName": "%SYNCTHING%/apps/keepassxc/keepassxc.exe" },
+			{ "Command": "kp",		"Name": "KeePassXC",		"FileName": "%SYNCTHING%/apps/keepassxc/keepassxc.exe", "Arguments": "--allow-screencapture" },
 
-			{ "Command": "ps",		"Name": "PowerShell",		"FileName": "powershell",	"Arguments": "-nologo" },
+			{ "Command": "ps5",		"Name": "PowerShell 5",		"FileName": "powershell",	"Arguments": "-nologo" },
 			{ "Command": "ps6",		"Name": "PowerShell 6",		"FileName": "pwsh",			"Arguments": "-nologo" },
+
+			{ "Command": "blender", "Name": "Blender",			"FileName": "D:/apps/blender/blender-4.0.1-windows-x64/blender.exe",		"Icon": "%SYNCTHING%/personal/images/icons/blender_01.png" },
 
 			{
 				"Command": "hosts",
@@ -38,6 +40,13 @@
 				"FileName": "code",
 				"Name": "Visual Studio Code",
 				"Icon": "%SYNCTHING%/Apps/vscode/oceanic_next.png"
+			},
+
+			{
+				"Command": "vscpp",
+				"FileName": "C:/tools/vsc/cpp/code.exe",
+				"Name": "VS Code - C++",
+				"Icon": "%SYNCTHING%/Apps/vscode/cpp.png"
 			},
 
 			{

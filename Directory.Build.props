@@ -1,7 +1,7 @@
 <Project>
 	<PropertyGroup>
-		<TargetFramework>net7.0-windows10.0.19041.0</TargetFramework>
-		<LangVersion>11.0</LangVersion>
+		<TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
 
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -12,7 +12,7 @@
 		<BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)\build\obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
 		<OutputPath>$(MSBuildThisFileDirectory)\build\bin</OutputPath>
 
-		<DebugType>full</DebugType>
+		<DebugType>embedded</DebugType>
 		<DebugSymbols>true</DebugSymbols>
 	</PropertyGroup>
 
@@ -21,13 +21,17 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Code analysis -->
-		<AnalysisLevel>6.0-all</AnalysisLevel>
+		<AnalysisLevel>8.0-all</AnalysisLevel>
 		<AnalysisMode>all</AnalysisMode>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 		<RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
 		<RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>
 	</PropertyGroup>
+
+	<ItemGroup>
+		<Content Include="$(MSBuildThisFileDirectory)\stylecop.json" Link="stylecop.json" />
+	</ItemGroup>
 
 	<!-- Unit Test Projects -->
 	<PropertyGroup Condition="$(MSBuildProjectName.EndsWith('Test'))">

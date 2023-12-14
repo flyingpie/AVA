@@ -20,7 +20,7 @@ namespace AVA.Plugin.Time
 			var cMax = ImGui.GetWindowContentRegionMax();
 			var cWidth = cMax.X - cMin.X;
 
-			ImGui.BeginChild($"query-result-{Id}", new Vector2(cWidth, 50), false, ImGuiWindowFlags.None);
+			ImGui.BeginChild($"query-result-{Id}", new Vector2(cWidth, 50), ImGuiChildFlags.None, ImGuiWindowFlags.None);
 			{
 				ImGui.Columns(2, " ", false);
 

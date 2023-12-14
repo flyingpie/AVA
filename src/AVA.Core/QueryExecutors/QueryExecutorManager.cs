@@ -51,18 +51,19 @@ namespace AVA.Core.QueryExecutors
 			return _activeQueryExecutor != null;
 		}
 
-		public Task<bool> TryExecuteAsync(QueryContext query)
+		public bool TryExecuteAsync(QueryContext query)
 		{
 			try
 			{
-				return _activeQueryExecutor?.TryExecuteAsync(query) ?? Task.FromResult(false);
+				return _activeQueryExecutor?.TryExecuteAsync(query) ?? false;//?? Task.FromResult(false);
 			}
 			catch (Exception ex)
 			{
 				_log.Error($"Error while calling 'TryExecute' on query executor '{_activeQueryExecutor}': '{ex.Message}'", ex);
 			}
 
-			return Task.FromResult(false);
+			//return Task.FromResult(false);
+			return false;
 		}
 
 		public void Draw()

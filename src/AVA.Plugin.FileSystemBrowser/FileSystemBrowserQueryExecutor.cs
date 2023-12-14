@@ -54,7 +54,8 @@ namespace AVA.Plugin.FileSystemBrowser
 					Icon = ResourceManager.Instance.LoadImageFromIcon(item.FullName),
 					Name = item.Name,
 					Description = item.FullName,
-					OnExecute = t => Process.Start(item.FullName).Dispose(),
+					//OnExecute = t => Process.Start(item.FullName).Dispose(),
+					OnExecute = t => new ProcessRunner(item.FullName).Start(), // TODO: Wait for done and dispose in background
 					Mode = ListMode.Small
 				});
 			}

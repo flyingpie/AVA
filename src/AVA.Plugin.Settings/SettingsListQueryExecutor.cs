@@ -59,6 +59,8 @@ namespace AVA.Plugin.Settings
 			};
 		}
 
+		private string _descr = "<none>";
+
 		private ListQueryResult CreateRebuildIndexSetting()
 		{
 			var res = new ListQueryResult()
@@ -68,7 +70,7 @@ namespace AVA.Plugin.Settings
 				Icon = ResourceManager.Instance.DefaultImage
 			};
 
-			res.OnExecuteAsync = async query =>
+			res.OnExecute = query =>
 			{
 				res.Description = "Rebuilding index...";
 				res.Icon = ResourceManager.Instance.LoadingImage;
@@ -87,11 +89,11 @@ namespace AVA.Plugin.Settings
 					}
 				});
 
-				await Indexer.RebuildAsync(progress);
+				Indexer.RebuildAsync(progress).GetAwaiter().GetResult();
 
 				cts.Cancel();
 
-				await updater;
+				//await updater;
 
 				res.Icon = ResourceManager.Instance.DefaultImage;
 				res.Description = "";

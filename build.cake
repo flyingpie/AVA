@@ -15,7 +15,6 @@ Task("Build").Does(() =>
 	MSBuild(sln, new MSBuildSettings
 	{
 		Configuration = configuration,
-		PlatformTarget = platform,
 		Restore = true
 	});
 });

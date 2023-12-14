@@ -13,9 +13,9 @@ namespace AVA.Core
 			Height = 700;
 		}
 
-		public override Task Update()
+		public override void Update()
 		{
-			return base.Update();
+			base.Update();
 		}
 
 		public override void Draw()

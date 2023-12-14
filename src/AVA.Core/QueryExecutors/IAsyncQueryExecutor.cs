@@ -8,7 +8,7 @@ namespace AVA.Core.QueryExecutors
 
 		bool TryHandle(QueryContext query);
 
-		Task<bool> TryExecuteAsync(QueryContext query);
+		bool TryExecuteAsync(QueryContext query);
 
 		void Draw();
 	}

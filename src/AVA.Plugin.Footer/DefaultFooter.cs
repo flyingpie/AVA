@@ -20,7 +20,7 @@ namespace AVA.Plugin.Footer
 		public void Draw()
 		{
 			ImGui.PushFont(Fonts.Regular16);
-			ImGui.BeginChild("footer", ImGui.GetContentRegionAvail(), false, ImGuiWindowFlags.None);
+			ImGui.BeginChild("footer", ImGui.GetContentRegionAvail(), ImGuiChildFlags.None, ImGuiWindowFlags.None);
 			{
 				// SysMon
 				ImGui.Text($"CPU {SysMon.CpuUsage.ToString("0.00")}");

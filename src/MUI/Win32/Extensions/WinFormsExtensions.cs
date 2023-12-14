@@ -1,19 +1,18 @@
 ﻿using System.Windows.Forms;
 
-namespace MUI.Win32.Extensions
+namespace MUI.Win32.Extensions;
+
+public static class WinFormsExtensions
 {
-	public static class WinFormsExtensions
+	public static void InvokeIfRequired(this Control control, MethodInvoker action)
 	{
-		public static void InvokeIfRequired(this Control control, MethodInvoker action)
+		if (control.InvokeRequired)
 		{
-			if (control.InvokeRequired)
-			{
-				control.Invoke(action);
-			}
-			else
-			{
-				action();
-			}
+			control.Invoke(action);
+		}
+		else
+		{
+			action();
 		}
 	}
 }

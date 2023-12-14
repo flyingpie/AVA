@@ -27,7 +27,7 @@ namespace AVA.Core.QueryExecutors.ListQuery
 
 		public Action<QueryContext> OnExecute { get; set; }
 
-		public Func<QueryContext, Task> OnExecuteAsync { get; set; }
+		//public Func<QueryContext, Task> OnExecuteAsync { get; set; }
 
 		public virtual void Draw(bool isSelected)
 		{
@@ -43,7 +43,7 @@ namespace AVA.Core.QueryExecutors.ListQuery
 			var cMax = ImGui.GetWindowContentRegionMax();
 			var cWidth = cMax.X - cMin.X;
 
-			ImGui.BeginChild($"query-result-{Id}", new Vector2(cWidth, iconSize), false, ImGuiWindowFlags.None);
+			ImGui.BeginChild($"query-result-{Id}", new Vector2(cWidth, iconSize), ImGuiChildFlags.None, ImGuiWindowFlags.None);
 			{
 				ImGui.Columns(2, " ", false);
 
@@ -83,20 +83,21 @@ namespace AVA.Core.QueryExecutors.ListQuery
 			if (isSelected) ImGui.SetScrollHereY();
 		}
 
-		public Task ExecuteAsync(QueryContext query)
+		public void ExecuteAsync(QueryContext query)
 		{
 			if (OnExecute != null)
 			{
 				OnExecute.Invoke(query);
-				return Task.CompletedTask;
+				//return Task.CompletedTask;
+				return;
 			}
 
-			if (OnExecuteAsync != null)
-			{
-				return OnExecuteAsync.Invoke(query);
-			}
+			//if (OnExecuteAsync != null)
+			//{
+			//	OnExecuteAsync.Invoke(query);
+			//}
 
-			return Task.CompletedTask;
+			//return Task.CompletedTask;
 		}
 	}
 }

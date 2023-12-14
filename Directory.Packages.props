@@ -1,24 +1,24 @@
 <Project>
-	<PropertyGroup>
-		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-	</PropertyGroup>
-	<ItemGroup>
-		<PackageVersion Include="Ardalis.GuardClauses" Version="4.0.1" />
-		<PackageVersion Include="CoreCLR-NCalc" Version="2.2.112" />
-		<PackageVersion Include="ImGui.NET" Version="1.89.4" />
-		<PackageVersion Include="Lucene.Net" Version="4.8.0-beta00016" />
-		<PackageVersion Include="Lucene.Net.Analysis.Common" Version="4.8.0-beta00016" />
-		<PackageVersion Include="Lucene.Net.Queries" Version="4.8.0-beta00016" />
-		<PackageVersion Include="Lucene.Net.QueryParser" Version="4.8.0-beta00016" />
-		<PackageVersion Include="Microsoft.Extensions.FileSystemGlobbing" Version="7.0.0" />
-		<PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.5.22" />
-		<PackageVersion Include="MonoGame.Framework.WindowsDX" Version="3.8.1.303" />
-		<PackageVersion Include="morelinq" Version="3.3.2" />
-		<PackageVersion Include="NCalc2" Version="2.1.0" />
-		<PackageVersion Include="Newtonsoft.Json" Version="13.0.2" />
-		<PackageVersion Include="SonarAnalyzer.CSharp" Version="8.53.0.62665" />
-		<PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.435" />
-		<PackageVersion Include="System.Numerics.Vectors" Version="4.5.0" />
-		<PackageVersion Include="TimeZoneNames" Version="6.0.0" />
-	</ItemGroup>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Ardalis.GuardClauses" Version="4.2.0" />
+    <PackageVersion Include="CoreCLR-NCalc" Version="3.0.119" />
+    <PackageVersion Include="ImGui.NET" Version="1.90.0.1" />
+    <PackageVersion Include="Lucene.Net" Version="4.8.0-beta00016" />
+    <PackageVersion Include="Lucene.Net.Analysis.Common" Version="4.8.0-beta00016" />
+    <PackageVersion Include="Lucene.Net.Queries" Version="4.8.0-beta00016" />
+    <PackageVersion Include="Lucene.Net.QueryParser" Version="4.8.0-beta00016" />
+    <PackageVersion Include="Microsoft.Extensions.FileSystemGlobbing" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.8.14" />
+    <PackageVersion Include="MonoGame.Framework.WindowsDX" Version="3.8.1.303" />
+    <PackageVersion Include="morelinq" Version="3.3.2" />
+    <PackageVersion Include="NCalc2" Version="2.1.0" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="9.15.0.81779" />
+    <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.435" />
+    <PackageVersion Include="System.Numerics.Vectors" Version="4.5.0" />
+    <PackageVersion Include="TimeZoneNames" Version="6.0.0" />
+  </ItemGroup>
 </Project>

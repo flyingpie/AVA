@@ -15,18 +15,18 @@ namespace MUI.Graphics
 		public virtual float Ratio { get; private set; }
 
 		public Image()
-		{ }
+		{
+
+		}
 
 		public Image(IntPtr texture, int width, int height)
 		{
-			if (texture.ToInt32() == 0) throw new ArgumentOutOfRangeException(nameof(texture));
-
 			Pointer = texture;
 
 			Width = width;
 			Height = height;
 
-			Ratio = (float)height / (float)width;
+			Ratio = (float)height / width;
 		}
 
 		public virtual void Initialize()

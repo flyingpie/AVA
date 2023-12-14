@@ -121,7 +121,7 @@ namespace MUI
 		{
 			try
 			{
-				return LoadImage(path, File.ReadAllBytes(path));
+				return LoadImage(path, factory => factory.Load(File.ReadAllBytes(path)));
 			}
 			catch (Exception ex)
 			{

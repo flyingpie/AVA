@@ -4,11 +4,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Reference Include="System.Net.Http" />
-		<Reference Include="System.Windows.Forms" />
-	</ItemGroup>
-
-	<ItemGroup>
+		<PackageReference Include="Ardalis.GuardClauses" />
 		<PackageReference Include="ImGui.NET" />
 		<PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" />
 		<PackageReference Include="MonoGame.Framework.WindowsDX" />
